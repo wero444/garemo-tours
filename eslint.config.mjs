@@ -68,7 +68,12 @@ export default defineConfig([
       '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
       'react/jsx-boolean-value': ['error', 'never'],
       'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
-      'react/self-closing-comp': 'error'
+      'react/self-closing-comp': 'error',
+
+      // ES6+ only: arrow functions, no `function` keyword
+      'func-style': ['error', 'expression'],
+      'prefer-arrow-callback': 'error',
+      'no-restricted-syntax': ['error', 'FunctionDeclaration', 'FunctionExpression']
     }
   }
 ])

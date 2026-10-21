@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { Button } from 'src/components/ui/button'
 
-export function Hero() {
+export const Hero = () => {
   const container = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {

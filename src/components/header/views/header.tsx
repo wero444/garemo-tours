@@ -16,7 +16,7 @@ export const Header = () => {
               <a
                 href={href}
                 aria-label={label}
-                className='nav-link relative block pb-1 text-sm font-medium uppercase tracking-[0.2em] text-primary outline-none'
+                className='nav-link relative block pb-1 text-[15px] md:text-base font-medium uppercase tracking-[0.2em] text-primary outline-none'
               >
                 <span aria-hidden className='block leading-[1.3]'><Chars text={label} /></span>
                 <span

@@ -26,7 +26,7 @@ export const Hero = () => {
 
       <div className='relative flex h-full flex-col items-center justify-center px-6'>
         <h1 className='hero-reveal invisible -mt-[8vh] w-[min(56vw,300px)] text-primary'>
-          <Logo className='h-auto w-full overflow-visible' />
+          <Logo className='hero-logo h-auto w-full overflow-visible' />
         </h1>
         <p
           aria-label={tagline}

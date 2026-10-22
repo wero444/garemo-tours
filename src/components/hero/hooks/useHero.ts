@@ -21,18 +21,23 @@ export const useHero = () => {
           { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: 'expo.inOut' }, 0)
         .fromTo('.hero-image', { scale: 1.4 }, { scale: 1, duration: 2.8 }, 0)
         .fromTo('.hero-shade', { opacity: 0 }, { opacity: 1, duration: 1.6, ease: 'power2.out' }, 0.8)
+        .set('.hero-logo path', { stroke: 'currentColor', strokeWidth: 1.5, fillOpacity: 0 }, 0)
         .fromTo('.logo-sun',
-          { scale: 0.4, rotate: -90, opacity: 0, transformOrigin: '50% 50%' },
-          { scale: 1, rotate: 0, opacity: 1, duration: 1.8 }, intro.logo)
+          { drawSVG: 0, rotate: -60, scale: 0.85, transformOrigin: '50% 50%' },
+          { drawSVG: '100%', rotate: 0, scale: 1, duration: 1.8, ease: 'power2.inOut' }, intro.logo)
         .fromTo('.logo-mountain',
-          { y: 24, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.2, stagger: 0.12 }, intro.logo + 0.2)
+          { drawSVG: '50% 50%' },
+          { drawSVG: '0% 100%', duration: 1.2, stagger: 0.15, ease: 'power2.inOut' }, intro.logo + 0.3)
         .fromTo('.logo-letter',
-          { y: 36, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.2, stagger: 0.06 }, intro.logo + 0.35)
+          { drawSVG: 0 },
+          { drawSVG: '100%', duration: 1.1, stagger: 0.08, ease: 'power2.inOut' }, intro.logo + 0.5)
         .fromTo('.logo-tours',
-          { y: 12, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1 }, intro.logo + 0.8)
+          { drawSVG: 0 },
+          { drawSVG: '100%', duration: 0.9, ease: 'power2.inOut' }, intro.logo + 1.1)
+        .to('.logo-sun, .logo-mountain', { fillOpacity: 1, duration: 0.8, stagger: 0.1, ease: 'power2.out' }, intro.logo + 1.5)
+        .to('.logo-letter', { fillOpacity: 1, duration: 0.6, stagger: 0.06, ease: 'power2.out' }, intro.logo + 1.7)
+        .to('.logo-tours', { fillOpacity: 1, duration: 0.6, ease: 'power2.out' }, intro.logo + 2.1)
+        .to('.hero-logo path', { strokeOpacity: 0, duration: 0.8, ease: 'power2.out' }, intro.logo + 2.4)
         .fromTo('.hero-word',
           { yPercent: 110, opacity: 0 },
           { yPercent: 0, opacity: 1, duration: 1.4, stagger: 0.12 }, intro.tagline).then()

@@ -92,7 +92,7 @@
   --popover-foreground: #ede6de;
   --primary: #ff7f4d;
   --primary-foreground: #14100e;
-  --secondary: #1a1411;
+  --secondary: #2a211c;
   --secondary-foreground: #e3dcd4;
   --muted: #2a221e;
   --muted-foreground: #a99d92;
@@ -126,6 +126,13 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    /* Native scrollbar is replaced by the floating Scrollbar component */
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
   }
 }
 

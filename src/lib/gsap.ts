@@ -2,8 +2,9 @@
 
 import gsap from 'gsap'
 import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 
-gsap.registerPlugin(useGSAP, DrawSVGPlugin)
+gsap.registerPlugin(useGSAP, DrawSVGPlugin, ScrollTrigger)
 
-export { gsap, useGSAP }
+export { gsap, useGSAP, ScrollTrigger }

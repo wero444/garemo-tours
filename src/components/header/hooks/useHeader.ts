@@ -1,9 +1,47 @@
 import { useRef } from 'react'
-import { gsap, useGSAP } from 'src/lib/gsap'
+import { gsap, useGSAP, ScrollTrigger } from 'src/lib/gsap'
 import { intro, reducedMotion } from 'src/lib/intro'
 
 export const useHeader = () => {
   const container = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const still = window.matchMedia(reducedMotion).matches
+
+    const sheen = gsap.fromTo('.header-sheen',
+      { xPercent: -150, opacity: 1 },
+      { xPercent: 450, duration: 1.8, ease: 'power2.inOut', repeat: -1, repeatDelay: 4.5, delay: 1.2, paused: true }
+    )
+
+    let scrolled = false
+
+    const update = (scroll: number, direction: number) => {
+      container.current?.toggleAttribute('data-hidden', direction > 0 && scroll > 160)
+
+      if (scrolled === scroll > 40) return
+      scrolled = scroll > 40
+      container.current?.toggleAttribute('data-scrolled', scrolled)
+
+      if (still) return
+
+      if (scrolled) {
+        sheen.restart(true).then()
+      } else {
+        sheen.pause().then()
+        gsap.set('.header-sheen', { opacity: 0 }).then()
+      }
+    }
+
+    const trigger = ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onUpdate: self => update(self.scroll(), self.direction)
+    })
+
+    update(window.scrollY, 0)
+
+    return () => trigger.kill()
+  }, { scope: container })
 
   useGSAP(() => {
     const mm = gsap.matchMedia()

@@ -11,16 +11,16 @@ export const Menu = () => {
 
   return (
     <div ref={container} className='ml-auto md:hidden'>
-      <div className='flex justify-end dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
+      <div className='relative z-10 flex justify-end dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
         <Burger open={open} onClick={toggle} />
       </div>
 
       <div
         id='mobile-menu'
         inert={!open}
-        className='menu-panel invisible fixed inset-0 flex flex-col overflow-y-auto bg-secondary px-6 pt-36 pb-8'
+        className='menu-panel invisible fixed inset-0 flex flex-col overflow-y-auto bg-secondary px-6 pt-40 pb-8'
       >
-        <a href='#' onClick={close} aria-label={siteConfig.legalName} className='menu-meta absolute top-5 left-6 w-20 text-primary outline-none'>
+        <a href='#' onClick={close} aria-label={siteConfig.legalName} className='menu-meta absolute top-5 left-6 w-28 text-primary outline-none'>
           <Logo className='h-auto w-full' />
         </a>
 

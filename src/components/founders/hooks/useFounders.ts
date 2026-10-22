@@ -1,6 +1,7 @@
-import { useRef, type PointerEvent } from 'react'
+import { useRef } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
+import { pressEnter, pressMove, pressRelease } from 'src/lib/press'
 
 export const useFounders = () => {
   const container = useRef<HTMLDivElement>(null)
@@ -26,9 +27,9 @@ export const useFounders = () => {
           .fromTo(q('.founder-frame'),
             { clipPath: 'inset(100% 0% 0% 0%)' },
             { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'expo.inOut' }, 0)
+          .fromTo(q('.founder-image'), { scale: 1.3 }, { scale: 1, duration: 2.2 }, 0.2)
           .fromTo(q('.founder-ground'), { scaleX: 0.2, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 1.4 }, 0.5)
           .fromTo(q('.founder-glow'), { opacity: 0 }, { opacity: 1, duration: 1.6, ease: 'power2.out' }, 0.9)
-          .fromTo(q('.founder-line'), { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 1.2 }, 1)
           .fromTo(q('.founder-name'), { yPercent: 110 }, { yPercent: 0, duration: 1.1 }, 1.1)
           .fromTo(q('.founder-role'), { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 1 }, 1.25).then()
       })
@@ -48,39 +49,5 @@ export const useFounders = () => {
     return () => mm.revert()
   }, { scope: container })
 
-  const pointer = (event: PointerEvent<HTMLDivElement>) => {
-    const { left, top, width, height } = event.currentTarget.getBoundingClientRect()
-    const x = event.clientX - left
-    const y = event.clientY - top
-
-    return { x, y, px: x / width - 0.5, py: y / height - 0.5 }
-  }
-
-  const tilt = (event: PointerEvent<HTMLDivElement>) =>
-    event.currentTarget.querySelector('.founder-tilt')
-
-  const still = () => window.matchMedia(reducedMotion).matches
-
-  const onPointerEnter = (event: PointerEvent<HTMLDivElement>) => {
-    const { x, y } = pointer(event)
-    gsap.set(event.currentTarget, { '--x': `${x}px`, '--y': `${y}px` }).then()
-  }
-
-  // The spot under the cursor sinks away from the viewer, like pressing into the frame
-  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    const { x, y, px, py } = pointer(event)
-    const ease = { duration: 0.6, ease: 'power3.out', overwrite: 'auto' as const }
-
-    gsap.to(event.currentTarget, { '--x': `${x}px`, '--y': `${y}px`, ...ease }).then()
-
-    if (still()) return
-
-    gsap.to(tilt(event), { rotateY: px * 10, rotateX: py * -10, scale: 0.985, ...ease }).then()
-  }
-
-  const onPointerLeave = (event: PointerEvent<HTMLDivElement>) => {
-    gsap.to(tilt(event), { rotateY: 0, rotateX: 0, scale: 1, duration: 1.2, ease: 'elastic.out(1, 0.5)', overwrite: 'auto' }).then()
-  }
-
-  return { container, onPointerEnter, onPointerMove, onPointerLeave }
+  return { container, onPointerEnter: pressEnter, onPointerMove: pressMove, onPointerLeave: pressRelease }
 }

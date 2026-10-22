@@ -1,35 +1,46 @@
 'use client'
 
+import Image from 'next/image'
 import { useFounders } from 'src/components/founders/hooks/useFounders'
 import { founders, languages } from 'src/components/founders/helpers'
+import { ArchFrame } from 'src/components/ui/archFrame'
+import { pressDent, pressDown, pressUp } from 'src/lib/press'
 
-const dent = 'pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100'
 
 export const Founders = () => {
   const { container, onPointerEnter, onPointerMove, onPointerLeave } = useFounders()
 
   return (
-    <section aria-label='Founders' className='bg-secondary px-6 pt-20 pb-24 md:pt-28 md:pb-32 lg:pb-40'>
+    <section aria-label='Founders' className='bg-secondary px-6 pt-20 pb-16 md:pt-28 md:pb-20 lg:pb-24'>
       <div ref={container} className='mx-auto max-w-3xl'>
         <ul className='grid grid-cols-1 justify-items-center gap-16 sm:grid-cols-2 sm:gap-10 md:gap-16'>
-          {founders.map(({ name, role }) => (
+          {founders.map(({ name, role, image, position }) => (
             <li key={name} className='founder invisible flex w-full max-w-72 flex-col items-center text-center sm:max-w-none'>
               <div
                 onPointerEnter={onPointerEnter}
                 onPointerMove={onPointerMove}
                 onPointerLeave={onPointerLeave}
-                className='group relative aspect-4/5 w-full transition-[translate] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] perspective-[900px] hover:-translate-y-2'
+                onPointerDown={pressDown}
+                onPointerUp={pressUp}
+                className='group relative aspect-4/5 w-full cursor-pointer transition-[translate] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] perspective-[900px] hover:-translate-y-2'
               >
                 <span aria-hidden className='founder-ground absolute inset-x-[12%] -bottom-7 h-8 rounded-[50%] bg-black/25 blur-xl' />
-                <div className='founder-tilt absolute inset-0'>
+                <div className='press-tilt absolute inset-0'>
                   <span aria-hidden className='founder-glow absolute inset-0 rounded-t-full rounded-b-md shadow-[0_40px_80px_-36px_color-mix(in_oklab,var(--primary)_55%,transparent)]' />
                   <span aria-hidden className='absolute inset-0 rounded-t-full rounded-b-md opacity-0 shadow-[0_50px_100px_-30px_color-mix(in_oklab,var(--primary)_60%,transparent)] transition-opacity duration-700 group-hover:opacity-100' />
 
-                  <div className='founder-frame absolute inset-0 overflow-hidden rounded-t-full rounded-b-md border border-primary/25 bg-[color-mix(in_oklab,var(--secondary),var(--foreground)_6%)]'>
-                    <span aria-hidden className='absolute inset-0 bg-linear-to-b from-white/30 via-transparent to-black/5 opacity-70 transition-opacity duration-700 group-hover:opacity-100' />
-                    <span aria-hidden className='founder-line absolute inset-3 rounded-t-full rounded-b-sm border border-primary/15' />
-                    <span aria-hidden className={`${dent} bg-[radial-gradient(220px_circle_at_var(--x)_var(--y),rgb(0_0_0/0.09),transparent_70%)]`} />
-                  </div>
+                  <ArchFrame className='founder-frame absolute! inset-0 border border-primary/25 bg-[color-mix(in_oklab,var(--secondary),var(--foreground)_6%)]'>
+                    <Image
+                      src={image}
+                      alt={`Portrait of ${name}`}
+                      fill
+                      placeholder='blur'
+                      sizes='(min-width: 640px) 360px, 288px'
+                      className={`founder-image object-cover ${position}`}
+                    />
+                    <span aria-hidden className='absolute inset-0 bg-linear-to-b from-white/10 via-transparent to-black/25 opacity-70 transition-opacity duration-700 group-hover:opacity-100' />
+                    <span aria-hidden className={pressDent} />
+                  </ArchFrame>
                 </div>
               </div>
 

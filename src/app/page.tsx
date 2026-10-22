@@ -2,6 +2,7 @@ import { Hero } from 'src/components/hero/views/hero'
 import { About } from 'src/components/about/views/about'
 import { Divider } from 'src/components/divider/views/divider'
 import { Founders } from 'src/components/founders/views/founders'
+import { Tours } from 'src/components/tours/views/tours'
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <About />
       <Divider />
       <Founders />
+      <Tours />
     </main>
   )
 }

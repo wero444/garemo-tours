@@ -13,7 +13,7 @@ export const About = () => {
       ref={container}
       id='about'
       aria-labelledby='about-title'
-      className='relative overflow-hidden bg-secondary px-6 py-24 md:py-32 lg:py-40'
+      className='relative overflow-hidden bg-secondary px-6 pt-24 pb-20 md:pt-32 md:pb-28 lg:pt-40 lg:pb-32'
     >
       <div className='relative mx-auto max-w-4xl'>
         <div aria-hidden className='about-trees pointer-events-none absolute -top-10 left-0 text-primary sm:top-0 md:-left-4 lg:-left-16'>

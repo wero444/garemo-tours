@@ -17,10 +17,10 @@ export const useHero = () => {
 
       tl.set('.hero-reveal', { autoAlpha: 1 })
         .fromTo('.hero-frame',
-          { clipPath: 'inset(22% 34% 22% 34%)' },
-          { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: 'expo.inOut' }, 0)
-        .fromTo('.hero-image', { scale: 1.4 }, { scale: 1, duration: 2.8 }, 0)
-        .fromTo('.hero-shade', { opacity: 0 }, { opacity: 1, duration: 1.6, ease: 'power2.out' }, 0.8)
+          { clipPath: 'circle(0% at 50% 50%)' },
+          { clipPath: 'circle(75% at 50% 50%)', duration: 1.6, ease: 'power4.out' }, intro.spread)
+        .fromTo('.hero-image', { scale: 1.4 }, { scale: 1, duration: 3 }, intro.spread)
+        .fromTo('.hero-shade', { opacity: 0 }, { opacity: 1, duration: 1.6, ease: 'power2.out' }, intro.spread + 0.8)
         .set('.hero-logo path', { stroke: 'currentColor', strokeWidth: 1.5, fillOpacity: 0 }, 0)
         .fromTo('.logo-sun',
           { drawSVG: 0, rotate: -60, scale: 0.85, transformOrigin: '50% 50%' },

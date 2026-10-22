@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Header } from 'src/components/header/views/header'
 import { siteConfig } from 'src/lib/site'
 import { jsonLd, serializeJsonLd } from 'src/lib/seo'
+import { themeScript } from 'src/lib/theme'
 import './globals.css'
 
 const geistSans = Geist({
@@ -71,8 +72,13 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
   return (
     <html
       lang='en'
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <title>Garemo Tours</title>
+      </head>
       <body className='min-h-full flex flex-col'>
         <script
           type='application/ld+json'

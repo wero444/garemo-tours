@@ -19,18 +19,18 @@ export const Hero = () => {
           preload
           sizes='100vw'
           placeholder='blur'
-          className='hero-image object-cover'
+          className='hero-image object-cover dark:brightness-[0.6]'
         />
-        <div className='hero-shade absolute inset-0 bg-linear-to-b from-white/20 via-transparent to-black/30' />
+        <div className='hero-shade absolute inset-0 bg-linear-to-b from-white/20 via-transparent to-black/30 dark:from-black/50 dark:via-black/15 dark:to-black/60' />
       </div>
 
       <div className='relative flex h-full flex-col items-center justify-center px-6'>
-        <h1 className='hero-reveal invisible -mt-[8vh] w-[min(56vw,300px)] text-primary'>
+        <h1 className='hero-reveal invisible -mt-[8vh] w-[min(60vw,260px)] text-primary md:w-[min(42vw,300px)] xl:w-80 dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
           <Logo className='hero-logo h-auto w-full overflow-visible' />
         </h1>
         <p
           aria-label={tagline}
-          className='hero-reveal invisible absolute bottom-10 text-sm font-light tracking-[0.15em] text-white/90 md:text-base'
+          className='hero-reveal invisible absolute inset-x-6 bottom-8 text-center text-xs font-light tracking-[0.15em] text-white/90 sm:text-sm md:bottom-10 md:text-base'
         >
           {tagline.split(' ').map((word, i) => (
             <span key={i} aria-hidden className='inline-block overflow-hidden pb-1 align-bottom'>

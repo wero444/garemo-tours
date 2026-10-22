@@ -5,7 +5,7 @@ import { useTours } from 'src/components/tours/hooks/useTours'
 import { description, tours } from 'src/components/tours/helpers'
 import { ToursTitle } from 'src/components/tours/views/toursTitle'
 import { Eagle } from 'src/components/tours/views/eagle'
-import { Words } from 'src/components/tours/views/words'
+import { Words } from 'src/components/ui/words'
 import { ArchFrame } from 'src/components/ui/archFrame'
 import { pressDown, pressUp } from 'src/lib/press'
 

@@ -2,13 +2,15 @@ import { useRef } from 'react'
 import { gsap, useGSAP, ScrollTrigger } from 'src/lib/gsap'
 import { intro, reducedMotion } from 'src/lib/intro'
 
-export const useHeader = () => {
+export const useHeader = (home: boolean) => {
   const container = useRef<HTMLElement>(null)
+  const route = useRef<boolean>(null)
 
   useGSAP(() => {
     const still = window.matchMedia(reducedMotion).matches
 
-    const sheen = gsap.fromTo('.header-sheen',
+    const glint = container.current?.querySelector('.header-sheen')
+    const sheen = gsap.fromTo(glint ?? [],
       { xPercent: -150, opacity: 1 },
       { xPercent: 450, duration: 1.8, ease: 'power2.inOut', repeat: -1, repeatDelay: 4.5, delay: 1.2, paused: true }
     )
@@ -28,7 +30,7 @@ export const useHeader = () => {
         sheen.restart(true).then()
       } else {
         sheen.pause().then()
-        gsap.set('.header-sheen', { opacity: 0 }).then()
+        if (glint) gsap.set(glint, { opacity: 0 }).then()
       }
     }
 
@@ -45,6 +47,8 @@ export const useHeader = () => {
 
   useGSAP(() => {
     const mm = gsap.matchMedia()
+    const changed = route.current !== null && route.current !== home
+    route.current = home
 
     mm.add(reducedMotion, () => {
       gsap.set('.nav-item', { autoAlpha: 1 }).then()
@@ -53,12 +57,19 @@ export const useHeader = () => {
     mm.add(`not all and ${reducedMotion}`, () => {
       gsap.fromTo('.nav-item',
         { autoAlpha: 0, y: -14 },
-        { autoAlpha: 1, y: 0, duration: 1.2, delay: intro.nav, stagger: { each: 0.08, from: 'center' }, ease: 'expo.out' }
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: changed ? 0.9 : 1.2,
+          delay: changed ? 0.1 : intro.nav,
+          stagger: changed ? 0.05 : { each: 0.08, from: 'center' },
+          ease: 'expo.out'
+        }
       ).then()
     })
 
     return () => mm.revert()
-  }, { scope: container })
+  }, { scope: container, dependencies: [home], revertOnUpdate: true })
 
   useGSAP(() => {
     const links = gsap.utils.toArray<HTMLAnchorElement>('.nav-link')
@@ -104,7 +115,7 @@ export const useHeader = () => {
     })
 
     return () => cleanups.forEach(cleanup => cleanup())
-  }, { scope: container })
+  }, { scope: container, dependencies: [home], revertOnUpdate: true })
 
   return { container }
 }

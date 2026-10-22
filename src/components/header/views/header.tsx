@@ -1,9 +1,10 @@
 'use client'
 
 import { useHeader } from 'src/components/header/hooks/useHeader'
-import { navItems } from 'src/components/header/helpers'
+import { useNavItems } from 'src/components/header/hooks/useNavItems'
 import { Chars } from 'src/components/header/views/chars'
 import { Menu } from 'src/components/header/views/menu'
+import { NavAnchor } from 'src/components/header/views/navAnchor'
 import { Wordmark } from 'src/components/header/views/wordmark'
 import { ThemeToggle } from 'src/components/theme/views/themeToggle'
 import { siteConfig } from 'src/lib/site'
@@ -11,7 +12,8 @@ import { siteConfig } from 'src/lib/site'
 const ease = 'ease-[cubic-bezier(0.16,1,0.3,1)]'
 
 export const Header = () => {
-  const { container } = useHeader()
+  const { home, items } = useNavItems()
+  const { container } = useHeader(home)
 
   return (
     <header
@@ -32,13 +34,13 @@ export const Header = () => {
         <Wordmark className='h-auto w-full' />
       </a>
       <nav aria-label='Main' className='mx-auto hidden max-w-5xl flex-1 md:block dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
-        <ul className='flex justify-between gap-x-6'>
-          {navItems.map(({ label, href }) => (
+        <ul className='flex justify-between gap-x-4 lg:gap-x-6'>
+          {items.map(({ label, href }) => (
             <li key={href} className='nav-item invisible'>
-              <a
+              <NavAnchor
                 href={href}
                 aria-label={label}
-                className='nav-link relative block py-1 text-sm font-medium uppercase tracking-[0.15em] text-primary outline-none lg:text-base lg:tracking-[0.2em]'
+                className='nav-link relative block whitespace-nowrap py-1 text-xs font-medium uppercase tracking-[0.12em] text-primary outline-none lg:text-sm lg:tracking-[0.15em] xl:text-base xl:tracking-[0.2em]'
               >
                 <span aria-hidden className='block leading-[1.3]'><Chars text={label} /></span>
                 <span
@@ -46,7 +48,7 @@ export const Header = () => {
                   className='nav-line absolute inset-x-0 bottom-0 block h-px bg-primary'
                   style={{ transform: 'scaleX(0)' }}
                 />
-              </a>
+              </NavAnchor>
             </li>
           ))}
         </ul>

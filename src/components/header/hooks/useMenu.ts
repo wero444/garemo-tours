@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
 
-export const useMenu = () => {
+export const useMenu = (home: boolean) => {
   const container = useRef<HTMLDivElement>(null)
   const timeline = useRef<gsap.core.Timeline>(null)
   const [open, setOpen] = useState(false)
@@ -42,7 +42,7 @@ export const useMenu = () => {
     })
 
     return () => mm.revert()
-  }, { scope: container })
+  }, { scope: container, dependencies: [home], revertOnUpdate: true })
 
   useGSAP(() => {
     const links = gsap.utils.toArray<HTMLAnchorElement>('.menu-link')
@@ -82,7 +82,7 @@ export const useMenu = () => {
     })
 
     return () => cleanups.forEach(cleanup => cleanup())
-  }, { scope: container })
+  }, { scope: container, dependencies: [home], revertOnUpdate: true })
 
   useEffect(() => {
     const tl = timeline.current

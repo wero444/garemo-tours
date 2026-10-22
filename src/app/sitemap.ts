@@ -6,6 +6,11 @@ const sitemap = (): MetadataRoute.Sitemap => [
     url: siteConfig.url,
     changeFrequency: 'weekly',
     priority: 1
+  },
+  {
+    url: `${siteConfig.url}/gallery`,
+    changeFrequency: 'weekly',
+    priority: 0.8
   }
 ]
 

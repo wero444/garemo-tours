@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Header } from 'src/components/header/views/header'
 import { Scrollbar } from 'src/components/scrollbar/views/scrollbar'
+import { BackToTop } from 'src/components/backToTop/views/backToTop'
 import { siteConfig } from 'src/lib/site'
 import { jsonLd, serializeJsonLd } from 'src/lib/seo'
 import { themeScript } from 'src/lib/theme'
@@ -74,6 +75,7 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
     <html
       lang='en'
       suppressHydrationWarning
+      data-scroll-behavior='smooth'
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
@@ -88,6 +90,7 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
         <Header />
         {children}
         <Scrollbar />
+        <BackToTop />
       </body>
     </html>
   )

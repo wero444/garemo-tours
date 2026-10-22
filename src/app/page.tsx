@@ -4,6 +4,7 @@ import { Divider } from 'src/components/divider/views/divider'
 import { Founders } from 'src/components/founders/views/founders'
 import { Tours } from 'src/components/tours/views/tours'
 import { Travel } from 'src/components/travel/views/travel'
+import { Gallery } from 'src/components/gallery/views/gallery'
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       <Founders />
       <Tours />
       <Travel />
+      <Gallery />
     </main>
   )
 }

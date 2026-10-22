@@ -1,3 +1,5 @@
+export const homeItem = { label: 'Home', href: '/' }
+
 export const navItems = [
   { label: 'About', href: '#about' },
   { label: 'Destinations', href: '#destinations' },

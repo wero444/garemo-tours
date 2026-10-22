@@ -1,13 +1,15 @@
 import { useMenu } from 'src/components/header/hooks/useMenu'
-import { navItems } from 'src/components/header/helpers'
+import { useNavItems } from 'src/components/header/hooks/useNavItems'
 import { Burger } from 'src/components/header/views/burger'
 import { Chars } from 'src/components/header/views/chars'
+import { NavAnchor } from 'src/components/header/views/navAnchor'
 import { Logo } from 'src/components/hero/views/logo'
 import { ThemeToggle } from 'src/components/theme/views/themeToggle'
 import { siteConfig } from 'src/lib/site'
 
 export const Menu = () => {
-  const { container, open, toggle, close } = useMenu()
+  const { home, items } = useNavItems()
+  const { container, open, toggle, close } = useMenu(home)
 
   return (
     <div ref={container} className='ml-auto md:hidden'>
@@ -26,16 +28,16 @@ export const Menu = () => {
 
         <nav aria-label='Mobile'>
           <ul className='flex flex-col'>
-            {navItems.map(({ label, href }) => (
+            {items.map(({ label, href }) => (
               <li key={href} className='relative'>
-                <a
+                <NavAnchor
                   href={href}
                   onClick={close}
                   aria-label={label}
                   className='menu-link block overflow-hidden py-3 text-[clamp(1.375rem,min(7vw,5svh),2.25rem)] font-medium uppercase leading-none tracking-[0.1em] text-primary outline-none'
                 >
                   <span aria-hidden className='block'><Chars text={label} /></span>
-                </a>
+                </NavAnchor>
                 <span aria-hidden className='menu-rule absolute inset-x-0 bottom-0 block h-px bg-primary/20' />
               </li>
             ))}

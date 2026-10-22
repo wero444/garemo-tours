@@ -8,11 +8,11 @@ export const Header = () => {
   const { container } = useHeader()
 
   return (
-    <header ref={container} className='w-full px-6 py-6'>
+    <header ref={container} className='absolute inset-x-0 top-0 z-20 w-full px-6 py-6'>
       <nav className='mx-auto max-w-5xl'>
         <ul className='flex flex-wrap justify-center gap-x-10 gap-y-3 md:justify-between'>
           {navItems.map(({ label, href }) => (
-            <li key={href}>
+            <li key={href} className='nav-item invisible'>
               <a
                 href={href}
                 aria-label={label}

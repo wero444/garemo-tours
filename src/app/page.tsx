@@ -1,8 +1,8 @@
-import { Hero } from 'src/components/hero'
+import { Hero } from 'src/components/hero/views/hero'
 
 const Home = () => {
   return (
-    <main className='flex flex-1 items-center justify-center p-8'>
+    <main className='flex flex-1 flex-col'>
       <Hero />
     </main>
   )

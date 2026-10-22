@@ -1,8 +1,26 @@
 import { useRef } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
+import { intro, reducedMotion } from 'src/lib/intro'
 
 export const useHeader = () => {
   const container = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const mm = gsap.matchMedia()
+
+    mm.add(reducedMotion, () => {
+      gsap.set('.nav-item', { autoAlpha: 1 }).then()
+    })
+
+    mm.add(`not all and ${reducedMotion}`, () => {
+      gsap.fromTo('.nav-item',
+        { autoAlpha: 0, y: -14 },
+        { autoAlpha: 1, y: 0, duration: 1.2, delay: intro.nav, stagger: { each: 0.08, from: 'center' }, ease: 'expo.out' }
+      ).then()
+    })
+
+    return () => mm.revert()
+  }, { scope: container })
 
   useGSAP(() => {
     const links = gsap.utils.toArray<HTMLAnchorElement>('.nav-link')

@@ -59,12 +59,14 @@ export const aspect = ({ w, h }: Slot) => w / h
 
 export const mirror = (slot: Slot, cols: number) => ({ ...slot, c: cols + 2 - slot.c - slot.w })
 
+export const photoAlt = (index: number, total: number) => `Photo ${index + 1} of ${total} from GAREMO journeys across Georgia`
+
 const span = (start: number, size: number) => `${start} / span ${size}`
 
 export const toTile = (image: StaticImageData, index: number, total: number, md: Slot, sm: Slot, xl = md): Tile => ({
   id: image.src,
   image,
-  alt: `Photo ${index + 1} of ${total} from GAREMO journeys across Georgia`,
+  alt: photoAlt(index, total),
   w: md.w,
   mw: sm.w,
   xw: xl.w,

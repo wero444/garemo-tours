@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GAREMO Tours
 
-## Getting Started
+The website of **GAREMO Tours**, a Tbilisi-based travel project offering small-group and private journeys across Georgia, and DMC services (group travel, pilgrimages, corporate and special interest tours) for travel partners in Georgia, Armenia and Azerbaijan.
 
-First, run the development server:
+It is a single-page site with a separate photo gallery, built around hand-drawn SVG illustrations and smooth scroll-driven animations.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+
+- **Home page sections:** Hero, About, Founders, Tours, Travel, Gallery preview, Letters from guests, For travel partners, Contact
+- **Gallery page** (`/gallery`): masonry feed with infinite loading and an animated lightbox
+- **Animations:** GSAP timelines and ScrollTrigger for scroll reveals, SVG line drawing, parallax and micro-interactions. Every animation respects `prefers-reduced-motion`.
+- **Light and dark theme** with a circular view-transition reveal
+- **SEO:** metadata and canonical URLs, Open Graph and Twitter cards, JSON-LD (TravelAgency, WebSite, WebPage, ImageGallery, BreadcrumbList), sitemap with images, robots.txt, web app manifest and icons
+
+## Tech stack
+
+| Area | Technology |
+| --- | --- |
+| Framework | [Next.js 16](https://nextjs.org) (App Router, Turbopack, Cache Components) |
+| UI | [React 19](https://react.dev) |
+| Language | [TypeScript 5](https://www.typescriptlang.org) (strict) |
+| Styling | [Tailwind CSS 4](https://tailwindcss.com), [shadcn/ui](https://ui.shadcn.com) with [Base UI](https://base-ui.com) |
+| Animation | [GSAP 3](https://gsap.com) with `@gsap/react`, ScrollTrigger and DrawSVG |
+| Icons | [Lucide](https://lucide.dev) |
+| Fonts | Geist via `next/font` |
+| Linting | ESLint 10 with `typescript-eslint` and React plugins |
+
+## Project structure
+
+```
+garemotours/
+├── public/                     # Static files served as-is
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── layout.tsx          # Root layout: fonts, global metadata, JSON-LD, header, theme script
+│   │   ├── page.tsx            # Home page (composes all sections)
+│   │   ├── gallery/            # /gallery page, its metadata and social images
+│   │   ├── globals.css         # Tailwind setup, theme tokens (light and dark), keyframes
+│   │   ├── sitemap.ts          # /sitemap.xml
+│   │   ├── robots.ts           # /robots.txt
+│   │   ├── manifest.ts         # /manifest.webmanifest
+│   │   ├── opengraph-image.tsx # Generated social card (also used by twitter-image.tsx)
+│   │   ├── apple-icon.tsx      # Generated iOS home screen icon
+│   │   └── icon.svg            # Favicon
+│   ├── assets/media/
+│   │   ├── images/             # Photos (imported statically, optimised by next/image)
+│   │   └── svgs/               # Source illustrations (converted into React components)
+│   ├── components/             # One folder per feature or section
+│   │   └── <feature>/
+│   │       ├── views/          # React components (markup)
+│   │       ├── hooks/          # Behaviour and animations (GSAP)
+│   │       └── helpers/        # Content, constants and pure functions
+│   └── lib/
+│       ├── site.ts             # Site config: name, URL, description, contacts, colours
+│       ├── seo.ts              # Structured data (JSON-LD) builders
+│       ├── gsap.ts             # GSAP with registered plugins
+│       ├── intro.ts            # Shared intro timings and reduced-motion query
+│       ├── press.ts            # Pointer "press" and tilt effect for tiles
+│       └── theme.ts            # Theme bootstrapping script
+├── .env.example                # Environment variables template
+├── next.config.ts
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The sections under `src/components` are: `hero`, `about`, `divider`, `founders`, `tours`, `travel`, `gallery`, `letters`, `partners`, `contact`, plus the shared `header`, `backToTop`, `scrollbar`, `theme` and `ui`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Getting started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prerequisites
 
-## Learn More
+- **Node.js 20.9 or newer** (22 LTS recommended)
+- **npm** (the repository includes `package-lock.json`)
 
-To learn more about Next.js, take a look at the following resources:
+### Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# 1. Clone the repository
+git clone <repository-url> garemotours
+cd garemotours
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 2. Install dependencies
+npm install
 
-## Deploy on Vercel
+# 3. Create your local environment file
+cp .env.example .env.local
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 4. Start the development server
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000).
+
+### Environment variables
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Recommended | Public URL of the site. Used for canonical URLs, sitemap, robots and structured data. Defaults to `https://garemotours.com`. |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | No | Google Search Console verification code |
+| `NEXT_PUBLIC_BING_SITE_VERIFICATION` | No | Bing Webmaster Tools verification code |
+
+### Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server with hot reload |
+| `npm run build` | Create a production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | Run ESLint on `src` |
+| `npm run check-all` | Generate route types, then run ESLint and the TypeScript type check |
+
+## Conventions
+
+- **Imports** use the `src/*` path alias, for example `import { siteConfig } from 'src/lib/site'`.
+- **Functions** are written as arrow functions, including components and default exports.
+- **Components** keep markup in `views/`, behaviour in `hooks/` and content in `helpers/`.
+- **Animations:**
+  - Use `useGSAP` with a `scope`, and `gsap.matchMedia()` with separate reduced-motion and full-motion branches.
+  - Elements that animate in start with the `invisible` class and are revealed with `autoAlpha`.
+  - Give every ScrollTrigger its own config object; never share one between tweens.
+- **Content** (texts, tours, letters, contacts) lives in each feature's `helpers/index.ts`. Site-wide details live in `src/lib/site.ts`.
+
+## Deployment
+
+The site runs anywhere Next.js 16 runs. [Vercel](https://vercel.com) is the simplest option.
+
+1. Set `NEXT_PUBLIC_SITE_URL` to the production domain.
+2. Run `npm run build`, then `npm run start` (or let your hosting platform do it).
+3. After the first deploy, submit `https://<domain>/sitemap.xml` in Google Search Console and Bing Webmaster Tools.

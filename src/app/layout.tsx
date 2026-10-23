@@ -62,11 +62,28 @@ export const metadata: Metadata = {
     telephone: false,
     email: false,
     address: false
+  },
+  appleWebApp: {
+    title: siteConfig.name,
+    statusBarStyle: 'default'
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { 'msvalidate.01': process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+      : undefined
+  },
+  other: {
+    'geo.region': 'GE-TB',
+    'geo.placename': siteConfig.address.locality
   }
 }
 
 export const viewport: Viewport = {
-  themeColor: siteConfig.colors.primary,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: siteConfig.colors.secondary },
+    { media: '(prefers-color-scheme: dark)', color: siteConfig.colors.dark }
+  ],
   colorScheme: 'light'
 }
 

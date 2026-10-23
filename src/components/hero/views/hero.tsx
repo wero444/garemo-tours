@@ -27,6 +27,7 @@ export const Hero = () => {
       <div className='relative flex h-full flex-col items-center justify-center px-6'>
         <h1 className='hero-reveal invisible -mt-[8vh] w-[min(60vw,260px)] text-primary md:w-[min(42vw,300px)] xl:w-80 dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
           <Logo className='hero-logo h-auto w-full overflow-visible' />
+          <span className='sr-only'>: small-group and private tours in Georgia</span>
         </h1>
         <p
           aria-label={tagline}

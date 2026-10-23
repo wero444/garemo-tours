@@ -24,14 +24,24 @@ export const siteConfig = {
     'Georgian wine tours',
     'historic towns of Georgia',
     'cultural tours Georgia',
-    'Georgia travel itinerary'
+    'Georgia travel itinerary',
+    'DMC Georgia',
+    'destination management company Georgia',
+    'group travel Georgia Armenia Azerbaijan',
+    'pilgrimage tours Georgia',
+    'corporate travel Georgia'
   ],
+  email: 'sh.tsereteli@garemotours.com',
+  phone: '+995557996876',
+  areaServed: ['Georgia', 'Armenia', 'Azerbaijan'],
+  languages: ['English', 'Polish'],
   address: {
     locality: 'Tbilisi',
     country: 'GE'
   },
   colors: {
     primary: '#a6320c',
-    secondary: '#e3dcd4'
+    secondary: '#e3dcd4',
+    dark: '#14100e'
   }
 }

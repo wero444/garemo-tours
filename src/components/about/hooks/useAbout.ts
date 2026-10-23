@@ -21,7 +21,7 @@ export const useAbout = () => {
       })
 
       tl.set('.about-tree, .about-title', { autoAlpha: 1 })
-        .set('.about-tree path, .about-letter', { stroke: 'currentColor', strokeWidth: 0.35, fillOpacity: 0 }).then()
+        .set('.about-tree path, .about-letter', { stroke: 'currentColor', strokeWidth: 0.35, fillOpacity: 0, autoRound: false }).then()
 
       trees.forEach((tree, i) => {
         const at = i * 0.35

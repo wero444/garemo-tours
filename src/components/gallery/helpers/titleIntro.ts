@@ -5,7 +5,7 @@ export const titleIntro = (prefix: string, tl: gsap.core.Timeline) => {
   const count = gsap.utils.toArray(`.${prefix}-count`)
 
   tl.set(`.${prefix}-title`, { autoAlpha: 1 }, 0)
-    .set(letters, { stroke: 'currentColor', strokeWidth: 0.35, fillOpacity: 0 }, 0)
+    .set(letters, { stroke: 'currentColor', strokeWidth: 0.35, fillOpacity: 0, autoRound: false }, 0)
     .fromTo(letters,
       { drawSVG: '0%', y: 8 },
       { drawSVG: '100%', y: 0, duration: 1.4, stagger: 0.09, ease: 'power2.inOut' }, 0)

@@ -5,6 +5,7 @@ import { Founders } from 'src/components/founders/views/founders'
 import { Tours } from 'src/components/tours/views/tours'
 import { Travel } from 'src/components/travel/views/travel'
 import { Gallery } from 'src/components/gallery/views/gallery'
+import { Letters } from 'src/components/letters/views/letters'
 
 const Home = () => {
   return (
@@ -16,6 +17,8 @@ const Home = () => {
       <Tours />
       <Travel />
       <Gallery />
+      <Divider icon='puri' />
+      <Letters />
     </main>
   )
 }

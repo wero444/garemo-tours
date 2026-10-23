@@ -23,7 +23,7 @@ export const useTours = () => {
 
       // Title is drawn letter by letter, then filled
       header.set('.tours-title, .tours-description', { autoAlpha: 1 })
-        .set('.tours-letter', { stroke: 'currentColor', strokeWidth: 0.35, fillOpacity: 0 })
+        .set('.tours-letter', { stroke: 'currentColor', strokeWidth: 0.35, fillOpacity: 0, autoRound: false })
         .fromTo('.tours-letter',
           { drawSVG: '0%', y: 6 },
           { drawSVG: '100%', y: 0, duration: 1.1, stagger: 0.1, ease: 'power2.inOut' }, 0)

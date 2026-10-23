@@ -73,7 +73,7 @@ export const useTravel = () => {
         if (steam.length) tl.set(steam, { opacity: 0 }, 0).then()
 
         if (fills.length) {
-          tl.set(fills, { stroke: 'currentColor', strokeWidth: 0.3, fillOpacity: 0 }, 0)
+          tl.set(fills, { stroke: 'currentColor', strokeWidth: 0.3, fillOpacity: 0, autoRound: false }, 0)
             .to(fills, { fillOpacity: 1, strokeOpacity: 0, duration: 0.6, stagger: 0.03, ease: 'power2.out' }, 1).then()
         }
       })

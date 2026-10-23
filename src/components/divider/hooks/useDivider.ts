@@ -9,23 +9,23 @@ export const useDivider = () => {
     const mm = gsap.matchMedia()
 
     mm.add(reducedMotion, () => {
-      gsap.set('.divider-tree', { autoAlpha: 1 }).then()
+      gsap.set('.divider-icon', { autoAlpha: 1 }).then()
     })
 
     mm.add(`not all and ${reducedMotion}`, () => {
       const [left, right] = gsap.utils.toArray<HTMLElement>('.divider-glint')
 
-      // The tree pops up first, then the lines draw outward from it
+      // The icon pops up first, then the lines draw outward from it
       gsap.timeline({
         defaults: { ease: 'expo.out' },
         scrollTrigger: { trigger: container.current, start: 'top 85%', once: true }
       })
-        .fromTo('.divider-tree',
+        .fromTo('.divider-icon',
           { autoAlpha: 0, scale: 0, rotate: -30, transformOrigin: '50% 100%' },
           { autoAlpha: 1, scale: 1, rotate: 0, duration: 1.2, ease: 'back.out(2.2)' }, 0)
         .fromTo('.divider-line', { scaleX: 0 }, { scaleX: 1, duration: 1.6, ease: 'expo.inOut' }, 0.2)
         .call(() => {
-          gsap.fromTo('.divider-tree', { rotate: -6 }, { rotate: 6, duration: 2.6, ease: 'sine.inOut', yoyo: true, repeat: -1 }).then()
+          gsap.fromTo('.divider-icon', { rotate: -6 }, { rotate: 6, duration: 2.6, ease: 'sine.inOut', yoyo: true, repeat: -1 }).then()
 
           // Every few seconds a glint travels out along both lines and fades at the ends
           gsap.timeline({ repeat: -1, repeatDelay: 3.5, defaults: { duration: 1.8, ease: 'power2.inOut' } })

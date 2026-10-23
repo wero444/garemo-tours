@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Header } from 'src/components/header/views/header'
 import { Scrollbar } from 'src/components/scrollbar/views/scrollbar'
 import { BackToTop } from 'src/components/backToTop/views/backToTop'
-import { siteConfig } from 'src/lib/site'
+import { basePath, siteConfig } from 'src/lib/site'
 import { jsonLd, serializeJsonLd } from 'src/lib/seo'
 import { themeScript } from 'src/lib/theme'
 import './globals.css'
@@ -62,6 +62,11 @@ export const metadata: Metadata = {
     telephone: false,
     email: false,
     address: false
+  },
+  manifest: `${basePath}/manifest.webmanifest`,
+  icons: {
+    icon: { url: `${basePath}/icon.svg`, type: 'image/svg+xml' },
+    apple: { url: `${basePath}/apple-touch-icon.png`, sizes: '180x180', type: 'image/png' }
   },
   appleWebApp: {
     title: siteConfig.name,

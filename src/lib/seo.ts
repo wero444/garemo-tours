@@ -1,4 +1,4 @@
-import { siteConfig } from 'src/lib/site'
+import { absoluteUrl as absolute, siteConfig } from 'src/lib/site'
 import { founders } from 'src/components/founders/helpers'
 import { tours } from 'src/components/tours/helpers'
 
@@ -6,8 +6,6 @@ const { name, legalName, url, about, address, email, phone, areaServed, language
 
 const organization = `${url}/#organization`
 const website = `${url}/#website`
-
-const absolute = (path: string) => new URL(path, url).toString()
 
 export const jsonLd = {
   '@context': 'https://schema.org',
@@ -19,7 +17,7 @@ export const jsonLd = {
       legalName,
       url,
       logo: absolute('/icon.svg'),
-      image: absolute('/opengraph-image'),
+      image: absolute('/opengraph-image/card.png'),
       description: about,
       slogan: siteConfig.tagline,
       email,
@@ -92,7 +90,7 @@ export const jsonLd = {
       inLanguage: 'en',
       isPartOf: { '@id': website },
       about: { '@id': organization },
-      primaryImageOfPage: absolute('/opengraph-image')
+      primaryImageOfPage: absolute('/opengraph-image/card.png')
     }
   ]
 }

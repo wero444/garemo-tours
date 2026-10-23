@@ -1,8 +1,6 @@
-import OpengraphImage from 'src/app/opengraph-image'
 import { siteConfig } from 'src/lib/site'
+import { socialCard, socialCardMetadata } from 'src/lib/socialCard'
 
-export const alt = siteConfig.title
-export const size = { width: 1200, height: 630 }
-export const contentType = 'image/png'
+export const generateImageMetadata = socialCardMetadata(siteConfig.title)
 
-export default OpengraphImage
+export default socialCard

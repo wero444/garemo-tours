@@ -1,7 +1,11 @@
+// Set when the site is served from a sub-path, e.g. /garemo-tours on GitHub Pages
+export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
+
 export const siteConfig = {
   name: 'GAREMO',
   legalName: 'GAREMO Tours',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://garemotours.com',
+  // Full public URL of the site root, including the base path
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://garemotours.com').replace(/\/$/, ''),
   locale: 'en_US',
   title: 'Garemo Tours',
   tagline: 'Journeys through the real Georgia',
@@ -44,4 +48,11 @@ export const siteConfig = {
     secondary: '#e3dcd4',
     dark: '#14100e'
   }
+}
+
+// Absolute URL for a route or file path; bundled asset URLs already include the base path
+export const absoluteUrl = (path: string) => {
+  const { origin } = new URL(siteConfig.url)
+
+  return basePath && path.startsWith(`${basePath}/`) ? `${origin}${path}` : `${siteConfig.url}${path}`
 }

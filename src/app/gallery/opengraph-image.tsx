@@ -1,7 +1,5 @@
-import OpengraphImage from 'src/app/opengraph-image'
+import { socialCard, socialCardMetadata } from 'src/lib/socialCard'
 
-export const alt = 'Gallery: photos from GAREMO journeys across Georgia'
-export const size = { width: 1200, height: 630 }
-export const contentType = 'image/png'
+export const generateImageMetadata = socialCardMetadata('Gallery: photos from GAREMO journeys across Georgia')
 
-export default OpengraphImage
+export default socialCard

@@ -3,11 +3,11 @@ import { join } from 'node:path'
 import { ImageResponse } from 'next/og'
 import { siteConfig } from 'src/lib/site'
 
-export const size = { width: 180, height: 180 }
-export const contentType = 'image/png'
+export { generateStaticParams } from 'src/lib/staticRoute'
 
-// The SVG favicon on the brand background, for iOS home screens
-const AppleIcon = async () => {
+// The SVG favicon on the brand background, for iOS home screens. A plain route (not the apple-icon
+// convention) so the <link> can carry the base path, which Next omits for generated icons in a static export.
+export const GET = async () => {
   const svg = await readFile(join(process.cwd(), 'src/app/icon.svg'))
   const src = `data:image/svg+xml;base64,${svg.toString('base64')}`
 
@@ -18,8 +18,6 @@ const AppleIcon = async () => {
         <img src={src} width={132} height={132} alt='' />
       </div>
     ),
-    size
+    { width: 180, height: 180 }
   )
 }
-
-export default AppleIcon

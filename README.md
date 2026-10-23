@@ -104,6 +104,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | --- | --- |
 | `npm run dev` | Start the development server with hot reload |
 | `npm run build` | Create a production build |
+| `npm run build:pages` | Static export for GitHub Pages (run with `GITHUB_PAGES=true`, see Deployment) |
 | `npm run start` | Serve the production build |
 | `npm run lint` | Run ESLint on `src` |
 | `npm run check-all` | Generate route types, then run ESLint and the TypeScript type check |
@@ -121,8 +122,31 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deployment
 
-The site runs anywhere Next.js 16 runs. [Vercel](https://vercel.com) is the simplest option.
+### GitHub Pages (current)
+
+The site is published as a static export to GitHub Pages by `.github/workflows/deploy.yml` on every push to `master`.
+
+- **One-time setup:** in the repository's **Settings → Pages**, set **Source** to **GitHub Actions**.
+- **What the workflow does:**
+  - Runs `npm run build:pages` with `GITHUB_PAGES=true`. This switches `next.config.ts` to `output: 'export'`, applies the repository base path (for example `/garemo-tours`) and turns off Cache Components, which a static export does not support.
+  - `scripts/optimizeImages.mjs` then writes resized WebP copies of every photo. `src/lib/imageLoader.ts` points `next/image` at them, since Pages cannot optimise images on request.
+  - Uploads `out/` and deploys it.
+- **Optional:** add `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` as repository **variables** (Settings → Secrets and variables → Actions → Variables).
+- **Custom domain:** add it in Settings → Pages. The workflow picks up the new URL and drops the base path automatically.
+
+To test the Pages build locally (in Git Bash; `MSYS_NO_PATHCONV` keeps the base path from being rewritten into a Windows path):
+
+```bash
+MSYS_NO_PATHCONV=1 GITHUB_PAGES=true NEXT_PUBLIC_BASE_PATH=/garemo-tours NEXT_PUBLIC_SITE_URL=https://wero444.github.io/garemo-tours npm run build:pages
+```
+
+Serve the `out/` folder under `/garemo-tours/` to preview it.
+
+### Node.js hosting
+
+The site also runs anywhere Next.js 16 runs, for example [Vercel](https://vercel.com). There, the full feature set (Cache Components, on-demand image optimisation) is used.
 
 1. Set `NEXT_PUBLIC_SITE_URL` to the production domain.
 2. Run `npm run build`, then `npm run start` (or let your hosting platform do it).
-3. After the first deploy, submit `https://<domain>/sitemap.xml` in Google Search Console and Bing Webmaster Tools.
+
+After the first deploy on either host, submit the site's `sitemap.xml` in Google Search Console and Bing Webmaster Tools.

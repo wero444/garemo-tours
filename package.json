@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:pages": "next build && node scripts/optimizeImages.mjs",
     "start": "next start",
     "lint": "eslint ./src",
     "check-all": "npx eslint ./src && npx tsc -b --pretty false --noEmit",

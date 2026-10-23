@@ -59,10 +59,10 @@ export const useLetters = () => {
           { autoAlpha: 1, scale: 1, rotate: 0, duration: 1, stagger: 0.15, ease: 'back.out(2)' }, 1.4)
         .call(breeze, [], 2.6).then()
 
-      const drift = { trigger: container.current, start: 'top bottom', end: 'bottom top', scrub: true }
+      const drift = () => ({ trigger: container.current, start: 'top bottom', end: 'bottom top', scrub: true })
 
-      gsap.fromTo('.letters-heading', { yPercent: 12 }, { yPercent: -12, ease: 'none', scrollTrigger: drift }).then()
-      gsap.fromTo('.letters-drift', { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: drift }).then()
+      gsap.fromTo('.letters-heading', { yPercent: 12 }, { yPercent: -12, ease: 'none', scrollTrigger: drift() }).then()
+      gsap.fromTo('.letters-drift', { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: drift() }).then()
     })
 
     return () => mm.revert()

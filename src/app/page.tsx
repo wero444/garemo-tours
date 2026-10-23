@@ -6,6 +6,7 @@ import { Tours } from 'src/components/tours/views/tours'
 import { Travel } from 'src/components/travel/views/travel'
 import { Gallery } from 'src/components/gallery/views/gallery'
 import { Letters } from 'src/components/letters/views/letters'
+import { Partners } from 'src/components/partners/views/partners'
 
 const Home = () => {
   return (
@@ -19,6 +20,7 @@ const Home = () => {
       <Gallery />
       <Divider icon='puri' />
       <Letters />
+      <Partners />
     </main>
   )
 }

@@ -7,6 +7,7 @@ import { Travel } from 'src/components/travel/views/travel'
 import { Gallery } from 'src/components/gallery/views/gallery'
 import { Letters } from 'src/components/letters/views/letters'
 import { Partners } from 'src/components/partners/views/partners'
+import { Contact } from 'src/components/contact/views/contact'
 
 const Home = () => {
   return (
@@ -21,6 +22,7 @@ const Home = () => {
       <Divider icon='puri' />
       <Letters />
       <Partners />
+      <Contact />
     </main>
   )
 }

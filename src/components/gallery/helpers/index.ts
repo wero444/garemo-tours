@@ -1,6 +1,5 @@
 import type { StaticImageData } from 'next/image'
 
-export const title = 'Gallery'
 export const tagline = 'People, dogs and weather met along the way.'
 export const cta = 'View all photos'
 export const batchSize = 10
@@ -40,7 +39,7 @@ export const homeSlots: Array<{ md: Slot, sm: Slot }> = [
 ]
 
 export const homeSizes = ({ w, mw }: Tile) =>
-  `(min-width: 1680px) ${w * 270}px, (min-width: 768px) ${Math.round(w * 100 / 6)}vw, ${mw * 50}vw`
+  `(min-width: 1248px) ${w * 195}px, (min-width: 768px) ${Math.round(w * 100 / 6)}vw, ${mw * 50}vw`
 
 export const feedSizes = ({ w, mw, xw }: Tile) =>
   `(min-width: 1280px) ${xw * 20}vw, (min-width: 768px) ${w * 25}vw, ${mw * 50}vw`

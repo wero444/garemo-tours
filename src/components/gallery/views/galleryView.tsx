@@ -3,11 +3,12 @@
 import type { StaticImageData } from 'next/image'
 import { useGallery } from 'src/components/gallery/hooks/useGallery'
 import { useLightbox } from 'src/components/gallery/hooks/useLightbox'
-import { homeSizes, tagline, title, type Tile } from 'src/components/gallery/helpers'
+import { homeSizes, type Tile } from 'src/components/gallery/helpers'
 import { GalleryTile } from 'src/components/gallery/views/galleryTile'
 import { GalleryCta } from 'src/components/gallery/views/galleryCta'
+import { GalleryNote } from 'src/components/gallery/views/galleryNote'
+import { GalleryTitle } from 'src/components/gallery/views/galleryTitle'
 import { Lightbox } from 'src/components/gallery/views/lightbox'
-import { Words } from 'src/components/ui/words'
 
 interface Props {
   tiles: Array<Tile>
@@ -28,17 +29,13 @@ export const GalleryView = ({ tiles, preview, total }: Props) => {
     >
       <div className='mx-auto max-w-[100rem]'>
         <header className='flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-10'>
-          <h2 id='gallery-title' className='whitespace-nowrap text-5xl font-light uppercase tracking-[0.06em] text-primary md:text-6xl lg:text-7xl xl:text-8xl'>
-            <span className='sr-only'>{title}</span>
-            <Words text={title} className='gallery-title-char' chars />
+          <h2 id='gallery-title' className='w-[min(64vw,16rem)] text-primary md:w-80 lg:w-96 xl:w-md'>
+            <GalleryTitle className='gallery-title invisible h-auto w-full overflow-visible' />
           </h2>
-          <p className='max-w-xs text-[15px] leading-[1.7] text-secondary-foreground/70 md:pb-3 md:text-right md:text-base'>
-            <span className='sr-only'>{tagline}</span>
-            <Words text={tagline} className='gallery-word' />
-          </p>
+          <GalleryNote prefix='gallery' />
         </header>
 
-        <div className='@container mt-10 md:mt-14'>
+        <div className='@container mx-auto mt-10 max-w-6xl md:mt-14'>
           <ul className='gallery-grid relative grid auto-rows-[calc((100cqw_-_0.75rem)/2)] grid-cols-2 gap-3 md:auto-rows-[calc((100cqw_-_5rem)/6)] md:grid-cols-6 md:gap-4'>
             {tiles.map(tile => (
               <GalleryTile key={tile.id} tile={tile} className='gallery-tile' sizes={homeSizes(tile)} onOpen={open} />

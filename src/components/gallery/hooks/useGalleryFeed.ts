@@ -4,6 +4,7 @@ import { getImageProps } from 'next/image'
 import { gsap, useGSAP, ScrollTrigger } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
 import { batchSize, feedSizes, quality, type Tile } from 'src/components/gallery/helpers'
+import { titleIntro } from 'src/components/gallery/helpers/titleIntro'
 
 const patience = 4000
 
@@ -118,16 +119,11 @@ export const useGalleryFeed = (tiles: Array<Tile>) => {
     const mm = gsap.matchMedia()
 
     mm.add(reducedMotion, () => {
-      gsap.set('.feed-intro', { autoAlpha: 1 }).then()
+      gsap.set('.feed-intro, .feed-title', { autoAlpha: 1 }).then()
     })
 
     mm.add(`not all and ${reducedMotion}`, () => {
-      gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.2 })
-        .set('.feed-intro', { autoAlpha: 1 })
-        .fromTo('.feed-title-char',
-          { yPercent: 110, rotate: 12 },
-          { yPercent: 0, rotate: 0, duration: 1.3, stagger: 0.06 }, 0)
-        .fromTo('.feed-word', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.03 }, 0.35)
+      titleIntro('feed', gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.2 }).set('.feed-intro', { autoAlpha: 1 }))
         .fromTo('.back-circle', { scale: 0, rotate: 180 }, { scale: 1, rotate: 0, duration: 1.3, ease: 'back.out(1.8)' }, 0.1)
         .fromTo('.back-arrow', { xPercent: 220 }, { xPercent: 0, duration: 1 }, 0.5)
         .fromTo('.back-in', { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.05 }, 0.45).then()

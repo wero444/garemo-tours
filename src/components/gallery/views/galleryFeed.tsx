@@ -3,10 +3,11 @@
 import { useGalleryFeed } from 'src/components/gallery/hooks/useGalleryFeed'
 import { useLightbox } from 'src/components/gallery/hooks/useLightbox'
 import { BackButton } from 'src/components/gallery/views/backButton'
-import { feedSizes, tagline, title, type Tile } from 'src/components/gallery/helpers'
+import { feedSizes, type Tile } from 'src/components/gallery/helpers'
+import { GalleryNote } from 'src/components/gallery/views/galleryNote'
 import { GalleryTile } from 'src/components/gallery/views/galleryTile'
+import { GalleryTitle } from 'src/components/gallery/views/galleryTitle'
 import { Lightbox } from 'src/components/gallery/views/lightbox'
-import { Words } from 'src/components/ui/words'
 
 export const GalleryFeed = ({ tiles }: { tiles: Array<Tile> }) => {
   const { container, sentinel, shown, waiting, done, onTileLoad } = useGalleryFeed(tiles)
@@ -22,15 +23,11 @@ export const GalleryFeed = ({ tiles }: { tiles: Array<Tile> }) => {
         <header className='feed-intro invisible flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-10'>
           <div>
             <BackButton className='mb-8 md:mb-10' />
-            <h1 id='gallery-page-title' className='whitespace-nowrap text-6xl font-light uppercase tracking-[0.06em] text-primary md:text-7xl lg:text-8xl xl:text-9xl'>
-              <span className='sr-only'>{title}</span>
-              <Words text={title} className='feed-title-char' chars />
+            <h1 id='gallery-page-title' className='w-[min(72vw,18rem)] text-primary md:w-96 lg:w-[30rem] xl:w-xl'>
+              <GalleryTitle className='feed-title invisible h-auto w-full overflow-visible' />
             </h1>
           </div>
-          <p className='max-w-xs text-[15px] leading-[1.7] text-secondary-foreground/70 md:pb-4 md:text-right md:text-base'>
-            <span className='sr-only'>{`${tagline} ${tiles.length} photos.`}</span>
-            <Words text={`${tagline} ${tiles.length} photos.`} className='feed-word' />
-          </p>
+          <GalleryNote prefix='feed' count={tiles.length} />
         </header>
 
         <div className='@container mt-12 md:mt-16'>

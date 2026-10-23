@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
+import { titleIntro } from 'src/components/gallery/helpers/titleIntro'
 
 export const useGallery = () => {
   const container = useRef<HTMLElement>(null)
@@ -9,18 +10,14 @@ export const useGallery = () => {
     const mm = gsap.matchMedia()
 
     mm.add(reducedMotion, () => {
-      gsap.set('.gallery-tile, .gallery-cta', { autoAlpha: 1 }).then()
+      gsap.set('.gallery-title, .gallery-tile, .gallery-cta', { autoAlpha: 1 }).then()
     })
 
     mm.add(`not all and ${reducedMotion}`, () => {
-      gsap.timeline({
+      titleIntro('gallery', gsap.timeline({
         defaults: { ease: 'expo.out' },
         scrollTrigger: { trigger: container.current, start: 'top 75%', once: true }
-      })
-        .fromTo('.gallery-title-char',
-          { yPercent: 110, rotate: 10 },
-          { yPercent: 0, rotate: 0, duration: 1.2, stagger: 0.05 }, 0)
-        .fromTo('.gallery-word', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.03 }, 0.3).then()
+      })).then()
 
       const grid = container.current?.querySelector<HTMLElement>('.gallery-grid')
       if (!grid) return

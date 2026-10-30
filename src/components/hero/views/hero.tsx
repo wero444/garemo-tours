@@ -1,5 +1,6 @@
 'use client'
 
+import { Fragment } from 'react'
 import Image from 'next/image'
 import heroImage from 'src/assets/media/images/5.jpeg'
 import { useHero } from 'src/components/hero/hooks/useHero'
@@ -26,17 +27,17 @@ export const Hero = () => {
 
       <div className='relative flex h-full flex-col items-center justify-center px-6'>
         <h1 className='hero-reveal invisible -mt-[8vh] w-[min(60vw,260px)] text-primary md:w-[min(42vw,300px)] xl:w-80 dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
+          <span className='sr-only'>Garemo Tours: small-group and private tours in Georgia</span>
           <Logo className='hero-logo h-auto w-full overflow-visible' />
-          <span className='sr-only'>: small-group and private tours in Georgia</span>
         </h1>
-        <p
-          aria-label={tagline}
-          className='hero-reveal invisible absolute inset-x-6 bottom-8 text-center text-xs font-light tracking-[0.15em] text-white/90 sm:text-sm md:bottom-10 md:text-base'
-        >
+        <p className='hero-reveal invisible absolute inset-x-6 bottom-8 text-center text-xs font-light tracking-[0.15em] text-white/90 sm:text-sm md:bottom-10 md:text-base'>
           {tagline.split(' ').map((word, i) => (
-            <span key={i} aria-hidden className='inline-block overflow-hidden pb-1 align-bottom'>
-              <span className='hero-word inline-block'>{word}&nbsp;</span>
-            </span>
+            <Fragment key={i}>
+              {i > 0 && ' '}
+              <span className='inline-block overflow-hidden pb-1 align-bottom'>
+                <span className='hero-word inline-block'>{word}</span>
+              </span>
+            </Fragment>
           ))}
         </p>
       </div>

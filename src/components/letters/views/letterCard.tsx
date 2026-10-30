@@ -9,7 +9,7 @@ export const LetterCard = ({ letter }: { letter: Letter }) => (
           {letter.text}
         </blockquote>
         <span className='letter-stamp relative size-14 shrink-0 overflow-hidden rounded-xs border border-dashed border-primary/40'>
-          {letter.image && <Image src={letter.image} alt='' fill sizes='56px' className='object-cover p-1' />}
+          {letter.image && <Image src={letter.image} alt={`Keepsake from ${letter.name}, ${letter.country}`} fill sizes='56px' className='object-cover p-1' />}
         </span>
       </div>
       <figcaption className='flex items-center gap-3 text-xs font-medium uppercase tracking-[0.25em] text-primary'>

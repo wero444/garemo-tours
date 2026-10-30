@@ -7,7 +7,7 @@ export const siteConfig = {
   // Full public URL of the site root, including the base path
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://garemotours.com').replace(/\/$/, ''),
   locale: 'en_US',
-  title: 'Garemo Tours',
+  title: 'Garemo Tours | Small-Group & Private Tours in Georgia',
   tagline: 'Journeys through the real Georgia',
   description:
     'Tbilisi-based small-group and private tours across Georgia — mountain regions, historic towns, vineyards and local life, beyond the usual tourist paths.',

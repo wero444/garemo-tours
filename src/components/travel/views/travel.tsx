@@ -47,7 +47,6 @@ export const Travel = () => {
                 </h3>
 
                 <p className='mt-2 max-w-64 text-[15px] leading-[1.7] text-secondary-foreground/70 md:mt-3 md:text-base'>
-                  <span className='sr-only'>{text}</span>
                   <Words text={text} className='travel-word' />
                 </p>
               </li>

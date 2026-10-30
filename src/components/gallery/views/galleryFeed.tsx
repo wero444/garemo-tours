@@ -24,6 +24,7 @@ export const GalleryFeed = ({ tiles }: { tiles: Array<Tile> }) => {
           <div>
             <BackButton className='mb-8 md:mb-10' />
             <h1 id='gallery-page-title' className='w-[min(72vw,18rem)] text-primary md:w-96 lg:w-[30rem] xl:w-xl'>
+              <span className='sr-only'>Gallery</span>
               <GalleryTitle className='feed-title invisible h-auto w-full overflow-visible' />
             </h1>
           </div>

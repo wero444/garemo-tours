@@ -23,13 +23,13 @@ export const Tours = () => {
         <header className='flex flex-col items-center text-center'>
           <div className='relative'>
             <h2 id='tours-title' className='w-[min(48vw,200px)] text-(--tone) md:w-60'>
+              <span className='sr-only'>Tours in Georgia</span>
               <ToursTitle className='tours-title invisible h-auto w-full overflow-visible' />
             </h2>
             <Eagle className='tours-eagle invisible absolute -top-7 -right-11 w-9 overflow-visible text-(--tone) md:-top-9 md:-right-16 md:w-13' />
           </div>
 
           <p className='tours-description invisible mt-4 max-w-xs text-[15px] leading-[1.8] text-(--tone) md:mt-6 md:max-w-sm md:text-lg'>
-            <span className='sr-only'>{description}</span>
             <Words text={description} className='tours-word' />
           </p>
         </header>
@@ -79,7 +79,6 @@ export const Tours = () => {
               </h3>
 
               <p className='mt-3 max-w-xs text-[15px] leading-[1.7] text-(--tone)'>
-                <span className='sr-only'>{text}</span>
                 <Words text={text} className='tour-word' />
               </p>
 

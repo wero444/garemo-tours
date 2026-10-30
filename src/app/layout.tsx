@@ -102,7 +102,6 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <title>Garemo Tours</title>
       </head>
       <body className='min-h-full flex flex-col'>
         <script

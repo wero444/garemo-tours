@@ -4,7 +4,7 @@ import { basePath, siteConfig } from 'src/lib/site'
 export { generateStaticParams } from 'src/lib/staticRoute'
 
 const manifest: MetadataRoute.Manifest = {
-  name: siteConfig.title,
+  name: siteConfig.legalName,
   short_name: siteConfig.name,
   description: siteConfig.description,
   start_url: `${basePath}/`,

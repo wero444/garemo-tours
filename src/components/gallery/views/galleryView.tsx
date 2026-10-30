@@ -30,6 +30,7 @@ export const GalleryView = ({ tiles, preview, total }: Props) => {
       <div className='mx-auto max-w-[100rem]'>
         <header className='flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-10'>
           <h2 id='gallery-title' className='w-[min(64vw,16rem)] text-primary md:w-80 lg:w-96 xl:w-md'>
+            <span className='sr-only'>Gallery</span>
             <GalleryTitle className='gallery-title invisible h-auto w-full overflow-visible' />
           </h2>
           <GalleryNote prefix='gallery' />

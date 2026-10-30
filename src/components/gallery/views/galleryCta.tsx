@@ -28,7 +28,7 @@ export const GalleryCta = ({ preview, total }: { preview: Array<StaticImageData>
             style={{ zIndex: preview.length - i }}
             className='cta-thumb relative -ml-3 size-10 overflow-hidden rounded-full ring-2 ring-secondary transition-shadow duration-500 first:ml-0 group-hover/cta:ring-primary md:size-12'
           >
-            <Image src={image} alt='' fill sizes='48px' placeholder='blur' className='object-cover' />
+            <Image src={image} alt={`Preview ${i + 1} from the GAREMO photo gallery`} fill sizes='48px' placeholder='blur' className='object-cover' />
           </span>
         ))}
       </span>

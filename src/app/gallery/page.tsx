@@ -6,7 +6,7 @@ import { GalleryFeed } from 'src/components/gallery/views/galleryFeed'
 import { galleryJsonLd, serializeJsonLd } from 'src/lib/seo'
 import { siteConfig } from 'src/lib/site'
 
-const title = 'Gallery'
+const title = 'Photo Gallery: Journeys Across Georgia'
 const description = `People, dogs and weather met along the way: ${photos.length} photos from GAREMO journeys across Georgia.`
 
 export const metadata: Metadata = {

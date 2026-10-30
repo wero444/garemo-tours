@@ -21,7 +21,7 @@ export const Partners = () => {
         <div className='partners-image absolute inset-y-[-8%] inset-x-0'>
           <Image
             src={partnersImage}
-            alt=''
+            alt='Misty mountain landscape in Georgia'
             fill
             sizes='100vw'
             placeholder='blur'
@@ -51,7 +51,6 @@ export const Partners = () => {
           </h2>
 
           <p className='mt-6 max-w-lg text-base leading-[1.75] text-white/75 md:mt-8 md:text-lg'>
-            <span className='sr-only'>{description}</span>
             <Words text={description} className='partners-word' />
           </p>
 

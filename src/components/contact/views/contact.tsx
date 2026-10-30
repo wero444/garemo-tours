@@ -23,7 +23,6 @@ export const Contact = () => {
               <Words text={title} className='contact-char' chars />
             </h2>
             <p className='mt-5 max-w-sm text-base leading-[1.75] text-secondary-foreground/75 md:mt-6 md:text-lg'>
-              <span className='sr-only'>{lead}</span>
               <Words text={lead} className='contact-word' />
             </p>
           </div>

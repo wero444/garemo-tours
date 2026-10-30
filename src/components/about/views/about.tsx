@@ -4,6 +4,7 @@ import { useAbout } from 'src/components/about/hooks/useAbout'
 import { paragraphs } from 'src/components/about/helpers'
 import { AboutTitle } from 'src/components/about/views/aboutTitle'
 import { Tree } from 'src/components/about/views/tree'
+import { Words } from 'src/components/ui/words'
 
 export const About = () => {
   const { container } = useAbout()
@@ -22,20 +23,14 @@ export const About = () => {
         </div>
 
         <h2 id='about-title' className='mx-auto w-[min(56vw,240px)] text-primary md:w-75'>
+          <span className='sr-only'>About GAREMO</span>
           <AboutTitle className='about-title invisible h-auto w-full overflow-visible' />
         </h2>
 
         <div className='mx-auto mt-10 max-w-2xl space-y-6 text-center text-[15px] leading-[1.8] text-secondary-foreground/85 md:mt-14 md:space-y-8 md:text-lg'>
           {paragraphs.map((paragraph, i) => (
             <p key={i} className='about-paragraph'>
-              <span className='sr-only'>{paragraph}</span>
-              <span aria-hidden>
-                {paragraph.split(' ').map((word, j) => (
-                  <span key={j} className='inline-block overflow-hidden pb-0.5 align-bottom'>
-                    <span className='about-word invisible inline-block'>{word}&nbsp;</span>
-                  </span>
-                ))}
-              </span>
+              <Words text={paragraph} className='about-word invisible' />
             </p>
           ))}
         </div>

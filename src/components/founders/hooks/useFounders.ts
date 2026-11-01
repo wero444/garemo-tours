@@ -10,7 +10,7 @@ export const useFounders = () => {
     const mm = gsap.matchMedia()
 
     mm.add(reducedMotion, () => {
-      gsap.set('.founder, .founders-languages', { autoAlpha: 1 }).then()
+      gsap.set('.founder', { autoAlpha: 1 }).then()
     })
 
     mm.add(`not all and ${reducedMotion}`, () => {
@@ -30,20 +30,8 @@ export const useFounders = () => {
           .fromTo(q('.founder-image'), { scale: 1.3 }, { scale: 1, duration: 2.2 }, 0.2)
           .fromTo(q('.founder-ground'), { scaleX: 0.2, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 1.4 }, 0.5)
           .fromTo(q('.founder-glow'), { opacity: 0 }, { opacity: 1, duration: 1.6, ease: 'power2.out' }, 0.9)
-          .fromTo(q('.founder-name'), { yPercent: 110 }, { yPercent: 0, duration: 1.1 }, 1.1)
-          .fromTo(q('.founder-role'), { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 1 }, 1.25).then()
+          .fromTo(q('.founder-name'), { yPercent: 110 }, { yPercent: 0, duration: 1.1 }, 1.1).then()
       })
-
-      gsap.fromTo('.founders-languages',
-        { autoAlpha: 0, y: 16 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.2,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: '.founders-languages', start: 'top 92%', once: true }
-        }
-      ).then()
     })
 
     return () => mm.revert()

@@ -2,7 +2,7 @@ import { absoluteUrl as absolute, siteConfig } from 'src/lib/site'
 import { founders } from 'src/components/founders/helpers'
 import { tours } from 'src/components/tours/helpers'
 
-const { name, legalName, url, about, address, email, phone, areaServed, languages } = siteConfig
+const { name, legalName, url, about, address, email, phone, instagram, areaServed, languages } = siteConfig
 
 const organization = `${url}/#organization`
 const website = `${url}/#website`
@@ -22,6 +22,7 @@ export const jsonLd = {
       slogan: siteConfig.tagline,
       email,
       telephone: phone,
+      sameAs: [instagram],
       address: {
         '@type': 'PostalAddress',
         addressLocality: address.locality,
@@ -29,7 +30,7 @@ export const jsonLd = {
       },
       areaServed: areaServed.map(country => ({ '@type': 'Country', name: country })),
       knowsLanguage: languages,
-      founder: founders.map(founder => ({ '@type': 'Person', name: founder.name, jobTitle: founder.role })),
+      founder: founders.map(founder => ({ '@type': 'Person', name: founder.name.en, jobTitle: founder.role })),
       contactPoint: [
         {
           '@type': 'ContactPoint',
@@ -58,7 +59,6 @@ export const jsonLd = {
             name: tour.title,
             description: tour.text,
             image: absolute(tour.image.src),
-            touristType: tour.format,
             provider: { '@id': organization }
           }
         }))

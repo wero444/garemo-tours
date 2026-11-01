@@ -3,12 +3,13 @@
 import type { StaticImageData } from 'next/image'
 import { useGallery } from 'src/components/gallery/hooks/useGallery'
 import { useLightbox } from 'src/components/gallery/hooks/useLightbox'
-import { homeSizes, type Tile } from 'src/components/gallery/helpers'
+import { content, homeSizes, type Tile } from 'src/components/gallery/helpers'
 import { GalleryTile } from 'src/components/gallery/views/galleryTile'
 import { GalleryCta } from 'src/components/gallery/views/galleryCta'
 import { GalleryNote } from 'src/components/gallery/views/galleryNote'
 import { GalleryTitle } from 'src/components/gallery/views/galleryTitle'
 import { Lightbox } from 'src/components/gallery/views/lightbox'
+import { useLocale } from 'src/lib/useLocale'
 
 interface Props {
   tiles: Array<Tile>
@@ -19,6 +20,7 @@ interface Props {
 export const GalleryView = ({ tiles, preview, total }: Props) => {
   const { container } = useGallery()
   const { active, open, close } = useLightbox()
+  const { title } = content[useLocale()]
 
   return (
     <section
@@ -30,7 +32,7 @@ export const GalleryView = ({ tiles, preview, total }: Props) => {
       <div className='mx-auto max-w-[100rem]'>
         <header className='flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-10'>
           <h2 id='gallery-title' className='w-[min(64vw,16rem)] text-primary md:w-80 lg:w-96 xl:w-md'>
-            <span className='sr-only'>Gallery</span>
+            <span className='sr-only'>{title}</span>
             <GalleryTitle className='gallery-title invisible h-auto w-full overflow-visible' />
           </h2>
           <GalleryNote prefix='gallery' />

@@ -1,9 +1,13 @@
 import { usePathname } from 'next/navigation'
-import { homeItem, navItems } from 'src/components/header/helpers'
+import { content } from 'src/components/header/helpers'
+import { localeOf } from 'src/lib/i18n'
 
 export const useNavItems = () => {
-  const home = usePathname() === '/'
-  const items = home ? navItems : [homeItem, ...navItems.map(item => ({ ...item, href: `/${item.href}` }))]
+  const pathname = usePathname()
+  const locale = localeOf(pathname)
+  const { home: homeLabel, nav, tagline } = content[locale]
+  const home = pathname === '/' || locale === 'ge'
+  const items = home ? nav : [{ label: homeLabel, href: '/' }, ...nav.map(item => ({ ...item, href: `/${item.href}` }))]
 
-  return { home, items }
+  return { home, items, locale, tagline }
 }

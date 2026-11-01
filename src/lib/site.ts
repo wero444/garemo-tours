@@ -8,11 +8,11 @@ export const siteConfig = {
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://garemotours.com').replace(/\/$/, ''),
   locale: 'en_US',
   title: 'Garemo Tours | Small-Group & Private Tours in Georgia',
-  tagline: 'Journeys through the real Georgia',
+  tagline: 'Georgia, the way we know it',
   description:
     'Tbilisi-based small-group and private tours across Georgia — mountain regions, historic towns, vineyards and local life, beyond the usual tourist paths.',
   about:
-    'GAREMO is a travel project based in Tbilisi, created to share the landscapes, culture and atmosphere of Georgia in a thoughtful and authentic way. We design journeys that combine nature, history and local life. From mountain regions to historic towns and vineyards, our routes are carefully planned to show the country beyond the usual tourist paths. Some of our tours bring travellers together in comfortable groups, while others are designed as private journeys. In every case, our goal is the same: to create meaningful travel experiences that allow guests to discover the real spirit of Georgia.',
+    'Garemo is Georgian for “surroundings”: the atmosphere of a place and the people who share it. Founded in Tbilisi by two local guides with fourteen years on the road, Garemo shares Georgia with all its beauty, contrasts and everyday life.',
   keywords: [
     'Georgia tours',
     'tours in Georgia',
@@ -35,7 +35,9 @@ export const siteConfig = {
     'pilgrimage tours Georgia',
     'corporate travel Georgia'
   ],
-  email: 'sh.tsereteli@garemotours.com',
+  email: 'info@garemotours.com',
+  // TODO: confirm the official Instagram handle
+  instagram: 'https://www.instagram.com/garemotours/',
   phone: '+995557996876',
   areaServed: ['Georgia', 'Armenia', 'Azerbaijan'],
   languages: ['English', 'Polish'],

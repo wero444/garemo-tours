@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono, Noto_Sans_Georgian } from 'next/font/google'
 import { Header } from 'src/components/header/views/header'
 import { Scrollbar } from 'src/components/scrollbar/views/scrollbar'
 import { BackToTop } from 'src/components/backToTop/views/backToTop'
 import { basePath, siteConfig } from 'src/lib/site'
 import { jsonLd, serializeJsonLd } from 'src/lib/seo'
 import { themeScript } from 'src/lib/theme'
+import { localeScript } from 'src/lib/i18n'
 import './globals.css'
 
 const geistSans = Geist({
@@ -16,6 +17,11 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin']
+})
+
+const notoGeorgian = Noto_Sans_Georgian({
+  variable: '--font-georgian',
+  subsets: ['georgian']
 })
 
 export const metadata: Metadata = {
@@ -32,7 +38,8 @@ export const metadata: Metadata = {
   publisher: siteConfig.legalName,
   category: 'travel',
   alternates: {
-    canonical: '/'
+    canonical: '/',
+    languages: { en: '/', ka: '/ge' }
   },
   openGraph: {
     type: 'website',
@@ -98,10 +105,11 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
       lang='en'
       suppressHydrationWarning
       data-scroll-behavior='smooth'
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${notoGeorgian.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: localeScript }} />
       </head>
       <body className='min-h-full flex flex-col'>
         <script

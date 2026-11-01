@@ -3,11 +3,13 @@
 import Image, { type StaticImageData } from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { cta } from 'src/components/gallery/helpers'
+import { content } from 'src/components/gallery/helpers'
 import { useGalleryCta } from 'src/components/gallery/hooks/useGalleryCta'
+import { useLocale } from 'src/lib/useLocale'
 
 export const GalleryCta = ({ preview, total }: { preview: Array<StaticImageData>, total: number }) => {
   const { onCtaEnter, onCtaMove, onCtaLeave } = useGalleryCta()
+  const { cta, photos } = content[useLocale()]
 
   return (
     <Link
@@ -34,7 +36,7 @@ export const GalleryCta = ({ preview, total }: { preview: Array<StaticImageData>
       </span>
 
       <span className='relative flex flex-col pr-1'>
-        <span className='sr-only'>{`${cta}, ${total} photos`}</span>
+        <span className='sr-only'>{`${cta}, ${photos(total)}`}</span>
         <span aria-hidden className='relative block overflow-hidden text-xs font-medium uppercase tracking-[0.25em] md:text-sm'>
           <span className='block'>
             {cta.split('').map((char, i) => (
@@ -48,7 +50,7 @@ export const GalleryCta = ({ preview, total }: { preview: Array<StaticImageData>
           </span>
         </span>
         <span aria-hidden className='cta-count mt-1 text-[10px] uppercase tracking-[0.3em] opacity-60 md:text-[11px]'>
-          {total} photos
+          {photos(total)}
         </span>
       </span>
 

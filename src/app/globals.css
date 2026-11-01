@@ -139,6 +139,7 @@
   }
   html {
     @apply font-sans;
+    font-family: var(--font-sans), var(--font-georgian), sans-serif;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     /* Native scrollbar is replaced by the floating Scrollbar component */
@@ -147,6 +148,13 @@
   html::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* Georgian has no capital letters in running text: keep it lowercase where Latin labels are set in caps.
+   Unlayered so it wins over the utility */
+:lang(ka) .uppercase {
+  text-transform: none;
+  letter-spacing: 0.06em;
 }
 
 /* Theme switch: the new theme is revealed by a circle animated from the toggle */

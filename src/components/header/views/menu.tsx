@@ -3,12 +3,13 @@ import { useNavItems } from 'src/components/header/hooks/useNavItems'
 import { Burger } from 'src/components/header/views/burger'
 import { Chars } from 'src/components/header/views/chars'
 import { NavAnchor } from 'src/components/header/views/navAnchor'
+import { LanguageSwitcher } from 'src/components/language/views/languageSwitcher'
 import { Logo } from 'src/components/hero/views/logo'
 import { ThemeToggle } from 'src/components/theme/views/themeToggle'
 import { siteConfig } from 'src/lib/site'
 
 export const Menu = () => {
-  const { home, items } = useNavItems()
+  const { home, items, tagline } = useNavItems()
   const { container, open, toggle, close } = useMenu(home)
 
   return (
@@ -46,9 +47,12 @@ export const Menu = () => {
 
         <div className='mt-auto flex items-end justify-between gap-6 pt-10'>
           <p className='menu-meta max-w-56 text-xs uppercase leading-relaxed tracking-[0.2em] text-secondary-foreground/70'>
-            {siteConfig.tagline}
+            {tagline}
           </p>
-          <ThemeToggle className='menu-meta -mr-2.5 -mb-2.5 shrink-0' />
+          <div className='flex shrink-0 flex-col items-end gap-4'>
+            <LanguageSwitcher className='menu-meta' onSelect={close} side='top' />
+            <ThemeToggle className='menu-meta -mr-2.5 -mb-2.5' />
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 import { useRef, type PointerEvent, type FocusEvent } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
-import { pressEnter, pressMove, pressRelease } from 'src/lib/press'
 
 type Target = PointerEvent<HTMLElement> | FocusEvent<HTMLElement>
 
@@ -12,7 +11,7 @@ export const useTours = () => {
     const mm = gsap.matchMedia()
 
     mm.add(reducedMotion, () => {
-      gsap.set('.tour, .tours-title, .tours-eagle, .tours-description', { autoAlpha: 1 }).then()
+      gsap.set('.tour, .tours-title, .tours-eagle, .tours-cta', { autoAlpha: 1 }).then()
     })
 
     mm.add(`not all and ${reducedMotion}`, () => {
@@ -22,13 +21,12 @@ export const useTours = () => {
       })
 
       // Title is drawn letter by letter, then filled
-      header.set('.tours-title, .tours-description', { autoAlpha: 1 })
+      header.set('.tours-title', { autoAlpha: 1 })
         .set('.tours-letter', { stroke: 'currentColor', strokeWidth: 0.35, fillOpacity: 0, autoRound: false })
         .fromTo('.tours-letter',
           { drawSVG: '0%', y: 6 },
           { drawSVG: '100%', y: 0, duration: 1.1, stagger: 0.1, ease: 'power2.inOut' }, 0)
-        .to('.tours-letter', { fillOpacity: 1, strokeOpacity: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' }, 0.9)
-        .fromTo('.tours-word', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.03 }, 0.6).then()
+        .to('.tours-letter', { fillOpacity: 1, strokeOpacity: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' }, 0.9).then()
 
       // Wings beat by folding toward the body from where they join it
       const flap = gsap.timeline({ repeat: -1, yoyo: true, defaults: { duration: 0.32, ease: 'sine.inOut' } })
@@ -78,16 +76,10 @@ export const useTours = () => {
             { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'expo.inOut' }, 0)
           .fromTo(q('.tour-image'), { scale: 1.35 }, { scale: 1, duration: 2.4 }, 0.2)
           .fromTo(q('.tour-shadow'), { scaleX: 0.2, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 1.4 }, 0.5)
-          .fromTo(q('.tour-meta'), { yPercent: 110 }, { yPercent: 0, duration: 1, stagger: 0.08 }, 0.8)
-          .fromTo(q('.tour-dot'), { scale: 0 }, { scale: 1, duration: 0.8, ease: 'back.out(3)' }, 0.9)
           .fromTo(q('.tour-title-word'),
             { yPercent: 110, rotate: 8 },
-            { yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.018 }, 0.95)
-          .fromTo(q('.tour-word'), { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.025 }, 1.1)
-          .fromTo(q('.tour-cta-in'), { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.02 }, 1.3)
-          .fromTo(q('.tour-cta-line'),
-            { scaleX: 0, transformOrigin: 'left center' },
-            { scaleX: 1, duration: 1.2, ease: 'expo.inOut' }, 1.35).then()
+            { yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.018 }, 0.8)
+          .fromTo(q('.tour-word'), { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.025 }, 0.95).then()
 
         // Images drift slightly slower than the page while scrolling past
         gsap.fromTo(q('.tour-parallax'), { yPercent: -5 }, {
@@ -96,36 +88,38 @@ export const useTours = () => {
           scrollTrigger: { trigger: tour, start: 'top bottom', end: 'bottom top', scrub: true }
         }).then()
       })
+      gsap.fromTo('.tours-cta',
+        { autoAlpha: 0, y: 24 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: '.tours-cta', start: 'top 92%', once: true }
+        }
+      ).then()
     })
 
     return () => mm.revert()
   }, { scope: container })
 
-  // Slow, soft zoom in and a press-in tilt on hover; a quicker return when the pointer leaves
+  // The arches are not links yet: hover only brings a slow, soft zoom, with a quicker return when the pointer leaves
   const onMediaEnter = (event: PointerEvent<HTMLElement>) => {
-    pressEnter(event)
     gsap.to(event.currentTarget.querySelector('.tour-image'), { scale: 1.08, duration: 2.2, ease: 'power2.out', overwrite: 'auto' }).then()
   }
 
   const onMediaLeave = (event: PointerEvent<HTMLElement>) => {
-    pressRelease(event)
     gsap.to(event.currentTarget.querySelector('.tour-image'), { scale: 1, duration: 0.6, ease: 'power2.out', overwrite: 'auto' }).then()
   }
 
-  // CTA letters roll up to reveal a second copy, while the underline sweeps out and back in
+  // CTA letters roll up to reveal a second copy
   const onCtaEnter = (event: Target) => {
-    const cta = event.currentTarget
-
-    gsap.to(cta.querySelectorAll('.tour-cta-char'), { yPercent: -100, duration: 0.5, stagger: 0.012, ease: 'power3.out', overwrite: 'auto' }).then()
-    gsap.timeline()
-      .to(cta.querySelector('.tour-cta-line'), { scaleX: 0, transformOrigin: 'right center', duration: 0.35, ease: 'power2.in', overwrite: 'auto' })
-      .set(cta.querySelector('.tour-cta-line'), { transformOrigin: 'left center' })
-      .to(cta.querySelector('.tour-cta-line'), { scaleX: 1, duration: 0.55, ease: 'expo.out' }).then()
+    gsap.to(event.currentTarget.querySelectorAll('.tour-cta-char'), { yPercent: -100, duration: 0.5, stagger: 0.012, ease: 'power3.out', overwrite: 'auto' }).then()
   }
 
   const onCtaLeave = (event: Target) => {
     gsap.to(event.currentTarget.querySelectorAll('.tour-cta-char'), { yPercent: 0, duration: 0.5, stagger: 0.012, ease: 'power3.out', overwrite: 'auto' }).then()
   }
 
-  return { container, onMediaEnter, onMediaMove: pressMove, onMediaLeave, onCtaEnter, onCtaLeave }
+  return { container, onMediaEnter, onMediaLeave, onCtaEnter, onCtaLeave }
 }

@@ -2,18 +2,22 @@
 
 import { ArrowUpRight } from 'lucide-react'
 import { useContact } from 'src/components/contact/hooks/useContact'
-import { brand, channels, lead, location, motto, title } from 'src/components/contact/helpers'
+import { brand, content } from 'src/components/contact/helpers'
+import { Instagram } from 'src/components/contact/views/instagram'
 import { Words } from 'src/components/ui/words'
+import { useLocale } from 'src/lib/useLocale'
+import { siteConfig } from 'src/lib/site'
 
 export const Contact = () => {
   const { container } = useContact()
+  const { title, lead, location, motto, channels } = content[useLocale()]
 
   return (
     <section
       ref={container}
       id='contact'
       aria-labelledby='contact-title'
-      className='overflow-hidden bg-secondary px-6 pt-20 pb-8 md:px-10 md:pt-24 lg:px-16'
+      className='overflow-hidden bg-secondary px-6 pt-20 pb-24 md:px-10 md:pt-24 md:pb-10 lg:px-16'
     >
       <div className='mx-auto max-w-6xl'>
         <div className='grid gap-12 md:grid-cols-[1.1fr_1fr] md:items-end md:gap-16'>
@@ -50,7 +54,7 @@ export const Contact = () => {
           </ul>
         </div>
 
-        <div className='relative mt-16 flex flex-col gap-4 pt-6 text-[11px] font-medium uppercase tracking-[0.3em] text-secondary-foreground/60 md:mt-20 md:flex-row md:items-center md:justify-between'>
+        <div className='relative mt-16 flex flex-col gap-4 pt-6 text-[11px] font-medium uppercase tracking-[0.3em] text-secondary-foreground/60 md:mt-20 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-8 md:pr-16'>
           <span aria-hidden className='contact-rule absolute inset-x-0 top-0 h-px bg-primary/20' />
           <p className='contact-foot'>{`© ${brand}`}</p>
           <p className='contact-foot flex items-center gap-3'>
@@ -60,6 +64,15 @@ export const Contact = () => {
             </span>
             {location}
           </p>
+          <a
+            href={siteConfig.instagram}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='contact-foot flex w-fit items-center gap-2.5 outline-none transition-colors duration-300 hover:text-primary focus-visible:text-primary'
+          >
+            <Instagram className='size-5' />
+            Instagram
+          </a>
           <p className='contact-foot text-primary'>{motto}</p>
         </div>
       </div>

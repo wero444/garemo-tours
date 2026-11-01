@@ -13,6 +13,7 @@ interface Entry {
 
 const entries: Array<Entry> = [
   { url: `${siteConfig.url}/`, changeFrequency: 'weekly', priority: 1, images: tours.map(tour => absoluteUrl(tour.image.src)) },
+  { url: absoluteUrl('/ge/'), changeFrequency: 'weekly', priority: 0.9, images: tours.map(tour => absoluteUrl(tour.image.src)) },
   { url: absoluteUrl('/gallery/'), changeFrequency: 'weekly', priority: 0.8, images: photos.map(photo => absoluteUrl(photo.src)) }
 ]
 

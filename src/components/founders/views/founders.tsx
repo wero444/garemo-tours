@@ -2,19 +2,22 @@
 
 import Image from 'next/image'
 import { useFounders } from 'src/components/founders/hooks/useFounders'
-import { founders, languages } from 'src/components/founders/helpers'
+import { founders, label, portrait } from 'src/components/founders/helpers'
 import { ArchFrame } from 'src/components/ui/archFrame'
 import { pressDent, pressDown, pressUp } from 'src/lib/press'
-
+import { useLocale } from 'src/lib/useLocale'
 
 export const Founders = () => {
   const { container, onPointerEnter, onPointerMove, onPointerLeave } = useFounders()
+  const locale = useLocale()
 
   return (
-    <section aria-label='Founders' className='bg-secondary px-6 pt-20 pb-16 md:pt-28 md:pb-20 lg:pb-24'>
-      <div ref={container} className='mx-auto max-w-3xl'>
-        <ul className='grid grid-cols-1 justify-items-center gap-16 sm:grid-cols-2 sm:gap-10 md:gap-16'>
-          {founders.map(({ name, role, image, position }) => (
+    <div ref={container} className='mx-auto max-w-3xl'>
+      <ul aria-label={label[locale]} className='grid grid-cols-1 justify-items-center gap-16 sm:grid-cols-2 sm:gap-10 md:gap-16'>
+        {founders.map(({ name: names, image, position }) => {
+          const name = names[locale]
+
+          return (
             <li key={name} className='founder invisible flex w-full max-w-72 flex-col items-center text-center sm:max-w-none'>
               <div
                 onPointerEnter={onPointerEnter}
@@ -32,7 +35,7 @@ export const Founders = () => {
                   <ArchFrame className='founder-frame absolute! inset-0 border border-primary/25 bg-[color-mix(in_oklab,var(--secondary),var(--foreground)_6%)]'>
                     <Image
                       src={image}
-                      alt={`Portrait of ${name}`}
+                      alt={portrait[locale](name)}
                       fill
                       placeholder='blur'
                       sizes='(min-width: 640px) 360px, 288px'
@@ -44,24 +47,13 @@ export const Founders = () => {
                 </div>
               </div>
 
-              <div className='mt-8 overflow-hidden'>
+              <div className='mt-6 overflow-hidden md:mt-7'>
                 <h3 className='founder-name text-xl font-medium text-primary md:text-2xl'>{name}</h3>
               </div>
-              <p className='founder-role mt-1.5 text-sm text-secondary-foreground/65 md:text-base'>{role}</p>
             </li>
-          ))}
-        </ul>
-
-        <p className='founders-languages invisible mt-16 flex items-center justify-center gap-4 text-xs font-medium uppercase tracking-[0.3em] text-secondary-foreground/70 md:mt-20 md:text-sm'>
-          <span>{languages[0]}</span>
-          <span aria-hidden className='relative flex size-2'>
-            <span className='absolute inset-0 rounded-full bg-primary motion-safe:animate-pulse-ring' />
-            <span className='absolute inset-0 rounded-full bg-primary [animation-delay:1.2s] motion-safe:animate-pulse-ring' />
-            <span className='relative size-2 rounded-full bg-primary' />
-          </span>
-          <span>{languages[1]}</span>
-        </p>
-      </div>
-    </section>
+          )
+        })}
+      </ul>
+    </div>
   )
 }

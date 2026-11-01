@@ -4,11 +4,13 @@ import { Fragment } from 'react'
 import Image from 'next/image'
 import heroImage from 'src/assets/media/images/5.jpeg'
 import { useHero } from 'src/components/hero/hooks/useHero'
-import { tagline } from 'src/components/hero/helpers'
+import { heading, tagline } from 'src/components/hero/helpers'
 import { Logo } from 'src/components/hero/views/logo'
+import { useLocale } from 'src/lib/useLocale'
 
 export const Hero = () => {
   const { container } = useHero()
+  const locale = useLocale()
 
   return (
     <section ref={container} className='relative h-svh min-h-140 w-full overflow-hidden bg-secondary'>
@@ -27,10 +29,10 @@ export const Hero = () => {
 
       <div className='relative flex h-full flex-col items-center justify-center px-6'>
         <h1 className='hero-reveal invisible -mt-[8vh] w-[min(60vw,260px)] text-primary md:w-[min(42vw,300px)] xl:w-80 dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
-          <span className='sr-only'>Garemo Tours: small-group and private tours in Georgia</span>
+          <span className='sr-only'>{heading[locale]}</span>
           <Logo className='hero-logo h-auto w-full overflow-visible' />
         </h1>
-        <p className='hero-reveal invisible absolute inset-x-6 bottom-8 text-center text-xs font-light tracking-[0.15em] text-white/90 sm:text-sm md:bottom-10 md:text-base'>
+        <p lang='en' className='hero-reveal invisible mt-6 text-center text-sm font-medium tracking-[0.15em] text-primary drop-shadow-[0_0_10px_rgb(255_255_255/0.85)] md:mt-8 md:text-base xl:text-lg dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
           {tagline.split(' ').map((word, i) => (
             <Fragment key={i}>
               {i > 0 && ' '}

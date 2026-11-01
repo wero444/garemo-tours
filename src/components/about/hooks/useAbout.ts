@@ -62,6 +62,18 @@ export const useAbout = () => {
         { drawSVG: '100%', y: 0, duration: 1, stagger: 0.1 }, 0.3)
         .to('.about-letter', { fillOpacity: 1, strokeOpacity: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' }, 1.1).then()
 
+      gsap.fromTo('.about-heading-char',
+        { yPercent: 110, rotate: 8 },
+        {
+          yPercent: 0,
+          rotate: 0,
+          duration: 1.2,
+          stagger: 0.04,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: '.about-heading-char', start: 'top 88%', once: true }
+        }
+      ).then()
+
       gsap.utils.toArray<HTMLElement>('.about-paragraph').forEach(paragraph => {
         gsap.fromTo(paragraph.querySelectorAll('.about-word'),
           { autoAlpha: 0, yPercent: 100 },

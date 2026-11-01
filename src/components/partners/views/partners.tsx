@@ -4,11 +4,17 @@ import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import partnersImage from 'src/assets/media/images/21.jpeg'
 import { usePartners } from 'src/components/partners/hooks/usePartners'
-import { cta, description, eyebrow, regions, title } from 'src/components/partners/helpers'
+import { content } from 'src/components/partners/helpers'
 import { Words } from 'src/components/ui/words'
+import { useLocale } from 'src/lib/useLocale'
+
+// Georgian words run longer, so the title steps down a size to keep each word on one line
+const titleSize = { en: 'text-5xl md:text-7xl lg:text-8xl', ge: 'text-4xl md:text-6xl lg:text-7xl' }
 
 export const Partners = () => {
   const { container, onCtaEnter, onCtaMove, onCtaLeave } = usePartners()
+  const locale = useLocale()
+  const { eyebrow, title, description, regionsLabel, regions, cta } = content[locale]
 
   return (
     <section
@@ -41,7 +47,7 @@ export const Partners = () => {
             <span className='partners-eyebrow'>{eyebrow}</span>
           </p>
 
-          <h2 id='partners-title' className='mt-6 text-5xl font-light leading-[1.04] tracking-tight md:mt-8 md:text-7xl lg:text-8xl'>
+          <h2 id='partners-title' className={`mt-6 font-light leading-[1.04] tracking-tight md:mt-8 ${titleSize[locale]}`}>
             <span className='sr-only'>{title.join(' ')}</span>
             {title.map(line => (
               <span key={line} className='block'>
@@ -54,7 +60,7 @@ export const Partners = () => {
             <Words text={description} className='partners-word' />
           </p>
 
-          <ul aria-label='Destinations' className='mt-8 flex flex-wrap gap-3'>
+          <ul aria-label={regionsLabel} className='mt-8 flex flex-wrap gap-3'>
             {regions.map(region => (
               <li
                 key={region}

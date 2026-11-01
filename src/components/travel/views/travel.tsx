@@ -1,16 +1,18 @@
 'use client'
 
 import { useTravel } from 'src/components/travel/hooks/useTravel'
-import { title, ways } from 'src/components/travel/helpers'
+import { content } from 'src/components/travel/helpers'
 import { Sun } from 'src/components/travel/views/sun'
 import { Puri } from 'src/components/travel/views/puri'
 import { Bottle } from 'src/components/travel/views/bottle'
 import { Words } from 'src/components/ui/words'
+import { useLocale } from 'src/lib/useLocale'
 
 const icons = { sun: Sun, puri: Puri, bottle: Bottle }
 
 export const Travel = () => {
   const { container, onWayEnter, onWayLeave } = useTravel()
+  const { title, ways } = content[useLocale()]
 
   return (
     <section

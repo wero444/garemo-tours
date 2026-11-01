@@ -1,19 +1,26 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useHeader } from 'src/components/header/hooks/useHeader'
 import { useNavItems } from 'src/components/header/hooks/useNavItems'
 import { Chars } from 'src/components/header/views/chars'
 import { Menu } from 'src/components/header/views/menu'
 import { NavAnchor } from 'src/components/header/views/navAnchor'
 import { Wordmark } from 'src/components/header/views/wordmark'
+import { LanguageSwitcher } from 'src/components/language/views/languageSwitcher'
 import { ThemeToggle } from 'src/components/theme/views/themeToggle'
+import { htmlLang } from 'src/lib/i18n'
 import { siteConfig } from 'src/lib/site'
 
 const ease = 'ease-[cubic-bezier(0.16,1,0.3,1)]'
 
 export const Header = () => {
-  const { home, items } = useNavItems()
+  const { home, items, locale } = useNavItems()
   const { container } = useHeader(home)
+
+  useEffect(() => {
+    document.documentElement.lang = htmlLang[locale]
+  }, [locale])
 
   return (
     <header
@@ -53,7 +60,8 @@ export const Header = () => {
           ))}
         </ul>
       </nav>
-      <div className='-my-2.5 hidden md:block dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
+      <div className='-my-2.5 hidden items-center gap-3 md:flex lg:gap-4 dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
+        <LanguageSwitcher className='nav-item invisible' />
         <ThemeToggle className='nav-item invisible' />
       </div>
       <Menu />

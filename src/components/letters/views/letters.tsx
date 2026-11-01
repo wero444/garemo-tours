@@ -1,13 +1,19 @@
 'use client'
 
 import { useLetters } from 'src/components/letters/hooks/useLetters'
-import { heading, letters } from 'src/components/letters/helpers'
+import { content } from 'src/components/letters/helpers'
 import { LetterCard } from 'src/components/letters/views/letterCard'
 import { Megreli } from 'src/components/letters/views/megreli'
 import { Words } from 'src/components/ui/words'
+import { useLocale } from 'src/lib/useLocale'
+
+// Georgian words run longer, so the heading steps down a size on phones to keep each word on one line
+const headingSize = { en: 'text-5xl md:text-6xl lg:text-7xl', ge: 'text-4xl md:text-6xl lg:text-7xl' }
 
 export const Letters = () => {
   const { container } = useLetters()
+  const locale = useLocale()
+  const { heading, letter } = content[locale]
 
   return (
     <section
@@ -21,14 +27,13 @@ export const Letters = () => {
           <div className='letters-drift'>
             <Megreli className='letters-figure invisible h-auto w-[min(78vw,20rem)] overflow-visible text-primary md:w-sm lg:w-md' />
           </div>
-          <h2 id='letters-title' className='letters-heading text-center text-5xl font-light leading-[1.05] tracking-tight text-primary md:text-left md:text-6xl lg:text-7xl'>
-            <span className='sr-only'>{`${heading.top} ${heading.bottom} ${heading.accent}`}</span>
+          <h2 id='letters-title' className={`letters-heading text-center font-light leading-[1.05] tracking-tight text-primary md:text-left ${headingSize[locale]}`}>
+            <span className='sr-only'>{[heading.top, heading.bottom, heading.accent].filter(Boolean).join(' ')}</span>
             <span className='block'>
               <Words text={heading.top} className='letters-char' chars />
             </span>
             <span className='block'>
-              <Words text={heading.bottom} className='letters-char' chars />
-              {' '}
+              {heading.bottom && <><Words text={heading.bottom} className='letters-char' chars />{' '}</>}
               <span className='relative inline-block'>
                 <Words text={heading.accent} className='letters-char' chars />
                 <svg aria-hidden viewBox='0 0 200 16' className='letters-underline absolute inset-x-0 -bottom-2 h-auto w-full overflow-visible md:-bottom-3'>
@@ -39,8 +44,8 @@ export const Letters = () => {
           </h2>
         </header>
 
-        <ul className='mt-14 grid gap-8 md:mt-20 md:grid-cols-3 md:gap-6 lg:gap-8'>
-          {letters.map((letter, i) => <LetterCard key={i} letter={letter} />)}
+        <ul className='mx-auto mt-14 max-w-xl md:mt-20'>
+          <LetterCard letter={letter} />
         </ul>
       </div>
     </section>

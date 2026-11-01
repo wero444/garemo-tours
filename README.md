@@ -6,7 +6,8 @@ It is a single-page site with a separate photo gallery, built around hand-drawn 
 
 ## Features
 
-- **Home page sections:** Hero, About, Founders, Tours, Travel, Gallery preview, Letters from guests, For travel partners, Contact
+- **Home page sections:** Hero, About (with the founders), Tours, Travel, Gallery preview, Letters from guests, For travel partners, Contact
+- **Languages:** English at `/` and Georgian at `/ge`, with an EN | PL | GE switcher in the header (Polish is not translated yet). Texts for each language live in the feature's `helpers/index.ts`.
 - **Gallery page** (`/gallery`): masonry feed with infinite loading and an animated lightbox
 - **Animations:** GSAP timelines and ScrollTrigger for scroll reveals, SVG line drawing, parallax and micro-interactions. Every animation respects `prefers-reduced-motion`.
 - **Light and dark theme** with a circular view-transition reveal
@@ -62,7 +63,7 @@ garemotours/
 └── package.json
 ```
 
-The sections under `src/components` are: `hero`, `about`, `divider`, `founders`, `tours`, `travel`, `gallery`, `letters`, `partners`, `contact`, plus the shared `header`, `backToTop`, `scrollbar`, `theme` and `ui`.
+The sections under `src/components` are: `hero`, `about`, `divider`, `founders`, `tours`, `travel`, `gallery`, `letters`, `partners`, `contact`, plus the shared `header`, `language`, `backToTop`, `scrollbar`, `theme` and `ui`.
 
 ## Getting started
 

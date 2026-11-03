@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Menu } from '@base-ui/react/menu'
 import { Check, ChevronDown } from 'lucide-react'
 import { cn } from 'cn'
+import { useLanguageSwitcher } from 'src/components/language/hooks/useLanguageSwitcher'
 import { Flag } from 'src/components/language/views/flag'
 import { languages } from 'src/lib/i18n'
 import { useLocale } from 'src/lib/useLocale'
@@ -26,9 +27,10 @@ export const LanguageSwitcher = ({ className, onSelect, side = 'bottom' }: Props
   const locale = useLocale()
   const current = languages.find(({ code }) => code === locale) ?? languages[0]
   const { label, soon } = text[locale]
+  const { state: { open }, setOpen, handleSelect } = useLanguageSwitcher({ onSelect })
 
   return (
-    <Menu.Root modal={false}>
+    <Menu.Root modal={false} open={open} onOpenChange={setOpen}>
       <Menu.Trigger
         aria-label={`${label}: ${current.name}`}
         className={cn(
@@ -64,7 +66,8 @@ export const LanguageSwitcher = ({ className, onSelect, side = 'bottom' }: Props
                 <Menu.LinkItem
                   key={code}
                   render={<Link href={href} hrefLang={lang} />}
-                  onClick={onSelect}
+                  closeOnClick
+                  onClick={handleSelect}
                   aria-current={active ? 'true' : undefined}
                   className={cn(row, 'cursor-pointer data-highlighted:bg-primary/8', active && 'text-primary')}
                 >

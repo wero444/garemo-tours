@@ -86,6 +86,7 @@ export const Tours = () => {
         <div className='mt-14 flex justify-center md:mt-16'>
           <a
             href='#contact'
+            data-avoid-back-to-top
             onPointerEnter={onCtaEnter}
             onPointerLeave={onCtaLeave}
             onFocus={onCtaEnter}

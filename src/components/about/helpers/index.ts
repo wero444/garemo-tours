@@ -3,7 +3,7 @@ import type { Locale } from 'src/lib/i18n'
 export const content: Record<Locale, { title: string, heading: string, paragraphs: Array<string> }> = {
   en: {
     title: 'About GAREMO',
-    heading: 'Environment',
+    heading: 'Garemo',
     paragraphs: [
       'Garemo is Georgian for “surroundings” — the atmosphere of a place and the people who share it.',
       'Fourteen years ago, we started working as local guides in Georgia. What started as a friendship grew into years on the road, and two years ago we created Garemo.',

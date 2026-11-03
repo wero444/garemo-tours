@@ -8,6 +8,24 @@ const threshold = 600
 
 export const circumference = 2 * Math.PI * 23
 
+// Buttons marked with data-avoid-back-to-top must stay clickable: the button steps aside while it would overlap one
+const gap = 12
+
+const covers = (element: HTMLElement) => {
+  // Measured from the resting position, so the show/hide offset can never make the result flip back and forth
+  const rect = element.getBoundingClientRect()
+  const x = rect.left + rect.width / 2
+  const y = rect.top + rect.height / 2 - Number(gsap.getProperty(element, 'y'))
+  const w = element.offsetWidth / 2 + gap
+  const h = element.offsetHeight / 2 + gap
+
+  return Array.from(document.querySelectorAll('[data-avoid-back-to-top]')).some(target => {
+    const { top, right, bottom, left } = target.getBoundingClientRect()
+
+    return top < y + h && bottom > y - h && left < x + w && right > x - w
+  })
+}
+
 export const useBackToTop = () => {
   const button = useRef<HTMLButtonElement>(null)
 
@@ -28,7 +46,7 @@ export const useBackToTop = () => {
 
       ring.style.strokeDashoffset = `${circumference * (1 - progress)}`
 
-      const show = window.scrollY > threshold
+      const show = window.scrollY > threshold && !covers(element)
       if (show === shown) return
       shown = show
 

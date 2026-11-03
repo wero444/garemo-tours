@@ -8,7 +8,6 @@ import { content } from 'src/components/partners/helpers'
 import { Words } from 'src/components/ui/words'
 import { useLocale } from 'src/lib/useLocale'
 
-// Georgian words run longer, so the title steps down a size to keep each word on one line
 const titleSize = { en: 'text-5xl md:text-7xl lg:text-8xl', ge: 'text-4xl md:text-6xl lg:text-7xl' }
 
 export const Partners = () => {
@@ -21,7 +20,7 @@ export const Partners = () => {
       ref={container}
       id='partners'
       aria-labelledby='partners-title'
-      className='relative isolate flex min-h-168 items-center overflow-hidden bg-[#14100e] px-6 py-28 text-white md:min-h-svh md:px-10 md:py-36 lg:px-16'
+      className='relative isolate flex min-h-svh items-center overflow-hidden bg-[#14100e] px-6 py-28 text-white md:px-10 md:py-36 lg:px-16'
     >
       <div aria-hidden className='partners-media absolute inset-0 -z-10 overflow-hidden'>
         <div className='partners-image absolute inset-y-[-8%] inset-x-0'>

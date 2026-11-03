@@ -33,12 +33,12 @@ export const metadata: Metadata = {
 const jsonLd = galleryJsonLd(photos.map((photo, i) => ({ src: photo.src, alt: photoAlt(i, photos.length) })))
 
 const GalleryPage = async () => {
-  const tiles = await getGalleryFeed()
+  const themes = await getGalleryFeed()
 
   return (
     <main className='flex flex-1 flex-col bg-secondary'>
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />
-      <GalleryFeed tiles={tiles} />
+      <GalleryFeed themes={themes} />
     </main>
   )
 }

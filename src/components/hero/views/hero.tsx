@@ -13,8 +13,8 @@ export const Hero = () => {
   const locale = useLocale()
 
   return (
-    <section ref={container} className='relative h-svh min-h-140 w-full overflow-hidden bg-secondary'>
-      <div className='hero-reveal hero-frame invisible absolute inset-0'>
+    <section ref={container} className='relative h-(--hero-height,100svh) min-h-140 w-full overflow-hidden bg-secondary'>
+      <div className='hero-reveal hero-frame invisible absolute inset-0 transform-gpu'>
         <Image
           src={heroImage}
           alt='Misty forested mountains in Georgia'
@@ -28,11 +28,11 @@ export const Hero = () => {
       </div>
 
       <div className='relative flex h-full flex-col items-center justify-center px-6'>
-        <h1 className='hero-reveal invisible -mt-[8vh] w-[min(60vw,260px)] text-primary md:w-[min(42vw,300px)] xl:w-80 dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
+        <h1 className='hero-reveal invisible -mt-[8svh] w-[min(60vw,260px)] text-primary md:w-[min(42vw,300px)] xl:w-80 dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
           <span className='sr-only'>{heading[locale]}</span>
           <Logo className='hero-logo h-auto w-full overflow-visible' />
         </h1>
-        <p lang='en' className='hero-reveal invisible mt-6 text-center text-sm font-medium tracking-[0.15em] text-primary drop-shadow-[0_0_10px_rgb(255_255_255/0.85)] md:mt-8 md:text-base xl:text-lg dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
+        <p lang='en' className='hero-reveal invisible mt-6 text-center text-sm font-medium tracking-[0.15em] text-[#f6eee2] [text-shadow:0_1px_3px_rgb(0_0_0/0.35),0_2px_14px_rgb(0_0_0/0.3)] md:mt-8 md:text-base xl:text-lg'>
           {tagline.split(' ').map((word, i) => (
             <Fragment key={i}>
               {i > 0 && ' '}

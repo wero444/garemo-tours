@@ -1,10 +1,14 @@
 import { useRef, type FocusEvent, type PointerEvent } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
+import { fullFrame, mountain, mountainStart } from 'src/components/partners/helpers'
 
 type Target = PointerEvent<HTMLElement> | FocusEvent<HTMLElement>
 
 const ease = { ease: 'expo.out', overwrite: 'auto' as const }
+
+// Share of the pinned scroll spent opening the photo; the rest holds the full image while the content plays in
+const expanded = 0.7
 
 export const usePartners = () => {
   const container = useRef<HTMLElement>(null)
@@ -16,37 +20,54 @@ export const usePartners = () => {
       gsap.set('.partners-tag, .partners-cta', { autoAlpha: 1 }).then()
     })
 
-    mm.add(`not all and ${reducedMotion}`, () => {
-      gsap.timeline({
-        defaults: { ease: 'expo.out' },
-        scrollTrigger: { trigger: container.current, start: 'top 65%', once: true }
-      })
-        .fromTo('.partners-media',
-          { clipPath: 'inset(12% 8% 12% 8% round 32px)' },
-          { clipPath: 'inset(0% 0% 0% 0% round 0px)', duration: 2.2, ease: 'expo.inOut' }, 0)
-        .fromTo('.partners-image', { scale: 1.3 }, { scale: 1, duration: 2.8, ease: 'power3.out' }, 0)
-        .fromTo('.partners-rule', { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: 'expo.inOut' }, 0.8)
+    mm.add({ motion: `not all and ${reducedMotion}`, phone: '(max-width: 767px)' }, context => {
+      if (!context.conditions?.motion) return
+
+      // The content plays in on its own clock once the photo has filled the screen, and steps back if you scroll up
+      const reveal = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' } })
+        .fromTo('.partners-rule', { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: 'expo.inOut' }, 0)
         .fromTo('.partners-eyebrow',
           { autoAlpha: 0, letterSpacing: '0.9em' },
-          { autoAlpha: 1, letterSpacing: '0.35em', duration: 1.6 }, 0.9)
+          { autoAlpha: 1, letterSpacing: '0.35em', duration: 1.6 }, 0.1)
         .fromTo('.partners-char',
           { yPercent: 110, rotate: 6 },
-          { yPercent: 0, rotate: 0, duration: 1.3, stagger: 0.035 }, 1)
-        .fromTo('.partners-word', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.02 }, 1.5)
+          { yPercent: 0, rotate: 0, duration: 1.3, stagger: 0.035 }, 0.2)
+        .fromTo('.partners-word', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.02 }, 0.7)
         .fromTo('.partners-tag',
           { autoAlpha: 0, y: 16, scale: 0.9, filter: 'blur(6px)' },
-          { autoAlpha: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 1, stagger: 0.12, clearProps: 'filter' }, 1.9)
+          { autoAlpha: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 1, stagger: 0.12 }, 1.1)
         .fromTo('.partners-cta',
           { autoAlpha: 0, y: 24, clipPath: 'inset(0% 100% 0% 0% round 999px)' },
-          { autoAlpha: 1, y: 0, clipPath: 'inset(0% 0% 0% 0% round 999px)', duration: 1.4, ease: 'expo.inOut', clearProps: 'clipPath' }, 2.2)
-        .fromTo('.partners-arrow', { xPercent: -220 }, { xPercent: 0, duration: 1 }, 2.9).then()
+          { autoAlpha: 1, y: 0, clipPath: 'inset(0% 0% 0% 0% round 999px)', duration: 1.4, ease: 'expo.inOut' }, 1.4)
+        .fromTo('.partners-arrow', { xPercent: -220 }, { xPercent: 0, duration: 1 }, 2.1)
 
-      // Slow parallax on the photo and mist drifting across it
-      gsap.fromTo('.partners-image', { yPercent: -6 }, {
-        yPercent: 6,
-        ease: 'none',
-        scrollTrigger: { trigger: container.current, start: 'top bottom', end: 'bottom top', scrub: true }
-      }).then()
+      const show = () => reveal.timeScale(1).play()
+
+      const hide = () => reveal.timeScale(2.5).reverse()
+
+      // Pinned while scrolling: the photo opens from a mountain silhouette to the full section, then holds for the reveal
+      gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: {
+          trigger: container.current,
+          start: 'top top',
+          end: '+=130%',
+          pin: true,
+          pinSpacing: true, // off by default inside a flex parent (main), which would let Contact slide underneath
+          scrub: 0.8,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: ({ progress }) => {
+            if (progress >= expanded) show()
+            else if (progress < expanded - 0.08) hide()
+          }
+        }
+      })
+        .fromTo('.partners-media',
+          { clipPath: mountain(context.conditions.phone ? mountainStart.phone : mountainStart.wide) },
+          { clipPath: fullFrame, duration: expanded, ease: 'power2.inOut' }, 0)
+        .fromTo('.partners-image', { scale: 1.3 }, { scale: 1, duration: expanded, ease: 'power1.out' }, 0)
+        .to({}, { duration: 1 - expanded })
 
       gsap.utils.toArray<HTMLElement>('.partners-mist').forEach((mist, i) => {
         gsap.to(mist, {

@@ -14,6 +14,7 @@ export const GalleryCta = ({ preview, total }: { preview: Array<StaticImageData>
   return (
     <Link
       href='/gallery'
+      data-avoid-back-to-top
       onPointerEnter={onCtaEnter}
       onPointerMove={onCtaMove}
       onPointerLeave={onCtaLeave}

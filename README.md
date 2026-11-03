@@ -8,7 +8,7 @@ It is a single-page site with a separate photo gallery, built around hand-drawn 
 
 - **Home page sections:** Hero, About (with the founders), Tours, Travel, Gallery preview, Letters from guests, For travel partners, Contact
 - **Languages:** English at `/` and Georgian at `/ge`, with an EN | PL | GE switcher in the header (Polish is not translated yet). Texts for each language live in the feature's `helpers/index.ts`.
-- **Gallery page** (`/gallery`): masonry feed with infinite loading and an animated lightbox
+- **Gallery page** (`/gallery`): three themed masonry grids (Culture, Food, Georgia) with an animated lightbox and a floating Back button
 - **Animations:** GSAP timelines and ScrollTrigger for scroll reveals, SVG line drawing, parallax and micro-interactions. Every animation respects `prefers-reduced-motion`.
 - **Light and dark theme** with a circular view-transition reveal
 - **SEO:** metadata and canonical URLs, Open Graph and Twitter cards, JSON-LD (TravelAgency, WebSite, WebPage, ImageGallery, BreadcrumbList), sitemap with images, robots.txt, web app manifest and icons
@@ -44,6 +44,7 @@ garemotours/
 │   │   ├── apple-icon.tsx      # Generated iOS home screen icon
 │   │   └── icon.svg            # Favicon
 │   ├── assets/media/
+│   │   ├── gallery/            # Gallery photos: culture/, food/, georgia/ with 01.jpg … 12.jpg each
 │   │   ├── images/             # Photos (imported statically, optimised by next/image)
 │   │   └── svgs/               # Source illustrations (converted into React components)
 │   ├── components/             # One folder per feature or section

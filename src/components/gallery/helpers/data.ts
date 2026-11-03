@@ -1,5 +1,5 @@
 import { cacheLife } from 'next/cache'
-import { photos } from 'src/components/gallery/helpers/photos'
+import { photos, themeIds, themes } from 'src/components/gallery/helpers/photos'
 import { aspect, homeSlots, mirror, pack, pickShape, shuffle, toTile } from 'src/components/gallery/helpers'
 
 const ratio = ({ width, height }: { width: number, height: number }) => width / height
@@ -29,11 +29,16 @@ export const getGalleryFeed = async () => {
   'use cache'
   cacheLife('hours')
 
-  const order = shuffle(photos)
-  const shapes = order.map(image => pickShape(ratio(image)))
-  const md = pack(shapes, 4)
-  const xl = pack(shapes, 5)
-  const sm = pack(shapes.map(([w, h]) => [Math.min(w, 2), h]), 2)
+  return themeIds.map(id => {
+    const order = shuffle(themes[id])
+    const shapes = order.map(image => pickShape(ratio(image)))
+    const md = pack(shapes, 4)
+    const xl = pack(shapes, 5)
+    const sm = pack(shapes.map(([w, h]) => [Math.min(w, 2), h]), 2)
 
-  return order.map((image, i) => toTile(image, photos.indexOf(image), photos.length, md[i]!, sm[i]!, xl[i]!))
+    return {
+      id,
+      tiles: order.map((image, i) => toTile(image, photos.indexOf(image), photos.length, md[i]!, sm[i]!, xl[i]!))
+    }
+  })
 }

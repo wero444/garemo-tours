@@ -1,21 +1,34 @@
 import type { StaticImageData } from 'next/image'
 import type { Locale } from 'src/lib/i18n'
+import type { ThemeId } from 'src/components/gallery/helpers/photos'
 
-export const content: Record<Locale, { title: string, tagline: string, cta: string, photos: (count: number) => string }> = {
+interface Content {
+  title: string
+  tagline: string
+  cta: string
+  photos: (count: number) => string
+  themes: Record<ThemeId, string>
+  all: (count: number) => string
+}
+
+export const content: Record<Locale, Content> = {
   en: {
     title: 'Gallery',
     tagline: 'People, dogs and weather met along the way.',
     cta: 'View all photos',
-    photos: count => `${count} photos`
+    photos: count => `${count} photos`,
+    themes: { culture: 'Culture', food: 'Food', georgia: 'Georgia' },
+    all: count => `That's all ${count} photos`
   },
   ge: {
     title: 'გალერეა',
     tagline: 'ადამიანები, ძაღლები და ამინდი, რაც გზაში შეგვხვდა.',
     cta: 'ყველა ფოტოს ნახვა',
-    photos: count => `${count} ფოტო`
+    photos: count => `${count} ფოტო`,
+    themes: { culture: 'კულტურა', food: 'სამზარეულო', georgia: 'საქართველო' },
+    all: count => `სულ ${count} ფოტო`
   }
 }
-export const batchSize = 10
 export const quality = 100
 
 interface Slot {

@@ -1,9 +1,29 @@
-import { useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { intro, reducedMotion } from 'src/lib/intro'
 
 export const useHero = () => {
   const container = useRef<HTMLElement>(null)
+
+  // Mobile browsers resize the viewport while their toolbars slide in and out. The hero height is locked in
+  // pixels so the photo never rescales mid-scroll, and is only measured again when the width changes (rotation)
+  useLayoutEffect(() => {
+    const section = container.current
+    if (!section) return
+
+    let width = 0
+
+    const measure = () => {
+      if (window.innerWidth === width) return
+      width = window.innerWidth
+      section.style.setProperty('--hero-height', `${window.innerHeight}px`)
+    }
+
+    measure()
+    window.addEventListener('resize', measure)
+
+    return () => window.removeEventListener('resize', measure)
+  }, [])
 
   useGSAP(() => {
     const mm = gsap.matchMedia()

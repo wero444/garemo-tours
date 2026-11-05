@@ -19,14 +19,6 @@ export const content: Record<Locale, Content> = {
     photos: count => `${count} photos`,
     themes: { culture: 'Culture', food: 'Food', georgia: 'Georgia' },
     all: count => `That's all ${count} photos`
-  },
-  ge: {
-    title: 'გალერეა',
-    tagline: 'ადამიანები, ძაღლები და ამინდი, რაც გზაში შეგვხვდა.',
-    cta: 'ყველა ფოტოს ნახვა',
-    photos: count => `${count} ფოტო`,
-    themes: { culture: 'კულტურა', food: 'სამზარეულო', georgia: 'საქართველო' },
-    all: count => `სულ ${count} ფოტო`
   }
 }
 export const quality = 100

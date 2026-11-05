@@ -7,7 +7,7 @@ It is a single-page site with a separate photo gallery, built around hand-drawn 
 ## Features
 
 - **Home page sections:** Hero, About (with the founders), Tours, Travel, Gallery preview, Letters from guests, For travel partners, Contact
-- **Languages:** English at `/` and Georgian at `/ge`, with an EN | PL | GE switcher in the header (Polish is not translated yet). Texts for each language live in the feature's `helpers/index.ts`.
+- **Languages:** English, with an EN / PL switcher in the header (Polish is not translated yet). Texts live in each feature's `helpers/index.ts`, keyed by locale so Polish can be added alongside.
 - **Gallery page** (`/gallery`): three themed masonry grids (Culture, Food, Georgia) with an animated lightbox and a floating Back button
 - **Animations:** GSAP timelines and ScrollTrigger for scroll reveals, SVG line drawing, parallax and micro-interactions. Every animation respects `prefers-reduced-motion`.
 - **Light and dark theme** with a circular view-transition reveal

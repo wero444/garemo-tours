@@ -42,7 +42,17 @@ export const useHeader = (home: boolean) => {
 
     update(window.scrollY, 0)
 
-    return () => trigger.kill()
+    // The scrolled bar narrows to the desktop links, so it needs their width (it changes with the root font size)
+    const content = container.current?.querySelector<HTMLElement>('.header-content')
+    const observer = new ResizeObserver(() => {
+      container.current?.style.setProperty('--header-content', `${content?.offsetWidth ?? 0}px`)
+    })
+    if (content) observer.observe(content)
+
+    return () => {
+      trigger.kill()
+      observer.disconnect()
+    }
   }, { scope: container })
 
   useGSAP(() => {

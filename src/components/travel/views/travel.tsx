@@ -48,7 +48,7 @@ export const Travel = () => {
                   <Words text={label} className='travel-label' chars />
                 </h3>
 
-                <p className='mt-2 max-w-64 text-[15px] leading-[1.7] text-secondary-foreground/70 md:mt-3 md:text-base'>
+                <p className='mt-2 max-w-64 text-[0.9375rem] leading-[1.7] text-secondary-foreground/70 md:mt-3 md:text-base'>
                   <Words text={text} className='travel-word' />
                 </p>
               </li>

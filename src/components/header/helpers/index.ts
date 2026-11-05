@@ -11,16 +11,5 @@ export const content: Record<Locale, { home: string, nav: Array<{ label: string,
       { label: 'Contact', href: '#contact' }
     ],
     tagline: 'Journeys through the real Georgia'
-  },
-  ge: {
-    home: 'მთავარი',
-    nav: [
-      { label: 'ჩვენ შესახებ', href: '#about' },
-      { label: 'ტურები', href: '#tours' },
-      { label: 'გალერეა', href: '#gallery' },
-      { label: 'პარტნიორები', href: '#partners' },
-      { label: 'კონტაქტი', href: '#contact' }
-    ],
-    tagline: 'მოგზაურობა ნამდვილ საქართველოში'
   }
 }

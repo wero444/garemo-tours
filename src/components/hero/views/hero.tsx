@@ -27,12 +27,12 @@ export const Hero = () => {
         <div className='hero-shade absolute inset-0 bg-linear-to-b from-white/20 via-transparent to-black/30 dark:from-black/50 dark:via-black/15 dark:to-black/60' />
       </div>
 
-      <div className='relative flex h-full flex-col items-center justify-center px-6'>
-        <h1 className='hero-reveal invisible -mt-[8svh] w-[min(60vw,260px)] text-primary md:w-[min(42vw,300px)] xl:w-80 dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
+      <div className='relative flex h-full flex-col items-center px-6 pt-[22svh] pb-10 md:pt-[16svh] md:pb-12'>
+        <h1 className='hero-reveal invisible w-[min(48vw,11.25rem)] text-primary md:w-[13.75rem] dark:drop-shadow-[0_0.0625rem_0.625rem_rgb(0_0_0/0.65)]'>
           <span className='sr-only'>{heading[locale]}</span>
           <Logo className='hero-logo h-auto w-full overflow-visible' />
         </h1>
-        <p lang='en' className='hero-reveal invisible mt-6 text-center text-sm font-medium tracking-[0.15em] text-[#f6eee2] [text-shadow:0_1px_3px_rgb(0_0_0/0.35),0_2px_14px_rgb(0_0_0/0.3)] md:mt-8 md:text-base xl:text-lg'>
+        <p lang='en' className='hero-reveal invisible mt-auto text-center text-[0.625rem] font-medium uppercase tracking-[0.25em] text-white [text-shadow:0_0.0625rem_0.1875rem_rgb(0_0_0/0.35),0_0.125rem_0.875rem_rgb(0_0_0/0.3)] md:text-[0.6875rem]'>
           {tagline.split(' ').map((word, i) => (
             <Fragment key={i}>
               {i > 0 && ' '}

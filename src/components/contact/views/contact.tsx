@@ -39,7 +39,7 @@ export const Contact = () => {
                     <Icon className='size-4.5' strokeWidth={1.75} />
                   </span>
                   <span className='flex min-w-0 flex-col gap-1 overflow-hidden'>
-                    <span className='contact-in text-[11px] font-medium uppercase tracking-[0.3em] text-secondary-foreground/55'>{label}</span>
+                    <span className='contact-in text-[0.6875rem] font-medium uppercase tracking-[0.3em] text-secondary-foreground/55'>{label}</span>
                     <span className='contact-in truncate text-base text-primary md:text-lg'>{value}</span>
                   </span>
                   <ArrowUpRight
@@ -54,7 +54,7 @@ export const Contact = () => {
           </ul>
         </div>
 
-        <div className='relative mt-16 flex flex-col gap-4 pt-6 text-[11px] font-medium uppercase tracking-[0.3em] text-secondary-foreground/60 md:mt-20 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-8 md:pr-16'>
+        <div className='relative mt-16 flex flex-col gap-4 pt-6 text-[0.6875rem] font-medium uppercase tracking-[0.3em] text-secondary-foreground/60 md:mt-20 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-8 md:pr-16'>
           <span aria-hidden className='contact-rule absolute inset-x-0 top-0 h-px bg-primary/20' />
           <p className='contact-foot'>{`© ${brand}`}</p>
           <p className='contact-foot flex items-center gap-3'>

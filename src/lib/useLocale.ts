@@ -1,4 +1,4 @@
-import { usePathname } from 'next/navigation'
-import { localeOf } from 'src/lib/i18n'
+import type { Locale } from 'src/lib/i18n'
 
-export const useLocale = () => localeOf(usePathname())
+// English is the only translation for now; Polish plugs in here once it ships
+export const useLocale = (): Locale => 'en'

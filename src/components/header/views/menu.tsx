@@ -14,7 +14,7 @@ export const Menu = () => {
 
   return (
     <div ref={container} className='ml-auto md:hidden'>
-      <div className='relative z-10 flex justify-end dark:drop-shadow-[0_1px_10px_rgb(0_0_0/0.65)]'>
+      <div className='relative z-10 flex justify-end dark:drop-shadow-[0_0.0625rem_0.625rem_rgb(0_0_0/0.65)]'>
         <Burger open={open} onClick={toggle} />
       </div>
 
@@ -50,7 +50,7 @@ export const Menu = () => {
             {tagline}
           </p>
           <div className='flex shrink-0 flex-col items-end gap-4'>
-            <LanguageSwitcher className='menu-meta' onSelect={close} side='top' />
+            <LanguageSwitcher className='menu-meta' onSelect={close} />
             <ThemeToggle className='menu-meta -mr-2.5 -mb-2.5' />
           </div>
         </div>

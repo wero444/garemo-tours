@@ -9,14 +9,6 @@ export const content: Record<Locale, { eyebrow: string, title: Array<string>, de
     regionsLabel: 'Destinations',
     regions: ['Georgia', 'Armenia', 'Azerbaijan'],
     cta: 'Work with us'
-  },
-  ge: {
-    eyebrow: 'ტურისტული პარტნიორებისთვის',
-    title: ['თქვენი DMC', 'საქართველოში'],
-    description: 'ინდივიდუალურად დაგეგმილი ჯგუფური მოგზაურობები მთელ საქართველოში — კულტურული და პილიგრიმული ტურებიდან კორპორაციულ და სპეციალური ინტერესის მოგზაურობებამდე.',
-    regionsLabel: 'მიმართულებები',
-    regions: ['საქართველო', 'სომხეთი', 'აზერბაიჯანი'],
-    cta: 'ითანამშრომლეთ ჩვენთან'
   }
 }
 

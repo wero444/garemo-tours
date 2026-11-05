@@ -8,7 +8,7 @@ import { Words } from 'src/components/ui/words'
 import { useLocale } from 'src/lib/useLocale'
 
 // Georgian words run longer, so the heading steps down a size on phones to keep each word on one line
-const headingSize = { en: 'text-5xl md:text-6xl lg:text-7xl', ge: 'text-4xl md:text-6xl lg:text-7xl' }
+const headingSize = { en: 'text-5xl md:text-6xl lg:text-7xl' }
 
 export const Letters = () => {
   const { container } = useLetters()

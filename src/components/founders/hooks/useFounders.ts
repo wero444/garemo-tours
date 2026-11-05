@@ -10,7 +10,7 @@ export const useFounders = () => {
     const mm = gsap.matchMedia()
 
     mm.add(reducedMotion, () => {
-      gsap.set('.founder', { autoAlpha: 1 }).then()
+      gsap.set('.founder, .founders-sun', { autoAlpha: 1 }).then()
     })
 
     mm.add(`not all and ${reducedMotion}`, () => {
@@ -32,6 +32,12 @@ export const useFounders = () => {
           .fromTo(q('.founder-glow'), { opacity: 0 }, { opacity: 1, duration: 1.6, ease: 'power2.out' }, 0.9)
           .fromTo(q('.founder-name'), { yPercent: 110 }, { yPercent: 0, duration: 1.1 }, 1.1).then()
       })
+
+      // The sun between the two arches rises once both are up, then its rays keep turning slowly
+      gsap.timeline({ scrollTrigger: { trigger: '.founders-sun', start: 'top 85%', once: true } })
+        .set('.founders-sun', { autoAlpha: 1 })
+        .fromTo('.founders-sun', { scale: 0, rotate: -90 }, { scale: 1, rotate: 0, duration: 1.4, ease: 'back.out(1.8)' }, 0.9)
+        .to('.founders-sun .sun-rays', { rotate: -360, svgOrigin: '148.41 98.36', duration: 36, ease: 'none', repeat: -1 }, 2.3).then()
     })
 
     return () => mm.revert()

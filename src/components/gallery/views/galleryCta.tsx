@@ -20,7 +20,7 @@ export const GalleryCta = ({ preview, total }: { preview: Array<StaticImageData>
       onPointerLeave={onCtaLeave}
       onFocus={onCtaEnter}
       onBlur={onCtaLeave}
-      className='gallery-cta group/cta invisible relative mx-auto mt-16 flex w-fit items-center gap-4 rounded-full border border-primary/20 bg-background/50 p-2 text-primary shadow-[0_24px_60px_-30px_color-mix(in_oklab,var(--primary)_70%,transparent)] outline-none backdrop-blur-sm transition-colors duration-500 hover:text-primary-foreground focus-visible:text-primary-foreground focus-visible:ring-3 focus-visible:ring-ring/50 md:mt-20 md:gap-6'
+      className='gallery-cta group/cta invisible relative mx-auto mt-16 flex w-fit items-center gap-4 rounded-full border border-primary/20 bg-background/50 p-2 text-primary shadow-[0_1.5rem_3.75rem_-1.875rem_color-mix(in_oklab,var(--primary)_70%,transparent)] outline-none backdrop-blur-sm transition-colors duration-500 hover:text-primary-foreground focus-visible:text-primary-foreground focus-visible:ring-3 focus-visible:ring-ring/50 md:mt-20 md:gap-6'
     >
       <span aria-hidden className='cta-fill absolute inset-0 rounded-full bg-primary' style={{ clipPath: 'circle(0% at 92% 50%)' }} />
 
@@ -50,7 +50,7 @@ export const GalleryCta = ({ preview, total }: { preview: Array<StaticImageData>
             ))}
           </span>
         </span>
-        <span aria-hidden className='cta-count mt-1 text-[10px] uppercase tracking-[0.3em] opacity-60 md:text-[11px]'>
+        <span aria-hidden className='cta-count mt-1 text-[0.625rem] uppercase tracking-[0.3em] opacity-60 md:text-[0.6875rem]'>
           {photos(total)}
         </span>
       </span>

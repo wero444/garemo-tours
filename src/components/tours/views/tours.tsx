@@ -39,7 +39,7 @@ export const Tours = () => {
       <div className='mx-auto w-full'>
         <header className='flex flex-col items-center text-center'>
           <div className='relative'>
-            <h2 id='tours-title' className='w-[min(48vw,200px)] text-(--tone) md:w-60'>
+            <h2 id='tours-title' className='w-[min(48vw,12.5rem)] text-(--tone) md:w-60'>
               <span className='sr-only'>{title}</span>
               <ToursTitle className='tours-title invisible h-auto w-full overflow-visible' />
             </h2>
@@ -56,7 +56,7 @@ export const Tours = () => {
                 className='relative aspect-4/5 w-full'
               >
                 <span aria-hidden className='tour-shadow absolute inset-x-[10%] -bottom-6 h-10 rounded-[50%] bg-black/35 blur-2xl' />
-                <ArchFrame className='tour-frame absolute! inset-0 bg-black/10 shadow-[0_30px_60px_-30px_rgb(0_0_0/0.55)]'>
+                <ArchFrame className='tour-frame absolute! inset-0 bg-black/10 shadow-[0_1.875rem_3.75rem_-1.875rem_rgb(0_0_0/0.55)]'>
                   <div className='tour-parallax absolute inset-x-0 inset-y-[-8%]'>
                     <Image
                       src={image}
@@ -76,7 +76,7 @@ export const Tours = () => {
                 <Words text={title} className='tour-title-word' chars />
               </h3>
 
-              <p className='mt-3 max-w-xs text-[15px] leading-[1.7] text-(--tone)'>
+              <p className='mt-3 max-w-xs text-[0.9375rem] leading-[1.7] text-(--tone)'>
                 <Words text={text} className='tour-word' />
               </p>
             </li>
@@ -91,7 +91,7 @@ export const Tours = () => {
             onPointerLeave={onCtaLeave}
             onFocus={onCtaEnter}
             onBlur={onCtaLeave}
-            className='tours-cta invisible group relative inline-flex items-center gap-4 rounded-full border border-(--tone)/45 py-4 pr-6 pl-7 text-center text-[11px] font-medium uppercase leading-relaxed tracking-[0.18em] text-(--tone) outline-none transition-colors duration-500 hover:border-(--tone) hover:bg-(--tone)/10 focus-visible:ring-2 focus-visible:ring-(--tone)/60 md:text-[13px] md:tracking-[0.25em]'
+            className='tours-cta invisible group relative inline-flex items-center gap-4 rounded-full border border-(--tone)/45 py-4 pr-6 pl-7 text-center text-[0.6875rem] font-medium uppercase leading-relaxed tracking-[0.18em] text-(--tone) outline-none transition-colors duration-500 hover:border-(--tone) hover:bg-(--tone)/10 focus-visible:ring-2 focus-visible:ring-(--tone)/60 md:text-[0.8125rem] md:tracking-[0.25em]'
           >
             <span className='sr-only'>{cta}</span>
             <span aria-hidden className='block'><Rolling text={cta} /></span>

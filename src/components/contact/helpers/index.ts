@@ -21,12 +21,5 @@ export const content: Record<Locale, { title: string, lead: string, location: st
     location: 'Tbilisi, Georgia',
     motto: 'Georgia, the way we know it',
     channels: [{ label: 'Email', ...email }, { label: 'Phone', ...phone }]
-  },
-  ge: {
-    title: 'მოგვწერეთ',
-    lead: 'გვითხარით, როდის გსურთ ჩამოსვლა და რისი ნახვა გინდათ.',
-    location: 'თბილისი, საქართველო',
-    motto: 'საქართველო, როგორც ჩვენ ვიცნობთ',
-    channels: [{ label: 'ელფოსტა', ...email }, { label: 'ტელეფონი', ...phone }]
   }
 }

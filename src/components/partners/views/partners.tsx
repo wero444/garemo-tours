@@ -8,7 +8,7 @@ import { content } from 'src/components/partners/helpers'
 import { Words } from 'src/components/ui/words'
 import { useLocale } from 'src/lib/useLocale'
 
-const titleSize = { en: 'text-5xl md:text-7xl lg:text-8xl', ge: 'text-4xl md:text-6xl lg:text-7xl' }
+const titleSize = { en: 'text-5xl md:text-7xl lg:text-8xl' }
 
 export const Partners = () => {
   const { container, onCtaEnter, onCtaMove, onCtaLeave } = usePartners()
@@ -41,7 +41,7 @@ export const Partners = () => {
 
       <div className='mx-auto w-full max-w-6xl'>
         <div className='max-w-2xl'>
-          <p className='flex items-center gap-4 text-xs font-medium uppercase tracking-[0.35em] text-white/70 md:text-[13px]'>
+          <p className='flex items-center gap-4 text-xs font-medium uppercase tracking-[0.35em] text-white/70 md:text-[0.8125rem]'>
             <span aria-hidden className='partners-rule block h-px w-10 origin-left bg-white/50' />
             <span className='partners-eyebrow'>{eyebrow}</span>
           </p>
@@ -81,7 +81,7 @@ export const Partners = () => {
             onPointerLeave={onCtaLeave}
             onFocus={onCtaEnter}
             onBlur={onCtaLeave}
-            className='partners-cta invisible relative mt-10 inline-flex items-center gap-4 overflow-hidden rounded-full bg-primary py-4 pr-6 pl-7 text-xs font-medium uppercase tracking-[0.25em] text-primary-foreground shadow-[0_20px_50px_-20px_var(--primary)] outline-none transition-colors duration-500 hover:text-primary focus-visible:ring-3 focus-visible:ring-white/50 md:mt-12 md:text-[13px]'
+            className='partners-cta invisible relative mt-10 inline-flex items-center gap-4 overflow-hidden rounded-full bg-primary py-4 pr-6 pl-7 text-xs font-medium uppercase tracking-[0.25em] text-primary-foreground shadow-[0_1.25rem_3.125rem_-1.25rem_var(--primary)] outline-none transition-colors duration-500 hover:text-primary focus-visible:ring-3 focus-visible:ring-white/50 md:mt-12 md:text-[0.8125rem]'
           >
             <span aria-hidden className='partners-cta-fill absolute inset-0 rounded-full bg-white' style={{ clipPath: 'circle(0% at 0% 50%)' }} />
             <span className='sr-only'>{cta}</span>

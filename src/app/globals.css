@@ -4,6 +4,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --breakpoint-3xl: 120rem;
+  --breakpoint-4xl: 160rem;
+}
+
 @theme inline {
   --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 
@@ -22,6 +27,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --font-hand: var(--font-caveat);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -137,9 +143,20 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Every size is set in rem, so the root size is the one scale for the whole site. It steps at fixed
+     breakpoints: each device class gets one exact size. Percentages keep the visitor's browser setting in play */
+  html {
+    font-size: 106.25%;
+
+    @variant md { font-size: 93.75%; }
+    @variant lg { font-size: 100%; }
+    @variant xl { font-size: 106.25%; }
+    @variant 3xl { font-size: 112.5%; }
+    @variant 4xl { font-size: 131.25%; }
+  }
   html {
     @apply font-sans;
-    font-family: var(--font-sans), var(--font-georgian), sans-serif;
+    font-family: var(--font-sans), sans-serif;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     /* Native scrollbar is replaced by the floating Scrollbar component */
@@ -150,11 +167,37 @@
   }
 }
 
-/* Georgian has no capital letters in running text: keep it lowercase where Latin labels are set in caps.
-   Unlayered so it wins over the utility */
-:lang(ka) .uppercase {
-  text-transform: none;
-  letter-spacing: 0.06em;
+/* Header bar: spans the full width at the top of the page, then closes in around the links once scrolled.
+   --header-content is the measured width of the desktop links; the bar keeps 2rem of padding around them.
+   Scrolling down it fades in first and then narrows; back at the top it widens first and then fades out */
+.header-bar {
+  --header-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  left: 0.5rem;
+  right: 0.5rem;
+  transition: left 0.8s var(--header-ease), right 0.8s var(--header-ease), opacity 0.5s ease 0.35s;
+}
+
+[data-scrolled] > .header-bar {
+  transition: opacity 0.4s ease, left 0.9s var(--header-ease) 0.1s, right 0.9s var(--header-ease) 0.1s;
+}
+
+@media (width >= theme(--breakpoint-md)) {
+  .header-bar {
+    left: 0.75rem;
+    right: 0.75rem;
+  }
+
+  [data-scrolled] > .header-bar {
+    left: max(0.75rem, calc(50% - var(--header-content, 100%) / 2 - 2rem));
+    right: max(0.75rem, calc(50% - var(--header-content, 100%) / 2 - 2rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-bar,
+  [data-scrolled] > .header-bar {
+    transition: opacity 0.4s ease;
+  }
 }
 
 /* Theme switch: the new theme is revealed by a circle animated from the toggle */

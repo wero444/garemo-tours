@@ -38,7 +38,7 @@ export const GalleryTile = ({ tile, className, sizes, preload, loading, onLoad, 
       >
         <span aria-hidden className='tile-shadow absolute inset-x-[10%] -bottom-4 h-8 rounded-[50%] bg-black/30 blur-2xl' />
         <div className='press-tilt absolute inset-0'>
-          <div className='tile-frame absolute inset-0 overflow-hidden rounded-2xl bg-[color-mix(in_oklab,var(--secondary),var(--foreground)_8%)] shadow-[0_24px_48px_-28px_rgb(0_0_0/0.55)]'>
+          <div className='tile-frame absolute inset-0 overflow-hidden rounded-2xl bg-[color-mix(in_oklab,var(--secondary),var(--foreground)_8%)] shadow-[0_1.5rem_3rem_-1.75rem_rgb(0_0_0/0.55)]'>
             <div className='tile-spin absolute inset-0'>
               <div className='tile-parallax absolute inset-x-0 inset-y-[-8%]'>
                 <Image

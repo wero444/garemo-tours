@@ -3,8 +3,7 @@ import type { Letter } from 'src/components/letters/helpers'
 import { useLocale } from 'src/lib/useLocale'
 
 const keepsake = {
-  en: ({ name, country }: Letter) => `Keepsake from ${name}, ${country}`,
-  ge: ({ name, country }: Letter) => `სამახსოვრო ფოტო: ${name}, ${country}`
+  en: ({ name, country }: Letter) => `Keepsake from ${name}, ${country}`
 }
 
 export const LetterCard = ({ letter }: { letter: Letter }) => {
@@ -12,9 +11,9 @@ export const LetterCard = ({ letter }: { letter: Letter }) => {
 
   return (
     <li className='letter-card invisible'>
-      <figure className='letter-paper flex h-full min-h-48 flex-col justify-between gap-10 rounded-md border border-primary/15 bg-[color-mix(in_oklab,var(--secondary),white_45%)] p-6 shadow-[0_18px_40px_-24px_rgb(0_0_0/0.35)] transition-[rotate,translate,box-shadow] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rotate-(--tilt) hover:-translate-y-1.5 hover:rotate-0 hover:shadow-[0_28px_50px_-24px_rgb(0_0_0/0.4)] md:min-h-60 md:p-7 dark:bg-[color-mix(in_oklab,var(--secondary),white_6%)]'>
+      <figure className='letter-paper flex h-full min-h-48 flex-col justify-between gap-10 rounded-md border border-primary/15 bg-[color-mix(in_oklab,var(--secondary),white_45%)] p-6 shadow-[0_1.125rem_2.5rem_-1.5rem_rgb(0_0_0/0.35)] transition-[rotate,translate,box-shadow] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rotate-(--tilt) hover:-translate-y-1.5 hover:rotate-0 hover:shadow-[0_1.75rem_3.125rem_-1.5rem_rgb(0_0_0/0.4)] md:min-h-60 md:p-7 dark:bg-[color-mix(in_oklab,var(--secondary),white_6%)]'>
         <div className='flex items-start justify-between gap-5'>
-          <blockquote className='text-[15px] leading-[1.75] text-secondary-foreground/80 md:text-base'>
+          <blockquote className='text-[0.9375rem] leading-[1.75] text-secondary-foreground/80 md:text-base'>
             {letter.text}
           </blockquote>
           <span className='letter-stamp relative size-14 shrink-0 overflow-hidden rounded-xs border border-dashed border-primary/40'>

@@ -4,55 +4,42 @@ import { useAbout } from 'src/components/about/hooks/useAbout'
 import { content } from 'src/components/about/helpers'
 import { AboutTitle } from 'src/components/about/views/aboutTitle'
 import { Tree } from 'src/components/about/views/tree'
-import { Divider } from 'src/components/divider/views/divider'
 import { Founders } from 'src/components/founders/views/founders'
 import { Words } from 'src/components/ui/words'
 import { useLocale } from 'src/lib/useLocale'
 
 export const About = () => {
   const { container } = useAbout()
-  const { title, heading, paragraphs } = content[useLocale()]
+  const { title, paragraphs } = content[useLocale()]
 
   return (
+    // Fills the screen like the hero; the negative scroll margin cancels the page's scroll padding so the nav link lands on its top edge
     <section
       ref={container}
       id='about'
       aria-labelledby='about-title'
-      className='relative overflow-hidden bg-secondary pt-24 pb-20 md:pt-32 md:pb-24 lg:pt-40 lg:pb-28'
+      className='relative flex min-h-dvh -scroll-mt-20 flex-col justify-center overflow-hidden bg-secondary px-6 py-20 md:py-16'
     >
-      <div className='relative mx-auto max-w-4xl px-6'>
-        <div aria-hidden className='about-trees pointer-events-none absolute -top-10 left-6 text-primary sm:top-0 md:left-2 lg:-left-10'>
-          <Tree className='about-tree invisible absolute top-10 left-0 w-9 -rotate-6 sm:top-12 sm:w-12 md:w-14' />
-          <Tree className='about-tree invisible absolute top-0 left-10 w-6 rotate-6 sm:left-14 sm:w-8 md:left-16 md:w-10' />
-        </div>
-
-        <h2 id='about-title' className='mx-auto w-[min(56vw,240px)] text-primary md:w-75'>
-          <span className='sr-only'>{title}</span>
-          <AboutTitle className='about-title invisible h-auto w-full overflow-visible' />
-        </h2>
+      <div aria-hidden className='about-trees pointer-events-none absolute inset-0 text-primary'>
+        <Tree className='about-tree invisible absolute top-[14%] left-[6%] w-7 -rotate-6 md:w-8 lg:top-[42%] lg:left-[9%]' />
+        <Tree className='about-tree invisible absolute right-[8%] bottom-[4%] w-9 rotate-3 md:w-12' />
       </div>
 
-      <div className='mt-12 px-6 md:mt-16'>
+      <h2 id='about-title' className='mx-auto w-[min(40vw,10rem)] text-primary'>
+        <span className='sr-only'>{title}</span>
+        <AboutTitle className='about-title invisible h-auto w-full overflow-visible' />
+      </h2>
+
+      <div className='mt-8 md:mt-10'>
         <Founders />
       </div>
 
-      <div className='mt-14 md:mt-16'>
-        <Divider />
-      </div>
-
-      <div className='mx-auto mt-10 max-w-2xl px-6 text-center md:mt-12'>
-        <h3 className='text-3xl font-light tracking-tight text-primary md:text-4xl'>
-          <span className='sr-only'>{heading}</span>
-          <Words text={heading} className='about-heading-char' chars />
-        </h3>
-
-        <div className='mt-6 space-y-5 text-[15px] leading-[1.8] text-secondary-foreground/85 md:mt-8 md:space-y-6 md:text-lg'>
-          {paragraphs.map((paragraph, i) => (
-            <p key={i} className='about-paragraph'>
-              <Words text={paragraph} className='about-word invisible' />
-            </p>
-          ))}
-        </div>
+      <div className='mx-auto mt-8 max-w-[42rem] space-y-2.5 text-center text-sm leading-[1.7] text-secondary-foreground/85 md:mt-10 md:text-[0.9375rem]'>
+        {paragraphs.map((paragraph, i) => (
+          <p key={i} className='about-paragraph'>
+            <Words text={paragraph} className='about-word invisible' />
+          </p>
+        ))}
       </div>
     </section>
   )

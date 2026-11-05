@@ -2,7 +2,7 @@ import type { PointerEvent } from 'react'
 import { gsap } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
 
-export const pressDent = 'pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(220px_circle_at_var(--x)_var(--y),rgb(0_0_0/0.09),transparent_70%)] dark:bg-[radial-gradient(220px_circle_at_var(--x)_var(--y),rgb(0_0_0/0.3),transparent_70%)]'
+export const pressDent = 'pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(13.75rem_circle_at_var(--x)_var(--y),rgb(0_0_0/0.09),transparent_70%)] dark:bg-[radial-gradient(13.75rem_circle_at_var(--x)_var(--y),rgb(0_0_0/0.3),transparent_70%)]'
 
 const pointer = (event: PointerEvent<HTMLElement>) => {
   const { left, top, width, height } = event.currentTarget.getBoundingClientRect()

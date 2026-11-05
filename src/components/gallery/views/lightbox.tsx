@@ -31,7 +31,7 @@ export const Lightbox = ({ tile, origin, onClosed }: Props) => {
       <div
         ref={frame}
         onClick={event => event.stopPropagation()}
-        className='fixed cursor-default overflow-hidden bg-black/30 shadow-[0_40px_120px_-40px_rgb(0_0_0/0.9)]'
+        className='fixed cursor-default overflow-hidden bg-black/30 shadow-[0_2.5rem_7.5rem_-2.5rem_rgb(0_0_0/0.9)]'
       >
         <Image
           src={tile.image}

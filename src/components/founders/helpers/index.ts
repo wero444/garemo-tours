@@ -11,13 +11,12 @@ interface Founder {
 }
 
 export const founders: Array<Founder> = [
-  { name: { en: 'Shota Tsereteli', ge: 'შოთა წერეთელი' }, role: 'Co-founder and guide', image: shota, position: 'object-[50%_30%]' },
-  { name: { en: 'Nodo Shonia', ge: 'ნოდო შონია' }, role: 'Co-founder and guide', image: nodo, position: 'object-[32%_50%]' }
+  { name: { en: 'Shota Tsereteli' }, role: 'Co-founder and guide', image: shota, position: 'object-[50%_30%]' },
+  { name: { en: 'Nodo Shonia' }, role: 'Co-founder and guide', image: nodo, position: 'object-[32%_50%]' }
 ]
 
 export const portrait: Record<Locale, (name: string) => string> = {
-  en: name => `Portrait of ${name}`,
-  ge: name => `${name}, პორტრეტი`
+  en: name => `Portrait of ${name}`
 }
 
-export const label: Record<Locale, string> = { en: 'Founders', ge: 'დამფუძნებლები' }
+export const label: Record<Locale, string> = { en: 'Founders' }

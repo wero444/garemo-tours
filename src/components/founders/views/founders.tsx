@@ -13,7 +13,7 @@ export const Founders = () => {
   const locale = useLocale()
 
   return (
-    <div ref={container} className='relative mx-auto max-w-[42rem]'>
+    <div ref={container} className='relative mx-auto max-w-2xl'>
       <Sun className='founders-sun invisible absolute top-[9%] left-1/2 hidden w-10 -translate-x-1/2 overflow-visible text-primary sm:block md:w-12' />
       <ul aria-label={label[locale]} className='grid grid-cols-1 justify-items-center gap-16 sm:grid-cols-2 sm:gap-x-20 lg:gap-x-40'>
         {founders.map(({ name: names, image, position }) => {

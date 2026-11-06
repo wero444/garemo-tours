@@ -42,12 +42,14 @@ export const useHeader = (home: boolean) => {
 
     update(window.scrollY, 0)
 
-    // The scrolled bar narrows to the desktop links, so it needs their width (it changes with the root font size)
     const content = container.current?.querySelector<HTMLElement>('.header-content')
+    const nav = content?.querySelector<HTMLElement>('nav')
     const observer = new ResizeObserver(() => {
       container.current?.style.setProperty('--header-content', `${content?.offsetWidth ?? 0}px`)
+      container.current?.style.setProperty('--header-nav', `${nav?.offsetWidth ?? 0}px`)
     })
     if (content) observer.observe(content)
+    if (nav) observer.observe(nav)
 
     return () => {
       trigger.kill()

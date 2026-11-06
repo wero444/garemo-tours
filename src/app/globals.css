@@ -4,6 +4,23 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@property --font-caveat {
+  syntax: '*';
+  inherits: true;
+}
+
+@property --header-nav {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --header-content {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
 @theme {
   --breakpoint-3xl: 120rem;
   --breakpoint-4xl: 160rem;
@@ -143,8 +160,6 @@
   body {
     @apply bg-background text-foreground;
   }
-  /* Every size is set in rem, so the root size is the one scale for the whole site. It steps at fixed
-     breakpoints: each device class gets one exact size. Percentages keep the visitor's browser setting in play */
   html {
     font-size: 106.25%;
 
@@ -159,7 +174,6 @@
     font-family: var(--font-sans), sans-serif;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
-    /* Native scrollbar is replaced by the floating Scrollbar component */
     scrollbar-width: none;
   }
   html::-webkit-scrollbar {
@@ -167,40 +181,59 @@
   }
 }
 
-/* Header bar: spans the full width at the top of the page, then closes in around the links once scrolled.
-   --header-content is the measured width of the desktop links; the bar keeps 2rem of padding around them.
-   Scrolling down it fades in first and then narrows; back at the top it widens first and then fades out */
-.header-bar {
-  --header-ease: cubic-bezier(0.16, 1, 0.3, 1);
+.header-bar,
+.header-bar-side {
+  --header-ease: cubic-bezier(0.22, 1, 0.36, 1);
   left: 0.5rem;
   right: 0.5rem;
-  transition: left 0.8s var(--header-ease), right 0.8s var(--header-ease), opacity 0.5s ease 0.35s;
+  transform-origin: 50% 50%;
+  transform: scaleX(0.88);
+  transition:
+    transform 0.45s cubic-bezier(0.4, 0, 0.2, 1) var(--header-out-delay, 0s),
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1) var(--header-out-delay, 0s);
 }
 
-[data-scrolled] > .header-bar {
-  transition: opacity 0.4s ease, left 0.9s var(--header-ease) 0.1s, right 0.9s var(--header-ease) 0.1s;
+[data-scrolled] > .header-bar,
+[data-scrolled] > .header-bar-side {
+  transform: scaleX(1);
+  transition:
+    transform 0.8s var(--header-ease) var(--header-in-delay, 0s),
+    opacity 0.5s ease-out var(--header-in-delay, 0s);
 }
 
-@media (width >= theme(--breakpoint-md)) {
-  .header-bar {
-    left: 0.75rem;
-    right: 0.75rem;
+.header-bar {
+  --header-out-delay: 0.04s;
+
+  @variant md {
+    left: max(0.75rem, calc(50% - var(--header-nav) / 2 - 2rem));
+    right: max(0.75rem, calc(50% - var(--header-nav) / 2 - 2rem));
+  }
+}
+
+.header-bar-side {
+  --header-in-delay: 0.06s;
+
+  @variant md {
+    --header-gap: 5rem;
+    left: calc(50% + var(--header-nav) / 2 + var(--header-gap) - 1.25rem);
+    right: max(0.75rem, calc(50% - var(--header-content) / 2 - 0.75rem));
   }
 
-  [data-scrolled] > .header-bar {
-    left: max(0.75rem, calc(50% - var(--header-content, 100%) / 2 - 2rem));
-    right: max(0.75rem, calc(50% - var(--header-content, 100%) / 2 - 2rem));
+  @variant lg {
+    --header-gap: 8rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .header-bar,
-  [data-scrolled] > .header-bar {
+  .header-bar-side,
+  [data-scrolled] > .header-bar,
+  [data-scrolled] > .header-bar-side {
+    transform: none;
     transition: opacity 0.4s ease;
   }
 }
 
-/* Theme switch: the new theme is revealed by a circle animated from the toggle */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;

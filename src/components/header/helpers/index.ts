@@ -5,6 +5,7 @@ export const content: Record<Locale, { home: string, nav: Array<{ label: string,
     home: 'Home',
     nav: [
       { label: 'About', href: '#about' },
+      { label: 'Destinations', href: '#destinations' },
       { label: 'Tours', href: '#tours' },
       { label: 'Gallery', href: '#gallery' },
       { label: 'Letters', href: '#letters' },

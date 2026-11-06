@@ -33,10 +33,10 @@ export const Header = () => {
       >
         <Wordmark className='h-auto w-full' />
       </a>
-      <div className='header-content hidden grid-cols-[1fr_auto_1fr] items-center gap-x-20 lg:grid xl:gap-x-32'>
+      <div className='header-content hidden grid-cols-[1fr_auto_1fr] items-center gap-x-10 lg:grid xl:gap-x-16 2xl:gap-x-28'>
         <span aria-hidden />
         <nav aria-label='Main' className='dark:drop-shadow-[0_0.0625rem_0.625rem_rgb(0_0_0/0.65)]'>
-          <ul className='flex justify-center gap-x-7 xl:gap-x-10'>
+          <ul className='flex justify-center gap-x-5 xl:gap-x-7 2xl:gap-x-10'>
             {items.map(({ label, href }) => (
               <li key={href} className='nav-item invisible'>
                 <NavAnchor

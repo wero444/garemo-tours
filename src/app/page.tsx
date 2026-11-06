@@ -1,6 +1,7 @@
 import { Hero } from 'src/components/hero/views/hero'
 import { About } from 'src/components/about/views/about'
 import { Divider } from 'src/components/divider/views/divider'
+import { Destinations } from 'src/components/destinations/views/destinations'
 import { Tours } from 'src/components/tours/views/tours'
 import { Gallery } from 'src/components/gallery/views/gallery'
 import { Letters } from 'src/components/letters/views/letters'
@@ -12,6 +13,7 @@ const Home = () => {
     <main className='flex flex-1 flex-col'>
       <Hero />
       <About />
+      <Destinations />
       <Tours />
       <Gallery />
       <Divider icon='puri' />

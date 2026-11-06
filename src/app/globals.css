@@ -218,13 +218,17 @@
   --header-in-delay: 0.06s;
 
   @variant lg {
-    --header-gap: 5rem;
+    --header-gap: 2.5rem;
     left: calc(50% + var(--header-nav) / 2 + var(--header-gap) - 1.25rem);
     right: max(0.75rem, calc(50% - var(--header-content) / 2 - 0.75rem));
   }
 
   @variant xl {
-    --header-gap: 8rem;
+    --header-gap: 4rem;
+  }
+
+  @variant 2xl {
+    --header-gap: 7rem;
   }
 }
 

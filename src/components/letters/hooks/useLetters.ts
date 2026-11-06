@@ -17,7 +17,7 @@ export const useLetters = () => {
     const mm = gsap.matchMedia()
 
     mm.add(reducedMotion, () => {
-      gsap.set('.letters-figure, .letter-card', { autoAlpha: 1 }).then()
+      gsap.set('.letters-figure, .letters-title, .letter-card', { autoAlpha: 1 }).then()
       tilt()
     })
 
@@ -48,10 +48,12 @@ export const useLetters = () => {
         .fromTo('.letters-figure', { y: 30, rotate: -3 }, { y: 0, rotate: 0, duration: 2.2 }, 0)
         .fromTo(lines, { drawSVG: '0%' }, { drawSVG: '100%', duration: 1.8, stagger: { amount: 0.8 }, ease: 'power2.inOut' }, 0)
         .to(lines, { fillOpacity: 1, strokeOpacity: 0, duration: 0.8, stagger: { amount: 0.4 }, ease: 'power2.out' }, 1.6)
-        .fromTo('.letters-char',
-          { yPercent: 110, rotate: 8 },
-          { yPercent: 0, rotate: 0, duration: 1.2, stagger: 0.035 }, 0.4)
-        .fromTo('.letters-underline path', { drawSVG: '0%' }, { drawSVG: '100%', duration: 1.1, ease: 'power2.inOut' }, 1.2)
+        .set('.letters-title', { autoAlpha: 1 }, 0)
+        .set('.letters-letter', { stroke: 'currentColor', strokeWidth: 0.35, fillOpacity: 0, autoRound: false }, 0)
+        .fromTo('.letters-letter',
+          { drawSVG: '0%', y: 5 },
+          { drawSVG: '100%', y: 0, duration: 1.1, stagger: 0.06, ease: 'power2.inOut' }, 0.4)
+        .to('.letters-letter', { fillOpacity: 1, strokeOpacity: 0, duration: 0.6, stagger: 0.05, ease: 'power2.out' }, 1.2)
         .fromTo('.letter-card', { autoAlpha: 0, y: 70 }, { autoAlpha: 1, y: 0, duration: 1.4, stagger: 0.15 }, 0.9)
         .call(tilt, [], 1.1)
         .fromTo('.letter-stamp',

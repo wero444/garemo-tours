@@ -8,6 +8,10 @@ export const useContact = () => {
   useGSAP(() => {
     const mm = gsap.matchMedia()
 
+    mm.add(reducedMotion, () => {
+      gsap.set('.contact-title', { autoAlpha: 1 }).then()
+    })
+
     mm.add(`not all and ${reducedMotion}`, () => {
       const rows = gsap.utils.toArray<HTMLElement>('.contact-row')
 
@@ -15,7 +19,12 @@ export const useContact = () => {
         defaults: { ease: 'expo.out' },
         scrollTrigger: { trigger: container.current, start: 'top 75%', once: true }
       })
-        .fromTo('.contact-char', { yPercent: 110, rotate: 8 }, { yPercent: 0, rotate: 0, duration: 1.2, stagger: 0.04 }, 0)
+        .set('.contact-title', { autoAlpha: 1 }, 0)
+        .set('.contact-letter', { stroke: 'currentColor', strokeWidth: 0.35, fillOpacity: 0, autoRound: false }, 0)
+        .fromTo('.contact-letter',
+          { drawSVG: '0%', y: 4 },
+          { drawSVG: '100%', y: 0, duration: 1.1, stagger: 0.07, ease: 'power2.inOut' }, 0)
+        .to('.contact-letter', { fillOpacity: 1, strokeOpacity: 0, duration: 0.6, stagger: 0.06, ease: 'power2.out' }, 0.8)
         .fromTo('.contact-word', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.03 }, 0.4)
 
       rows.forEach((row, i) => {

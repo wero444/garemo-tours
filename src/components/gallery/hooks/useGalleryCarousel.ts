@@ -1,75 +1,83 @@
-import { useRef, type KeyboardEvent, type MouseEvent, type PointerEvent, type WheelEvent } from 'react'
+import { useEffect, useRef, type KeyboardEvent, type MouseEvent, type PointerEvent, type WheelEvent } from 'react'
 import { gsap, useGSAP, ScrollTrigger } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
 import type { Tile } from 'src/components/gallery/helpers'
 import type { ThemeId } from 'src/components/gallery/helpers/photos'
 import { useGalleryReducer } from 'src/components/gallery/store'
 
-const spacing = 96
-
-export const offset = (index: number, pos: number, count: number) => gsap.utils.wrap(-count / 2, count / 2, index - pos)
-
-export const place = (d: number) => {
-  const a = Math.abs(d)
-
-  return {
-    xPercent: Math.sign(d) * (a <= 1 ? a : 1 + (a - 1) * 0.82) * spacing,
-    z: -Math.min(a, 3) * 90,
-    rotationY: -gsap.utils.clamp(-2.5, 2.5, d) * 26,
-    opacity: a <= 1.2 ? 1 : Math.max(0, 1 - (a - 1.2) * 0.65),
-    zIndex: 10 - Math.round(a)
-  }
-}
-
 const still = () => window.matchMedia(reducedMotion).matches
 
+const desktop = () => window.matchMedia('(min-width: 48rem)').matches
+
+const mod = (value: number, count: number) => (value % count + count) % count
+
+// Endless loop: every card sits at a wrapped offset from the current position, so there is always a
+// neighbour on both sides and the jump from one end to the other happens out of sight
 export const useGalleryCarousel = (tabs: Record<ThemeId, Array<Tile>>, onOpen: (tile: Tile, origin: HTMLElement) => void) => {
-  const [{ active, shown }, dispatch] = useGalleryReducer()
+  const [{ active, shown, slide }, dispatch] = useGalleryReducer()
   const track = useRef<HTMLUListElement>(null)
   const proxy = useRef({ pos: 0 })
-  const drag = useRef<{ x: number, pos: number, t: number, v: number, moved: boolean } | null>(null)
-  const dragged = useRef(false)
-  const wheel = useRef({ sum: 0, locked: false })
   const entered = useRef(false)
   const leaving = useRef<gsap.core.Timeline | null>(null)
+  const drag = useRef<{ x: number, start: number, moved: boolean } | null>(null)
+  const dragged = useRef(false)
+  const wheel = useRef({ sum: 0, locked: false })
   const tiles = tabs[shown]
 
-  const cards = () => gsap.utils.toArray<HTMLElement>(track.current?.querySelectorAll('.carousel-card') ?? [])
+  const metrics = () => {
+    const cards = Array.from(track.current?.children ?? []) as Array<HTMLElement>
+    const gap = track.current ? parseFloat(getComputedStyle(track.current).columnGap) || 0 : 0
+    const visible = desktop() ? 3 : 1
+
+    return { cards, step: (cards[0]?.offsetWidth ?? 0) + gap, visible }
+  }
+
+  const offset = (index: number, count: number, visible: number) => {
+    const center = (visible - 1) / 2
+    return gsap.utils.wrap(center - count / 2, center + count / 2, index - proxy.current.pos)
+  }
 
   const render = () => {
-    const list = cards()
-
-    list.forEach((card, i) => {
-      const d = offset(i, proxy.current.pos, list.length)
-      const { opacity, ...rest } = place(d)
-
-      gsap.set(card, { x: 0, y: 0, rotationX: 0, rotation: 0, scale: 1, ...rest, opacity, pointerEvents: opacity > 0.05 ? 'auto' : 'none' }).then()
-      gsap.set(card.querySelector('.carousel-parallax'), { xPercent: -d * 5 }).then()
-    })
+    const { cards, step, visible } = metrics()
+    cards.forEach((card, i) => gsap.set(card, { x: offset(i, cards.length, visible) * step }).then())
   }
 
   const goTo = (target: number, duration = 0.9) => {
+    dispatch({ type: 'SLIDE', index: mod(target, tiles.length) })
     gsap.to(proxy.current, { pos: target, duration: still() ? 0 : duration, ease: 'expo.out', overwrite: true, onUpdate: render }).then()
   }
 
-  const step = () => (cards()[0]?.offsetWidth ?? 300) * spacing / 100
+  const nearest = () => Math.round(proxy.current.pos)
 
-  const ordered = (list: Array<HTMLElement>) => list.map((card, i) => ({ card, a: Math.abs(offset(i, proxy.current.pos, list.length)) }))
+  // Cards on screen and the half-faded neighbours animate; the rest are simply set
+  const split = () => {
+    const { cards, visible } = metrics()
+    const near = (i: number) => {
+      const d = offset(i, cards.length, visible)
+      return d >= -1 && d <= visible
+    }
+
+    return { inView: cards.filter((_, i) => near(i)), rest: cards.filter((_, i) => !near(i)) }
+  }
+
+  const within = (cards: Array<HTMLElement>, selector: string) => cards.map(card => card.querySelector(selector))
 
   const reveal = () => {
-    const list = ordered(cards()).filter(({ a }) => a < 3)
-    const frames = list.map(({ card }) => card.querySelector('.carousel-frame'))
-    const delay = (i: number) => list[i]!.a * 0.09
+    const { inView, rest } = split()
 
-    gsap.timeline({ defaults: { ease: 'expo.out' } })
-      .fromTo(frames,
+    gsap.set(within(rest, '.carousel-frame'), { clipPath: 'inset(0% 0% 0% 0%)', y: 0 }).then()
+    gsap.set(within(rest, '.carousel-shadow'), { opacity: 1 }).then()
+
+    gsap.timeline({ defaults: { ease: 'expo.out', stagger: 0.09 } })
+      .fromTo(within(inView, '.carousel-frame'),
         { clipPath: 'inset(100% 0% 0% 0%)', y: 48 },
-        { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: 1.3, delay }, 0)
-      .fromTo(list.map(({ card }) => card.querySelector('.carousel-image')), { scale: 1.3 }, { scale: 1, duration: 1.8, delay }, 0)
-      .fromTo(list.map(({ card }) => card.querySelector('.carousel-shadow')), { opacity: 0 }, { opacity: 1, duration: 1.2, delay: (i: number) => delay(i) + 0.3 }, 0).then()
+        { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: 1.3 }, 0)
+      .fromTo(within(inView, '.carousel-image'), { scale: 1.3 }, { scale: 1, duration: 1.8 }, 0)
+      .fromTo(within(inView, '.carousel-shadow'), { opacity: 0 }, { opacity: 1, duration: 1.2 }, 0.3).then()
   }
 
   useGSAP(() => {
+    gsap.killTweensOf(proxy.current)
     proxy.current.pos = 0
     render()
 
@@ -80,8 +88,9 @@ export const useGalleryCarousel = (tabs: Record<ThemeId, Array<Tile>>, onOpen: (
       return
     }
 
-    gsap.set(cards().map(card => card.querySelector('.carousel-frame')), { clipPath: 'inset(100% 0% 0% 0%)' }).then()
-    gsap.set(cards().map(card => card.querySelector('.carousel-shadow')), { opacity: 0 }).then()
+    const { cards } = metrics()
+    gsap.set(within(cards, '.carousel-frame'), { clipPath: 'inset(100% 0% 0% 0%)' }).then()
+    gsap.set(within(cards, '.carousel-shadow'), { opacity: 0 }).then()
 
     ScrollTrigger.create({
       trigger: track.current,
@@ -95,6 +104,12 @@ export const useGalleryCarousel = (tabs: Record<ThemeId, Array<Tile>>, onOpen: (
     })
   }, { scope: track, dependencies: [shown] })
 
+  // Card size and the number of visible cards change with the viewport
+  useEffect(() => {
+    window.addEventListener('resize', render)
+    return () => window.removeEventListener('resize', render)
+  })
+
   const select = (tab: ThemeId) => {
     if (tab === active) return
     dispatch({ type: 'SELECT_TAB', tab })
@@ -107,22 +122,22 @@ export const useGalleryCarousel = (tabs: Record<ThemeId, Array<Tile>>, onOpen: (
     if (leaving.current?.isActive()) return
 
     gsap.killTweensOf(proxy.current)
-    const list = ordered(cards()).filter(({ a }) => a < 3)
-    const delay = (i: number) => list[i]!.a * 0.06
+    const { inView } = split()
 
-    leaving.current = gsap.timeline({ defaults: { ease: 'power3.in' }, onComplete: () => dispatch({ type: 'SHOW_TAB' }) })
-      .to(list.map(({ card }) => card.querySelector('.carousel-frame')), { clipPath: 'inset(0% 0% 100% 0%)', y: -32, duration: 0.6, delay }, 0)
-      .to(list.map(({ card }) => card.querySelector('.carousel-image')), { scale: 1.15, duration: 0.6, delay }, 0)
-      .to(list.map(({ card }) => card.querySelector('.carousel-shadow')), { opacity: 0, duration: 0.3, delay }, 0)
+    leaving.current = gsap.timeline({ defaults: { ease: 'power3.in', stagger: 0.06 }, onComplete: () => dispatch({ type: 'SHOW_TAB' }) })
+      .to(within(inView, '.carousel-frame'), { clipPath: 'inset(0% 0% 100% 0%)', y: -32, duration: 0.6 }, 0)
+      .to(within(inView, '.carousel-image'), { scale: 1.15, duration: 0.6 }, 0)
+      .to(within(inView, '.carousel-shadow'), { opacity: 0, duration: 0.3 }, 0)
   }
 
-  const onPointerDown = (event: PointerEvent<HTMLUListElement>) => {
+  const onPointerDown = (event: PointerEvent<HTMLElement>) => {
     if (event.button !== 0 || leaving.current?.isActive()) return
+
     gsap.killTweensOf(proxy.current)
-    drag.current = { x: event.clientX, pos: proxy.current.pos, t: performance.now(), v: 0, moved: false }
+    drag.current = { x: event.clientX, start: proxy.current.pos, moved: false }
   }
 
-  const onPointerMove = (event: PointerEvent<HTMLUListElement>) => {
+  const onPointerMove = (event: PointerEvent<HTMLElement>) => {
     const state = drag.current
     if (!state) return
 
@@ -134,54 +149,72 @@ export const useGalleryCarousel = (tabs: Record<ThemeId, Array<Tile>>, onOpen: (
       event.currentTarget.setPointerCapture(event.pointerId)
     }
 
-    const now = performance.now()
-    const pos = state.pos - dx / step()
-    state.v = (pos - proxy.current.pos) / Math.max(1, now - state.t) * 1000
-    state.t = now
-    proxy.current.pos = pos
+    proxy.current.pos = state.start - dx / (metrics().step || 1)
     render()
   }
 
-  const onPointerUp = () => {
+  const onPointerUp = (event: PointerEvent<HTMLElement>) => {
     const state = drag.current
     drag.current = null
-    if (!state?.moved) return
+    if (!state) return
+
+    if (!state.moved) {
+      goTo(Math.round(state.start))
+      return
+    }
 
     dragged.current = true
     requestAnimationFrame(() => {
       dragged.current = false
     })
 
-    const projected = proxy.current.pos + gsap.utils.clamp(-3, 3, state.v * 0.18)
-    goTo(Math.round(projected), 1.1)
+    const { step } = metrics()
+    const dx = event.clientX - state.x
+    const shift = Math.abs(dx) > step * 0.15 ? -Math.sign(dx) * Math.max(1, Math.round(Math.abs(dx) / step)) : 0
+
+    goTo(Math.round(state.start) + shift, 1.1)
   }
 
-  const onWheel = (event: WheelEvent<HTMLUListElement>) => {
+  const onPointerCancel = () => {
+    if (!drag.current) return
+    drag.current = null
+    goTo(nearest())
+  }
+
+  const onWheel = (event: WheelEvent<HTMLElement>) => {
     if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return
 
     wheel.current.sum += event.deltaX
     if (wheel.current.locked || Math.abs(wheel.current.sum) < 40) return
 
-    goTo(Math.round(proxy.current.pos) + Math.sign(wheel.current.sum))
+    goTo(nearest() + Math.sign(wheel.current.sum))
     wheel.current = { sum: 0, locked: true }
     setTimeout(() => {
       wheel.current.locked = false
     }, 450)
   }
 
-  const onKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
+  const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+
     event.preventDefault()
-    goTo(Math.round(proxy.current.pos) + (event.key === 'ArrowRight' ? 1 : -1))
+    goTo(nearest() + (event.key === 'ArrowRight' ? 1 : -1))
   }
 
+  // Dots take the shortest way round the loop
+  const pick = (index: number) => goTo(nearest() + gsap.utils.wrap(-tiles.length / 2, tiles.length / 2, index - slide))
+
+  // A tap on a half-faded neighbour slides it into view; a tap on a visible card opens it
   const onCard = (index: number) => (event: MouseEvent<HTMLElement>) => {
     if (dragged.current) return
 
-    const d = offset(index, proxy.current.pos, tiles.length)
-    if (Math.abs(d) < 0.5) onOpen(tiles[index]!, event.currentTarget)
-    else goTo(Math.round(proxy.current.pos + d))
+    const { visible } = metrics()
+    const d = Math.round(offset(index, tiles.length, visible))
+
+    if (d < 0) goTo(nearest() + d)
+    else if (d >= visible) goTo(nearest() + d - visible + 1)
+    else onOpen(tiles[index]!, event.currentTarget)
   }
 
-  return { track, active, tiles, select, onCard, onPointerDown, onPointerMove, onPointerUp, onWheel, onKeyDown }
+  return { track, active, tiles, slide, select, pick, onCard, onPointerDown, onPointerMove, onPointerUp, onPointerCancel, onWheel, onKeyDown }
 }

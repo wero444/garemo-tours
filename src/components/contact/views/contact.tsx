@@ -18,7 +18,7 @@ export const Contact = () => {
       ref={container}
       id='contact'
       aria-labelledby='contact-title'
-      className='flex min-h-dvh -scroll-mt-20 flex-col overflow-hidden bg-secondary px-6 pt-24 pb-8 md:px-10 md:pt-24 md:pb-6 lg:px-16'
+      className='flex min-h-svh -scroll-mt-20 flex-col overflow-hidden bg-secondary px-6 pt-24 pb-8 md:px-10 md:pt-24 md:pb-6 lg:px-16'
     >
       <div className='mx-auto flex w-full max-w-6xl flex-1 flex-col'>
         <div className='grid flex-1 content-center gap-12 md:grid-cols-[1fr_1fr] md:items-center md:gap-16'>

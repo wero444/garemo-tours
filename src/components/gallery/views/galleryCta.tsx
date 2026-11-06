@@ -20,7 +20,7 @@ export const GalleryCta = ({ preview, total }: { preview: Array<StaticImageData>
       onPointerLeave={onCtaLeave}
       onFocus={onCtaEnter}
       onBlur={onCtaLeave}
-      className='gallery-cta group/cta invisible relative mx-auto mt-12 flex w-fit items-center gap-3 rounded-full border border-primary/20 bg-background/50 p-1.5 text-primary shadow-[0_1.5rem_3.75rem_-1.875rem_color-mix(in_oklab,var(--primary)_70%,transparent)] outline-none backdrop-blur-sm transition-colors duration-500 hover:text-primary-foreground focus-visible:ring-3 focus-visible:ring-ring/50 md:mt-14 md:gap-4'
+      className='gallery-cta group/cta invisible relative mx-auto mt-10 flex w-fit items-center gap-3 rounded-full border border-primary/20 bg-background/50 p-1.5 text-primary shadow-[0_1.5rem_3.75rem_-1.875rem_color-mix(in_oklab,var(--primary)_70%,transparent)] outline-none backdrop-blur-sm transition-colors duration-500 hover:text-primary-foreground focus-visible:ring-3 focus-visible:ring-ring/50 md:mt-[2.6rem] md:gap-4'
     >
       <span aria-hidden className='cta-fill absolute inset-0 rounded-full bg-primary' style={{ clipPath: 'circle(0% at 92% 50%)' }} />
 

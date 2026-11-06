@@ -1,6 +1,6 @@
 import { useRef, type FocusEvent, type PointerEvent } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
-import { reducedMotion } from 'src/lib/intro'
+import { glide } from 'src/lib/glide'
 
 type Target = PointerEvent<HTMLElement> | FocusEvent<HTMLElement>
 
@@ -85,7 +85,7 @@ export const useBackToTop = () => {
   const onTopLeave = (event: Target) => settle(event.currentTarget)
 
   const onTop = () => {
-    window.scrollTo({ top: 0, behavior: window.matchMedia(reducedMotion).matches ? 'auto' : 'smooth' })
+    glide(0)
   }
 
   return { button, onTop, onTopEnter, onTopLeave }

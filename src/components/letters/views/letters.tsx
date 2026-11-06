@@ -16,7 +16,7 @@ export const Letters = () => {
       ref={container}
       id='letters'
       aria-labelledby='letters-title'
-      className='flex min-h-dvh -scroll-mt-20 flex-col justify-center overflow-hidden bg-secondary px-5 pt-24 pb-16 md:px-8 md:pt-24 md:pb-16 lg:px-12'
+      className='flex min-h-svh -scroll-mt-20 flex-col justify-center overflow-hidden bg-secondary px-5 pt-24 pb-16 md:px-8 md:pt-24 md:pb-16 lg:px-12'
     >
       <div className='mx-auto w-full max-w-6xl'>
         <header className='flex flex-col items-center gap-8 md:flex-row md:justify-center md:gap-14'>

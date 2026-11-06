@@ -20,7 +20,7 @@ export const Header = () => {
   return (
     <header
       ref={container}
-      className={`group/header fixed inset-x-0 top-0 z-20 flex w-full items-center gap-6 px-5 lg:justify-center transition-[translate] duration-700 data-scrolled:py-3 data-hidden:not-focus-within:-translate-y-[calc(100%+2rem)] md:px-8 md:py-3 md:data-scrolled:py-2.5 lg:gap-10 ${ease}`}
+      className={`group/header fixed inset-x-0 top-0 z-20 flex w-full items-center gap-6 px-5 lg:justify-center data-scrolled:py-3 md:px-8 md:py-3 md:data-scrolled:py-2.5 lg:gap-10 ${ease}`}
     >
       <div aria-hidden className={`header-bar ${bar}`}>
         <span className='header-sheen absolute inset-y-0 left-0 w-1/4 -skew-x-12 bg-linear-to-r from-transparent via-white/45 to-transparent opacity-0' />

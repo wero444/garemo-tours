@@ -6,7 +6,7 @@ const ratio = ({ width, height }: { width: number, height: number }) => width / 
 
 const single = { c: 1, r: 1, w: 1, h: 1 }
 
-export const carouselCount = 8
+export const carouselCount = 9
 
 export const getHomeGallery = async () => {
   'use cache'

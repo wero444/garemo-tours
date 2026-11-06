@@ -18,7 +18,7 @@ export const About = () => {
       ref={container}
       id='about'
       aria-labelledby='about-title'
-      className='relative flex min-h-dvh -scroll-mt-20 flex-col justify-center overflow-hidden bg-secondary px-6 py-20 md:py-16'
+      className='relative flex min-h-svh -scroll-mt-20 flex-col justify-center overflow-hidden bg-secondary px-6 py-20 md:py-16'
     >
       <div aria-hidden className='about-trees pointer-events-none absolute inset-0 text-primary'>
         <Tree className='about-tree invisible absolute top-[14%] left-[6%] w-7 -rotate-6 md:w-8 lg:top-[42%] lg:left-[9%]' />
@@ -34,7 +34,7 @@ export const About = () => {
         <Founders />
       </div>
 
-      <div className='mx-auto mt-8 max-w-[42rem] space-y-2.5 text-center text-sm leading-[1.7] text-secondary-foreground/85 md:mt-10 md:text-[0.9375rem]'>
+      <div className='mx-auto mt-8 max-w-[42rem] space-y-2.5 text-center text-sm leading-[1.7] text-[#2e2723] dark:text-secondary-foreground/85 md:mt-10 md:text-[0.9375rem]'>
         {paragraphs.map((paragraph, i) => (
           <p key={i} className='about-paragraph'>
             <Words text={paragraph} className='about-word invisible' />

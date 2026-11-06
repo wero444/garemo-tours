@@ -176,7 +176,6 @@
   html {
     @apply font-sans;
     font-family: var(--font-sans), sans-serif;
-    scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     scrollbar-width: none;
   }

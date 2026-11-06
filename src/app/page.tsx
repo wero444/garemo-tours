@@ -1,6 +1,5 @@
 import { Hero } from 'src/components/hero/views/hero'
 import { About } from 'src/components/about/views/about'
-import { Divider } from 'src/components/divider/views/divider'
 import { Destinations } from 'src/components/destinations/views/destinations'
 import { Tours } from 'src/components/tours/views/tours'
 import { Gallery } from 'src/components/gallery/views/gallery'
@@ -16,7 +15,6 @@ const Home = () => {
       <Destinations />
       <Tours />
       <Gallery />
-      <Divider icon='puri' />
       <Letters />
       <Partners />
       <Contact />

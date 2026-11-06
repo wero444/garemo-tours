@@ -2,6 +2,7 @@ import { useRef, type MouseEvent, type PointerEvent } from 'react'
 import { useToursReducer } from 'src/components/tours/store'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
+import { glideTo } from 'src/lib/glide'
 
 export const useTours = () => {
   const container = useRef<HTMLElement>(null)
@@ -56,13 +57,11 @@ export const useTours = () => {
         }, [], 2.6)
         .fromTo('.tours-subtitle', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 1.1 }, 0.6).then()
 
-      const columns = window.matchMedia('(min-width: 48rem)').matches
-
       gsap.utils.toArray<HTMLElement>('.tour').forEach((tour, i) => {
         const q = gsap.utils.selector(tour)
 
         gsap.timeline({
-          delay: columns ? i * 0.16 : 0,
+          delay: i * 0.16,
           defaults: { ease: 'expo.out' },
           scrollTrigger: { trigger: tour, start: 'top 85%', once: true }
         })
@@ -121,8 +120,7 @@ export const useTours = () => {
   const onOpenChangeComplete = (opened: boolean) => {
     if (opened || !asking) return
     dispatch({ type: 'DONE_ASKING' })
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-    history.replaceState(null, '', '#contact')
+    glideTo('#contact')
   }
 
   return { container, open, active, onOpenChange, onOpen, onAsk, onOpenChangeComplete, onMediaEnter, onMediaLeave }

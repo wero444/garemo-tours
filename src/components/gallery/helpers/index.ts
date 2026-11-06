@@ -6,8 +6,8 @@ interface Content {
   title: string
   subtitle: string
   tabs: Record<ThemeId, string>
-  drag: string
   tagline: string
+  show: (index: number) => string
   cta: string
   photos: (count: number) => string
   themes: Record<ThemeId, string>
@@ -19,8 +19,8 @@ export const content: Record<Locale, Content> = {
     title: 'Gallery',
     subtitle: 'What happens between the sights.',
     tabs: { culture: 'People we visit', food: 'Tables we share', georgia: 'Roads we take' },
-    drag: 'Drag or use the arrow keys to browse the photos',
     tagline: 'People, dogs and weather met along the way.',
+    show: index => `Show photo ${index}`,
     cta: 'View all photos',
     photos: count => `${count} photos`,
     themes: { culture: 'Culture', food: 'Food', georgia: 'Georgia' },
@@ -51,7 +51,7 @@ export interface Tile {
   xr: string
 }
 
-export const carouselSizes = '(min-width: 768px) 21rem, 64vw'
+export const carouselSizes = '(min-width: 768px) 21rem, 72vw'
 
 export const feedSizes = ({ w, mw, xw }: Tile) =>
   `(min-width: 1280px) ${xw * 20}vw, (min-width: 768px) ${w * 25}vw, ${mw * 50}vw`

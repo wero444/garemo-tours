@@ -2,6 +2,7 @@ import { useRef, type FocusEvent, type PointerEvent } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
 import { fullFrame, mountain, mountainStart } from 'src/components/partners/helpers'
+import { setLanding } from 'src/lib/glide'
 
 type Target = PointerEvent<HTMLElement> | FocusEvent<HTMLElement>
 
@@ -68,22 +69,15 @@ export const usePartners = () => {
         .fromTo('.partners-image', { scale: 1.3 }, { scale: 1, duration: expanded, ease: 'power1.out' }, 0)
         .to({}, { duration: 1 - expanded })
 
-      const land = (behavior: ScrollBehavior) => {
+      const land = () => {
         const end = opening.scrollTrigger?.end
         if (end === undefined) return
-        window.scrollTo({ top: end, behavior })
+        window.scrollTo({ top: end, behavior: 'instant' })
         history.replaceState(null, '', '#partners')
       }
 
-      const onClick = (event: MouseEvent) => {
-        const link = (event.target as Element | null)?.closest?.('a[href="#partners"]')
-        if (!link) return
-        event.preventDefault()
-        land('smooth')
-      }
-
-      document.addEventListener('click', onClick)
-      if (location.hash === '#partners') requestAnimationFrame(() => land('instant'))
+      const unland = setLanding('partners', () => opening.scrollTrigger?.end)
+      if (location.hash === '#partners') requestAnimationFrame(land)
 
       gsap.utils.toArray<HTMLElement>('.partners-mist').forEach((mist, i) => {
         gsap.to(mist, {
@@ -96,7 +90,7 @@ export const usePartners = () => {
         }).then()
       })
 
-      return () => document.removeEventListener('click', onClick)
+      return unland
     })
 
     return () => mm.revert()

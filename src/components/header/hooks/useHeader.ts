@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { gsap, useGSAP, ScrollTrigger } from 'src/lib/gsap'
 import { intro, reducedMotion } from 'src/lib/intro'
+import { onHashClick } from 'src/lib/glide'
 
 export const useHeader = (home: boolean) => {
   const container = useRef<HTMLElement>(null)
@@ -17,9 +18,7 @@ export const useHeader = (home: boolean) => {
 
     let scrolled = false
 
-    const update = (scroll: number, direction: number) => {
-      container.current?.toggleAttribute('data-hidden', direction > 0 && scroll > 160)
-
+    const update = (scroll: number) => {
       if (scrolled === scroll > 40) return
       scrolled = scroll > 40
       container.current?.toggleAttribute('data-scrolled', scrolled)
@@ -37,10 +36,10 @@ export const useHeader = (home: boolean) => {
     const trigger = ScrollTrigger.create({
       start: 0,
       end: 'max',
-      onUpdate: self => update(self.scroll(), self.direction)
+      onUpdate: self => update(self.scroll())
     })
 
-    update(window.scrollY, 0)
+    update(window.scrollY)
 
     const content = container.current?.querySelector<HTMLElement>('.header-content')
     const nav = content?.querySelector<HTMLElement>('nav')
@@ -51,9 +50,12 @@ export const useHeader = (home: boolean) => {
     if (content) observer.observe(content)
     if (nav) observer.observe(nav)
 
+    document.addEventListener('click', onHashClick)
+
     return () => {
       trigger.kill()
       observer.disconnect()
+      document.removeEventListener('click', onHashClick)
     }
   }, { scope: container })
 

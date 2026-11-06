@@ -16,7 +16,7 @@ export const Destinations = () => {
       ref={container}
       id='destinations'
       aria-labelledby='destinations-title'
-      className='relative flex min-h-dvh -scroll-mt-20 flex-col justify-center overflow-hidden bg-secondary px-5 pt-24 pb-12 md:px-8 lg:px-12'
+      className='relative flex min-h-svh -scroll-mt-20 flex-col justify-center overflow-hidden bg-secondary px-5 pt-24 pb-12 md:px-8 lg:px-12'
     >
       <header className='flex flex-col items-center text-center'>
         <h2 id='destinations-title' className='w-[min(80vw,22rem)] text-primary md:w-104'>
@@ -34,7 +34,7 @@ export const Destinations = () => {
           onPointerMove={handlers.onPointerMove}
           onPointerLeave={handlers.onPointerLeave}
           onClick={handlers.onClick}
-          className='relative h-[min(calc(100dvh-20rem),calc(min(100vw-2.5rem,72rem)*0.52))] min-h-56 w-full'
+          className='relative h-[min(calc(100svh-20rem),calc(min(100vw-2.5rem,72rem)*0.52))] min-h-56 w-full'
         >
           <canvas ref={canvas} aria-hidden className='absolute inset-0 size-full' />
           <svg aria-hidden className='pointer-events-none absolute inset-0 size-full overflow-visible text-primary'>

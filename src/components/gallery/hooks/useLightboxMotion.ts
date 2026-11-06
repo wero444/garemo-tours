@@ -20,6 +20,8 @@ const rectOf = (element: HTMLElement) => {
   return { left, top, width, height }
 }
 
+const radiusOf = (element: HTMLElement) => parseFloat(getComputedStyle(element).borderTopLeftRadius) || 0
+
 export const useLightboxMotion = (tile: Tile, origin: HTMLElement, onClosed: () => void) => {
   const root = useRef<HTMLDivElement>(null)
   const frame = useRef<HTMLDivElement>(null)
@@ -37,7 +39,7 @@ export const useLightboxMotion = (tile: Tile, origin: HTMLElement, onClosed: () 
 
     gsap.timeline({ defaults: { ease: 'expo.out' } })
       .fromTo('.lightbox-backdrop', { opacity: 0 }, { opacity: 1, duration: 0.7, ease: 'power2.out' }, 0)
-      .fromTo(frame.current, { ...rectOf(origin), borderRadius: 16 }, { ...fit(tile), borderRadius: 12, duration: 1 }, 0)
+      .fromTo(frame.current, { ...rectOf(origin), borderRadius: radiusOf(origin) }, { ...fit(tile), borderRadius: radiusOf(origin) ? 12 : 0, duration: 1 }, 0)
       .fromTo('.lightbox-close',
         { opacity: 0, scale: 0.4, rotate: -90 },
         { opacity: 1, scale: 1, rotate: 0, duration: 0.9 }, 0.35).then()
@@ -54,7 +56,7 @@ export const useLightboxMotion = (tile: Tile, origin: HTMLElement, onClosed: () 
 
     gsap.timeline({ defaults: { ease: 'expo.inOut' }, onComplete: onClosed })
       .to(closeButton.current, { opacity: 0, scale: 0.4, rotate: 90, duration: 0.45, ease: 'power3.in' }, 0)
-      .to(frame.current, { ...rectOf(origin), borderRadius: 16, duration: 0.85 }, 0)
+      .to(frame.current, { ...rectOf(origin), borderRadius: radiusOf(origin), duration: 0.85 }, 0)
       .to(root.current?.querySelector('.lightbox-backdrop') ?? [], { opacity: 0, duration: 0.6, ease: 'power2.inOut' }, 0.2).then()
   }, [origin, onClosed])
 

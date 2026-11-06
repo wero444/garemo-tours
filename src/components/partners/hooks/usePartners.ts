@@ -7,7 +7,6 @@ type Target = PointerEvent<HTMLElement> | FocusEvent<HTMLElement>
 
 const ease = { ease: 'expo.out', overwrite: 'auto' as const }
 
-// Share of the pinned scroll spent opening the photo; the rest holds the full image while the content plays in
 const expanded = 0.7
 
 export const usePartners = () => {
@@ -17,49 +16,49 @@ export const usePartners = () => {
     const mm = gsap.matchMedia()
 
     mm.add(reducedMotion, () => {
-      gsap.set('.partners-tag, .partners-cta', { autoAlpha: 1 }).then()
+      gsap.set('.partners-cta', { autoAlpha: 1 }).then()
     })
 
     mm.add({ motion: `not all and ${reducedMotion}`, phone: '(max-width: 767px)' }, context => {
       if (!context.conditions?.motion) return
 
-      // The content plays in on its own clock once the photo has filled the screen, and steps back if you scroll up
+      gsap.set('.partners-letter', { stroke: 'currentColor', strokeWidth: 0.35, autoRound: false }).then()
+
       const reveal = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' } })
-        .fromTo('.partners-rule', { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: 'expo.inOut' }, 0)
+        .fromTo('.partners-rule', { scaleX: 0 }, { scaleX: 1, duration: 1.2, ease: 'expo.inOut' }, 0.6)
         .fromTo('.partners-eyebrow',
-          { autoAlpha: 0, letterSpacing: '0.9em' },
-          { autoAlpha: 1, letterSpacing: '0.35em', duration: 1.6 }, 0.1)
-        .fromTo('.partners-char',
-          { yPercent: 110, rotate: 6 },
-          { yPercent: 0, rotate: 0, duration: 1.3, stagger: 0.035 }, 0.2)
+          { autoAlpha: 0, letterSpacing: '0.6em' },
+          { autoAlpha: 1, letterSpacing: '0.22em', duration: 1.6 }, 0.7)
+        .fromTo('.partners-letter',
+          { drawSVG: '0%', y: 4 },
+          { drawSVG: '100%', y: 0, duration: 1.1, stagger: 0.05, ease: 'power2.inOut' }, 0)
+        .fromTo('.partners-letter',
+          { fillOpacity: 0, strokeOpacity: 1 },
+          { fillOpacity: 1, strokeOpacity: 0, duration: 0.6, stagger: 0.04, ease: 'power2.out' }, 0.8)
         .fromTo('.partners-word', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1, stagger: 0.02 }, 0.7)
-        .fromTo('.partners-tag',
-          { autoAlpha: 0, y: 16, scale: 0.9, filter: 'blur(6px)' },
-          { autoAlpha: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 1, stagger: 0.12 }, 1.1)
         .fromTo('.partners-cta',
           { autoAlpha: 0, y: 24, clipPath: 'inset(0% 100% 0% 0% round 999px)' },
-          { autoAlpha: 1, y: 0, clipPath: 'inset(0% 0% 0% 0% round 999px)', duration: 1.4, ease: 'expo.inOut' }, 1.4)
-        .fromTo('.partners-arrow', { xPercent: -220 }, { xPercent: 0, duration: 1 }, 2.1)
+          { autoAlpha: 1, y: 0, clipPath: 'inset(0% 0% 0% 0% round 999px)', duration: 1.4, ease: 'expo.inOut' }, 1.1)
+        .fromTo('.partners-arrow', { xPercent: -220 }, { xPercent: 0, duration: 1 }, 1.8)
 
       const show = () => reveal.timeScale(1).play()
 
       const hide = () => reveal.timeScale(2.5).reverse()
 
-      // Pinned while scrolling: the photo opens from a mountain silhouette to the full section, then holds for the reveal
-      gsap.timeline({
+      const opening = gsap.timeline({
         defaults: { ease: 'none' },
         scrollTrigger: {
           trigger: container.current,
           start: 'top top',
           end: '+=130%',
           pin: true,
-          pinSpacing: true, // off by default inside a flex parent (main), which would let Contact slide underneath
+          pinSpacing: true,
           scrub: 0.8,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: ({ progress }) => {
-            if (progress >= expanded) show()
-            else if (progress < expanded - 0.08) hide()
+            if (progress >= expanded) show().then()
+            else if (progress < expanded - 0.08) hide().then()
           }
         }
       })
@@ -68,6 +67,23 @@ export const usePartners = () => {
           { clipPath: fullFrame, duration: expanded, ease: 'power2.inOut' }, 0)
         .fromTo('.partners-image', { scale: 1.3 }, { scale: 1, duration: expanded, ease: 'power1.out' }, 0)
         .to({}, { duration: 1 - expanded })
+
+      const land = (behavior: ScrollBehavior) => {
+        const end = opening.scrollTrigger?.end
+        if (end === undefined) return
+        window.scrollTo({ top: end, behavior })
+        history.replaceState(null, '', '#partners')
+      }
+
+      const onClick = (event: MouseEvent) => {
+        const link = (event.target as Element | null)?.closest?.('a[href="#partners"]')
+        if (!link) return
+        event.preventDefault()
+        land('smooth')
+      }
+
+      document.addEventListener('click', onClick)
+      if (location.hash === '#partners') requestAnimationFrame(() => land('instant'))
 
       gsap.utils.toArray<HTMLElement>('.partners-mist').forEach((mist, i) => {
         gsap.to(mist, {
@@ -79,6 +95,8 @@ export const usePartners = () => {
           repeat: -1
         }).then()
       })
+
+      return () => document.removeEventListener('click', onClick)
     })
 
     return () => mm.revert()

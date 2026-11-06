@@ -18,7 +18,6 @@ const geistMono = Geist_Mono({
   subsets: ['latin']
 })
 
-// Handwritten accents, such as the founders' signatures
 const caveat = Caveat({
   variable: '--font-caveat',
   subsets: ['latin'],

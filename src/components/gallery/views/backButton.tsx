@@ -11,15 +11,13 @@ interface Props {
   compact?: boolean
 }
 
-// compact: the arrow circle alone, on a frosted backdrop so it stays readable over photos
 export const BackButton = ({ className, compact }: Props) => {
-  const { button, onBack, onBackEnter, onBackMove, onBackLeave } = useBackButton()
+  const { button, onBackEnter, onBackMove, onBackLeave } = useBackButton()
 
   return (
     <Link
       ref={button}
       href='/'
-      onClick={onBack}
       onPointerEnter={onBackEnter}
       onPointerMove={onBackMove}
       onPointerLeave={onBackLeave}

@@ -208,7 +208,7 @@
 .header-bar {
   --header-out-delay: 0.04s;
 
-  @variant md {
+  @variant lg {
     left: max(0.75rem, calc(50% - var(--header-nav) / 2 - 2rem));
     right: max(0.75rem, calc(50% - var(--header-nav) / 2 - 2rem));
   }
@@ -217,13 +217,13 @@
 .header-bar-side {
   --header-in-delay: 0.06s;
 
-  @variant md {
+  @variant lg {
     --header-gap: 5rem;
     left: calc(50% + var(--header-nav) / 2 + var(--header-gap) - 1.25rem);
     right: max(0.75rem, calc(50% - var(--header-content) / 2 - 0.75rem));
   }
 
-  @variant lg {
+  @variant xl {
     --header-gap: 8rem;
   }
 }

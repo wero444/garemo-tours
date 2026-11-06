@@ -1,26 +1,25 @@
 import { cacheLife } from 'next/cache'
-import { photos, themeIds, themes } from 'src/components/gallery/helpers/photos'
-import { aspect, homeSlots, mirror, pack, pickShape, shuffle, toTile } from 'src/components/gallery/helpers'
+import { photos, themeIds, themes, type ThemeId } from 'src/components/gallery/helpers/photos'
+import { pack, pickShape, shuffle, toTile, type Tile } from 'src/components/gallery/helpers'
 
 const ratio = ({ width, height }: { width: number, height: number }) => width / height
+
+const single = { c: 1, r: 1, w: 1, h: 1 }
+
+export const carouselCount = 8
 
 export const getHomeGallery = async () => {
   'use cache'
   cacheLife('hours')
 
-  const order = shuffle(photos)
-  const picked = order.slice(0, homeSlots.length).sort((a, b) => ratio(a) - ratio(b))
-  const flip = Math.random() < 0.5
-
-  const tiles = shuffle(homeSlots)
-    .sort((a, b) => aspect(a.md) - aspect(b.md))
-    .map(({ md, sm }, i) => ({ md: flip ? mirror(md, 6) : md, sm, image: picked[i]! }))
-    .sort((a, b) => a.md.r - b.md.r || a.md.c - b.md.c)
-    .map(({ md, sm, image }) => toTile(image, photos.indexOf(image), photos.length, md, sm))
+  const tabs = Object.fromEntries(themeIds.map(id => [
+    id,
+    shuffle(themes[id]).slice(0, carouselCount).map(image => toTile(image, photos.indexOf(image), photos.length, single, single))
+  ])) as Record<ThemeId, Array<Tile>>
 
   return {
-    tiles,
-    preview: order.slice(homeSlots.length, homeSlots.length + 4),
+    tabs,
+    preview: shuffle(photos).slice(0, 4),
     total: photos.length
   }
 }

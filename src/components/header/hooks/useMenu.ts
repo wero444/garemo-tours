@@ -103,7 +103,7 @@ export const useMenu = (home: boolean) => {
   }, [open])
 
   useEffect(() => {
-    const desktop = window.matchMedia('(min-width: 48rem)')
+    const desktop = window.matchMedia('(min-width: 64rem)')
     const onChange = () => {
       if (desktop.matches) setOpen(false)
     }

@@ -4,6 +4,9 @@ import type { ThemeId } from 'src/components/gallery/helpers/photos'
 
 interface Content {
   title: string
+  subtitle: string
+  tabs: Record<ThemeId, string>
+  drag: string
   tagline: string
   cta: string
   photos: (count: number) => string
@@ -14,6 +17,9 @@ interface Content {
 export const content: Record<Locale, Content> = {
   en: {
     title: 'Gallery',
+    subtitle: 'What happens between the sights.',
+    tabs: { culture: 'People we visit', food: 'Tables we share', georgia: 'Roads we take' },
+    drag: 'Drag or use the arrow keys to browse the photos',
     tagline: 'People, dogs and weather met along the way.',
     cta: 'View all photos',
     photos: count => `${count} photos`,
@@ -45,19 +51,7 @@ export interface Tile {
   xr: string
 }
 
-export const homeSlots: Array<{ md: Slot, sm: Slot }> = [
-  { md: { c: 1, r: 1, w: 3, h: 3 }, sm: { c: 1, r: 1, w: 2, h: 2 } },
-  { md: { c: 4, r: 1, w: 3, h: 2 }, sm: { c: 1, r: 5, w: 2, h: 1 } },
-  { md: { c: 4, r: 3, w: 2, h: 3 }, sm: { c: 1, r: 3, w: 1, h: 2 } },
-  { md: { c: 6, r: 3, w: 1, h: 1 }, sm: { c: 2, r: 3, w: 1, h: 1 } },
-  { md: { c: 6, r: 4, w: 1, h: 2 }, sm: { c: 2, r: 6, w: 1, h: 2 } },
-  { md: { c: 1, r: 4, w: 2, h: 1 }, sm: { c: 2, r: 4, w: 1, h: 1 } },
-  { md: { c: 3, r: 4, w: 1, h: 2 }, sm: { c: 1, r: 6, w: 1, h: 1 } },
-  { md: { c: 1, r: 5, w: 2, h: 1 }, sm: { c: 1, r: 7, w: 1, h: 1 } }
-]
-
-export const homeSizes = ({ w, mw }: Tile) =>
-  `(min-width: 1248px) ${w * 195}px, (min-width: 768px) ${Math.round(w * 100 / 6)}vw, ${mw * 50}vw`
+export const carouselSizes = '(min-width: 768px) 21rem, 64vw'
 
 export const feedSizes = ({ w, mw, xw }: Tile) =>
   `(min-width: 1280px) ${xw * 20}vw, (min-width: 768px) ${w * 25}vw, ${mw * 50}vw`
@@ -72,10 +66,6 @@ export const shuffle = <T>(items: Array<T>) => {
 
   return out
 }
-
-export const aspect = ({ w, h }: Slot) => w / h
-
-export const mirror = (slot: Slot, cols: number) => ({ ...slot, c: cols + 2 - slot.c - slot.w })
 
 export const photoAlt = (index: number, total: number) => `Photo ${index + 1} of ${total} from GAREMO journeys across Georgia`
 

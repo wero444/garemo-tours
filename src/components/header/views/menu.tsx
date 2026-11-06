@@ -13,7 +13,7 @@ export const Menu = () => {
   const { container, open, toggle, close } = useMenu(home)
 
   return (
-    <div ref={container} className='ml-auto md:hidden'>
+    <div ref={container} className='ml-auto lg:hidden'>
       <div className='relative z-10 flex justify-end dark:drop-shadow-[0_0.0625rem_0.625rem_rgb(0_0_0/0.65)]'>
         <Burger open={open} onClick={toggle} />
       </div>
@@ -35,7 +35,7 @@ export const Menu = () => {
                   href={href}
                   onClick={close}
                   aria-label={label}
-                  className='menu-link block overflow-hidden py-3 text-[clamp(1.375rem,min(7vw,5svh),2.25rem)] font-medium uppercase leading-none tracking-[0.1em] text-primary outline-none'
+                  className='menu-link block overflow-hidden py-3 text-[clamp(1.375rem,min(7vw,5svh),2.25rem)] font-medium uppercase leading-none tracking-widest text-primary outline-none'
                 >
                   <span aria-hidden className='block'><Chars text={label} /></span>
                 </NavAnchor>

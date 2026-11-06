@@ -1,5 +1,4 @@
-import { useRef, type FocusEvent, type MouseEvent, type PointerEvent } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRef, type FocusEvent, type PointerEvent } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
 
@@ -11,7 +10,6 @@ export const useBackButton = () => {
   const button = useRef<HTMLAnchorElement>(null)
   const nudge = useRef<gsap.core.Animation>(null)
   const resume = useRef<gsap.core.Tween>(null)
-  const router = useRouter()
 
   useGSAP(() => {
     if (window.matchMedia(reducedMotion).matches) return
@@ -20,13 +18,6 @@ export const useBackButton = () => {
       .to('.back-arrow', { x: -5, duration: 0.35, ease: 'power2.out' })
       .to('.back-arrow', { x: 0, duration: 0.9, ease: 'elastic.out(1, 0.4)' })
   }, { scope: button })
-
-  const onBack = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (window.history.length < 2) return
-
-    event.preventDefault()
-    router.back()
-  }
 
   const onBackEnter = (event: Target) => {
     const back = event.currentTarget
@@ -60,5 +51,5 @@ export const useBackButton = () => {
     gsap.to(event.currentTarget, { x: px * 14, y: py * 14, duration: 0.6, ease: 'power3.out', overwrite: 'auto' }).then()
   }
 
-  return { button, onBack, onBackEnter, onBackMove, onBackLeave }
+  return { button, onBackEnter, onBackMove, onBackLeave }
 }

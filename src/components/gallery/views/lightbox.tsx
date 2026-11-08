@@ -4,17 +4,19 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
-import { quality, type Tile } from 'src/components/gallery/helpers'
-import { fit, useLightboxMotion } from 'src/components/gallery/hooks/useLightboxMotion'
+import { quality } from 'src/components/gallery/helpers'
+import { fit, useLightboxMotion, type Photo } from 'src/components/gallery/hooks/useLightboxMotion'
 
 interface Props {
-  tile: Tile
+  tile: Photo
   origin: HTMLElement
   onClosed: () => void
+  container?: Element
+  square?: boolean
 }
 
-export const Lightbox = ({ tile, origin, onClosed }: Props) => {
-  const { root, frame, closeButton, close } = useLightboxMotion(tile, origin, onClosed)
+export const Lightbox = ({ tile, origin, onClosed, container = document.body, square }: Props) => {
+  const { root, frame, closeButton, close } = useLightboxMotion(tile, origin, onClosed, square)
   const [sizes] = useState(() => `${Math.ceil(fit(tile).width)}px`)
 
   return createPortal(
@@ -55,6 +57,6 @@ export const Lightbox = ({ tile, origin, onClosed }: Props) => {
         <X className='size-5 md:size-6' strokeWidth={1.5} />
       </button>
     </div>,
-    document.body
+    container
   )
 }

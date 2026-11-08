@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, type PointerEvent } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
 
@@ -19,5 +19,13 @@ export const useTourModal = () => {
     return () => mm.revert()
   }, { scope: container })
 
-  return { container }
+  const onMediaEnter = (event: PointerEvent<HTMLElement>) => {
+    gsap.to(event.currentTarget.querySelector('.moment-image'), { scale: 1.08, duration: 2.2, ease: 'power2.out', overwrite: 'auto' }).then()
+  }
+
+  const onMediaLeave = (event: PointerEvent<HTMLElement>) => {
+    gsap.to(event.currentTarget.querySelector('.moment-image'), { scale: 1, duration: 0.6, ease: 'power2.out', overwrite: 'auto' }).then()
+  }
+
+  return { container, onMediaEnter, onMediaLeave }
 }

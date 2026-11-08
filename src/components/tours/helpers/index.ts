@@ -2,6 +2,18 @@ import type { StaticImageData } from 'next/image'
 import classic from 'src/assets/media/images/archs/main/arch1.jpeg'
 import trekking from 'src/assets/media/images/archs/main/arch2.jpg'
 import caucasus from 'src/assets/media/images/archs/main/arch3.jpg'
+import tbilisi from 'src/assets/media/images/archs/classicGeorgia/tbilisi.jpg'
+import mtskheta from 'src/assets/media/images/archs/classicGeorgia/mtskheta.jpg'
+import kutaisi from 'src/assets/media/images/archs/classicGeorgia/kutaisi.jpeg'
+import batumi from 'src/assets/media/images/archs/classicGeorgia/batumi.jpg'
+import vardzia from 'src/assets/media/images/archs/classicGeorgia/vardzia.jpeg'
+import ancientChurches from 'src/assets/media/images/archs/classicGeorgia/ancientChurches.jpg'
+import fortresses from 'src/assets/media/images/archs/classicGeorgia/fortresses.jpeg'
+import atTheGeorgianTable from 'src/assets/media/images/archs/classicGeorgia/atTheGeorgianTable.jpg'
+import wineCountry from 'src/assets/media/images/archs/classicGeorgia/wineCountry.jpeg'
+import theMountains from 'src/assets/media/images/archs/classicGeorgia/theMountains.jpg'
+import oldStreets from 'src/assets/media/images/archs/classicGeorgia/oldStreets.jpg'
+import aLocalMarket from 'src/assets/media/images/archs/classicGeorgia/aLocalMarket.jpg'
 import { themes } from 'src/components/gallery/helpers/photos'
 import type { Locale } from 'src/lib/i18n'
 
@@ -52,8 +64,8 @@ export const content: Record<Locale, Content> = {
             'Fortresses', 'Wine country', 'The mountains', 'At the Georgian table', 'Old streets', 'A local market'
           ],
           [
-            themes.georgia[1], themes.culture[3], themes.georgia[3], themes.georgia[6], themes.georgia[8], themes.culture[0],
-            themes.georgia[11], themes.food[1], themes.georgia[2], themes.food[5], themes.culture[4], themes.food[7]
+            tbilisi, mtskheta, kutaisi, batumi, vardzia, ancientChurches,
+            fortresses, wineCountry, theMountains, atTheGeorgianTable, oldStreets, aLocalMarket
           ]
         )
       },

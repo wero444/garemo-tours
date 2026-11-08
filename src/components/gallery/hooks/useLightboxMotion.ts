@@ -3,7 +3,9 @@ import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
 import type { Tile } from 'src/components/gallery/helpers'
 
-export const fit = ({ image }: Tile) => {
+export type Photo = Pick<Tile, 'image' | 'alt'>
+
+export const fit = ({ image }: Photo) => {
   const phone = window.innerWidth < 768
   const maxWidth = window.innerWidth - (phone ? 32 : 160)
   const maxHeight = window.innerHeight - (phone ? 144 : 112)
@@ -20,9 +22,26 @@ const rectOf = (element: HTMLElement) => {
   return { left, top, width, height }
 }
 
-const radiusOf = (element: HTMLElement) => parseFloat(getComputedStyle(element).borderTopLeftRadius) || 0
+const cornersOf = (element: HTMLElement) => {
+  const style = getComputedStyle(element)
+  const max = Math.min(element.offsetWidth, element.offsetHeight) / 2
+  const corner = (value: string) => Math.min(parseFloat(value) || 0, max)
 
-export const useLightboxMotion = (tile: Tile, origin: HTMLElement, onClosed: () => void) => {
+  return {
+    borderTopLeftRadius: corner(style.borderTopLeftRadius),
+    borderTopRightRadius: corner(style.borderTopRightRadius),
+    borderBottomRightRadius: corner(style.borderBottomRightRadius),
+    borderBottomLeftRadius: corner(style.borderBottomLeftRadius)
+  }
+}
+
+const openCorners = (origin: HTMLElement, square: boolean) => {
+  const radius = square || !Object.values(cornersOf(origin)).some(Boolean) ? 0 : 12
+
+  return { borderTopLeftRadius: radius, borderTopRightRadius: radius, borderBottomRightRadius: radius, borderBottomLeftRadius: radius }
+}
+
+export const useLightboxMotion = (tile: Photo, origin: HTMLElement, onClosed: () => void, square = false) => {
   const root = useRef<HTMLDivElement>(null)
   const frame = useRef<HTMLDivElement>(null)
   const closeButton = useRef<HTMLButtonElement>(null)
@@ -39,7 +58,7 @@ export const useLightboxMotion = (tile: Tile, origin: HTMLElement, onClosed: () 
 
     gsap.timeline({ defaults: { ease: 'expo.out' } })
       .fromTo('.lightbox-backdrop', { opacity: 0 }, { opacity: 1, duration: 0.7, ease: 'power2.out' }, 0)
-      .fromTo(frame.current, { ...rectOf(origin), borderRadius: radiusOf(origin) }, { ...fit(tile), borderRadius: radiusOf(origin) ? 12 : 0, duration: 1 }, 0)
+      .fromTo(frame.current, { ...rectOf(origin), ...cornersOf(origin) }, { ...fit(tile), ...openCorners(origin, square), duration: 1 }, 0)
       .fromTo('.lightbox-close',
         { opacity: 0, scale: 0.4, rotate: -90 },
         { opacity: 1, scale: 1, rotate: 0, duration: 0.9 }, 0.35).then()
@@ -56,7 +75,7 @@ export const useLightboxMotion = (tile: Tile, origin: HTMLElement, onClosed: () 
 
     gsap.timeline({ defaults: { ease: 'expo.inOut' }, onComplete: onClosed })
       .to(closeButton.current, { opacity: 0, scale: 0.4, rotate: 90, duration: 0.45, ease: 'power3.in' }, 0)
-      .to(frame.current, { ...rectOf(origin), borderRadius: radiusOf(origin), duration: 0.85 }, 0)
+      .to(frame.current, { ...rectOf(origin), ...cornersOf(origin), duration: 0.85 }, 0)
       .to(root.current?.querySelector('.lightbox-backdrop') ?? [], { opacity: 0, duration: 0.6, ease: 'power2.inOut' }, 0.2).then()
   }, [origin, onClosed])
 
@@ -69,19 +88,21 @@ export const useLightboxMotion = (tile: Tile, origin: HTMLElement, onClosed: () 
     closeButton.current?.focus({ preventScroll: true })
 
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') close()
+      if (event.key !== 'Escape') return
+      event.stopPropagation()
+      close()
     }
 
     const onResize = () => {
       if (!closing.current) gsap.set(frame.current, fit(tile)).then()
     }
 
-    window.addEventListener('keydown', onKey)
+    window.addEventListener('keydown', onKey, true)
     window.addEventListener('resize', onResize)
 
     return () => {
       html.style.overflow = overflow
-      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('keydown', onKey, true)
       window.removeEventListener('resize', onResize)
       previous?.focus({ preventScroll: true })
     }

@@ -34,7 +34,11 @@ const Moments = ({ tour, ask, close, onAsk }: Props) => {
       </Dialog.Title>
       <Dialog.Description className='sr-only'>{tour.text}</Dialog.Description>
 
-      <ul className='mt-6 grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-6 md:mt-5 md:gap-x-[1.3rem]'>
+      <ul
+        className={`mx-auto mt-6 grid gap-x-3 gap-y-6 md:mt-5 md:gap-x-[1.3rem] ${
+          tour.moments.length > 8 ? 'grid-cols-3 sm:grid-cols-6' : 'grid-cols-4 sm:w-5/6'
+        }`}
+      >
         {tour.moments.map(({ label, image }) => (
           <li key={label} className='moment group/item flex min-w-0 flex-col items-center'>
             <ArchFrame className='moment-frame aspect-4/5 w-full rounded-b-none bg-primary/10'>
@@ -47,7 +51,7 @@ const Moments = ({ tour, ask, close, onAsk }: Props) => {
                 className={`moment-image object-cover transition-[scale] duration-1000 group-hover/item:scale-105 ${ease}`}
               />
             </ArchFrame>
-            <span className='mt-2.5 max-w-full truncate text-[0.5625rem] font-medium uppercase tracking-[0.2em] text-primary sm:text-[0.625rem]'>
+            <span className='mt-2.5 max-w-full text-center text-balance text-[0.5625rem] leading-snug font-medium uppercase tracking-[0.2em] text-primary sm:text-[0.625rem]'>
               {label}
             </span>
           </li>

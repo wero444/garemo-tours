@@ -1,7 +1,7 @@
 import type { StaticImageData } from 'next/image'
-import classic from 'src/assets/media/images/18.png'
-import trekking from 'src/assets/media/images/40.jpg'
-import occasion from 'src/assets/media/images/60.jpg'
+import classic from 'src/assets/media/images/archs/main/arch1.jpeg'
+import trekking from 'src/assets/media/images/archs/main/arch2.jpg'
+import caucasus from 'src/assets/media/images/archs/main/arch3.jpg'
 import { themes } from 'src/components/gallery/helpers/photos'
 import type { Locale } from 'src/lib/i18n'
 
@@ -15,6 +15,7 @@ export interface Tour {
   text: string
   image: StaticImageData
   alt: string
+  focus?: string
   moments: Array<Moment>
 }
 
@@ -44,30 +45,43 @@ export const content: Record<Locale, Content> = {
         title: 'Classic Georgia',
         text: 'Our most requested trip, by coach: Tbilisi, ancient churches, wine country and the mountains.',
         image: classic,
-        alt: 'Svan defensive towers above a village in a green valley',
+        alt: 'A brick bell tower and tiled roof of an old Georgian church against a blue sky',
         moments: moments(
-          ['Old Tbilisi', 'Ancient churches', 'Wine country', 'A family cellar', 'The mountains', 'The road'],
-          [themes.culture[0], themes.culture[3], themes.food[1], themes.food[5], themes.georgia[2], themes.georgia[7]]
+          [
+            'Tbilisi', 'Mtskheta', 'Kutaisi', 'Batumi', 'Vardzia', 'Ancient churches',
+            'Fortresses', 'Wine country', 'The mountains', 'At the Georgian table', 'Old streets', 'A local market'
+          ],
+          [
+            themes.georgia[1], themes.culture[3], themes.georgia[3], themes.georgia[6], themes.georgia[8], themes.culture[0],
+            themes.georgia[11], themes.food[1], themes.georgia[2], themes.food[5], themes.culture[4], themes.food[7]
+          ]
         )
       },
       {
-        title: 'Trekking',
+        title: 'Trekking & 4x4',
         text: 'Several days on foot, with professional mountain guides.',
         image: trekking,
-        alt: 'A horse on a dark ridge below the snowy peaks of the Caucasus',
+        alt: 'Riders crossing a highland meadow below an old stone tower and misty mountains',
         moments: moments(
-          ['The trail', 'A high pass', 'Our guides', 'A village stop', 'A guesthouse', 'The view'],
-          [themes.georgia[0], themes.georgia[4], themes.culture[6], themes.culture[9], themes.food[3], themes.georgia[10]]
+          ['The trail', 'By 4x4', 'A mountain road', 'Our mountain guides', 'A high pass', 'A highland village', 'A guesthouse', 'The view'],
+          [
+            themes.georgia[0], themes.georgia[7], themes.georgia[9], themes.culture[6],
+            themes.georgia[4], themes.culture[9], themes.food[3], themes.georgia[10]
+          ]
         )
       },
       {
-        title: 'Your own occasion',
-        text: 'For a team, a family or a class with its own reason to come.',
-        image: occasion,
-        alt: 'An elderly Georgian woman in a patterned green headscarf, smiling',
+        title: 'South Caucasus',
+        text: 'Georgia, Armenia and Azerbaijan in one trip.',
+        image: caucasus,
+        alt: 'A shepherd with his crook walking behind a flock of sheep at golden hour',
+        focus: '85% 50%',
         moments: moments(
-          ['Your group', 'Your reason', 'A day together', 'A shared table', 'Free time', 'The way home'],
-          [themes.culture[2], themes.culture[11], themes.georgia[5], themes.food[8], themes.food[10], themes.georgia[9]]
+          ['Georgia', 'Armenia', 'Azerbaijan', 'Yerevan', 'Baku', 'Old monasteries', 'Sheki', 'Lake Sevan'],
+          [
+            themes.georgia[5], themes.culture[2], themes.culture[11], themes.culture[5],
+            themes.culture[7], themes.culture[8], themes.culture[10], themes.georgia[1]
+          ]
         )
       }
     ]

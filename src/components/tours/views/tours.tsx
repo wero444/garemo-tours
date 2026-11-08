@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image, { type StaticImageData } from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { useTours } from 'src/components/tours/hooks/useTours'
 import { content } from 'src/components/tours/helpers'
@@ -12,6 +12,11 @@ import { ArchFrame } from 'src/components/ui/archFrame'
 import { useLocale } from 'src/lib/useLocale'
 
 const ease = 'ease-[cubic-bezier(0.16,1,0.3,1)]'
+
+const coverSizes = ({ width, height }: StaticImageData) => {
+  const stretch = Math.max(1, (width / height) / (0.8 / 1.16))
+  return `(min-width: 1280px) ${Math.ceil(360 * stretch)}px, (min-width: 768px) ${Math.ceil(30 * stretch)}vw, ${Math.ceil(384 * stretch)}px`
+}
 
 export const Tours = () => {
   const { container, open, active, onOpenChange, onOpen, onAsk, onOpenChangeComplete, onMediaEnter, onMediaLeave } = useTours()
@@ -37,7 +42,7 @@ export const Tours = () => {
         </header>
 
         <ul className='-mx-6 mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[14vw] pb-8 [scrollbar-width:none] md:mx-auto md:mt-7 md:grid md:max-w-4xl md:grid-cols-3 md:gap-x-10 md:overflow-visible md:px-0 md:pb-0 lg:max-w-5xl lg:gap-x-16 xl:max-w-[70rem] xl:gap-x-[5.875rem] [&::-webkit-scrollbar]:hidden'>
-          {tours.map(({ title, text, image, alt }, index) => (
+          {tours.map(({ title, text, image, alt, focus }, index) => (
             <li key={title} className='tour invisible flex w-[min(72vw,calc((100svh-27rem)*0.8))] min-w-48 shrink-0 snap-center flex-col items-center text-center md:w-auto md:min-w-0'>
               <button
                 type='button'
@@ -55,8 +60,10 @@ export const Tours = () => {
                       alt={alt}
                       fill
                       placeholder='blur'
-                      sizes='(min-width: 1280px) 360px, (min-width: 768px) 30vw, 384px'
+                      quality={100}
+                      sizes={coverSizes(image)}
                       className='tour-image object-cover'
+                      style={{ objectPosition: focus }}
                     />
                   </div>
                   <span aria-hidden className='pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-white/15 ring-inset' />

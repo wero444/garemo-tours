@@ -76,7 +76,7 @@ export const Destinations = () => {
                 onPointerLeave={() => hover(null)}
                 onFocus={() => hover(id)}
                 onBlur={() => hover(null)}
-                className='destinations-chip invisible whitespace-nowrap rounded-full border border-primary/35 px-3 py-1.5 text-[0.6875rem] xl:px-3.5 xl:text-xs text-primary outline-none transition-[background-color,border-color,color] duration-300 hover:border-primary focus-visible:ring-2 focus-visible:ring-primary/40 aria-pressed:bg-primary'
+                className='destinations-chip invisible whitespace-nowrap rounded-full border border-primary/35 px-3 py-1.5 text-[0.6875rem] xl:px-3.5 xl:text-xs text-primary outline-none transition-[background-color,border-color,color] duration-300 hover:border-primary focus-visible:ring-2 focus-visible:ring-primary/40 aria-pressed:bg-primary aria-pressed:text-primary-foreground'
               >
                 {name}
               </button>

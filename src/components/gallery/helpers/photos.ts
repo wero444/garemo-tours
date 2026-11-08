@@ -1,5 +1,4 @@
-// Gallery photos live in src/assets/media/gallery/<theme>/01.jpg … 12.jpg.
-// To swap a photo, replace the file and keep its name. To add one, drop in 13.jpg and add it to the list below
+
 import type { StaticImageData } from 'next/image'
 import culture01 from 'src/assets/media/gallery/culture/01.jpg'
 import culture02 from 'src/assets/media/gallery/culture/02.jpg'

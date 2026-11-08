@@ -14,6 +14,14 @@ import wineCountry from 'src/assets/media/images/archs/classicGeorgia/wineCountr
 import theMountains from 'src/assets/media/images/archs/classicGeorgia/theMountains.jpg'
 import oldStreets from 'src/assets/media/images/archs/classicGeorgia/oldStreets.jpg'
 import aLocalMarket from 'src/assets/media/images/archs/classicGeorgia/aLocalMarket.jpg'
+import theTrail from 'src/assets/media/images/archs/tekking&4x4/theTrail.jpg'
+import by4x4 from 'src/assets/media/images/archs/tekking&4x4/by4x4.jpg'
+import aMountainRoad from 'src/assets/media/images/archs/tekking&4x4/aMountainRoad.jpg'
+import ourMountainGuides from 'src/assets/media/images/archs/tekking&4x4/ourMountainGuides.jpg'
+import aHighPass from 'src/assets/media/images/archs/tekking&4x4/aHighPass.jpg'
+import aHighlandVillage from 'src/assets/media/images/archs/tekking&4x4/aHighlandVillage.jpg'
+import aGuestHouse from 'src/assets/media/images/archs/tekking&4x4/aGuestHouse.jpg'
+import theView from 'src/assets/media/images/archs/tekking&4x4/theView.jpeg'
 import { themes } from 'src/components/gallery/helpers/photos'
 import type { Locale } from 'src/lib/i18n'
 
@@ -55,7 +63,7 @@ export const content: Record<Locale, Content> = {
     tours: [
       {
         title: 'Classic Georgia',
-        text: 'Our most requested trip, by coach: Tbilisi, ancient churches, wine country and the mountains.',
+        text: 'Our most requested trips: Tbilisi, ancient churches, wine country and the mountains.',
         image: classic,
         alt: 'A brick bell tower and tiled roof of an old Georgian church against a blue sky',
         moments: moments(
@@ -71,20 +79,20 @@ export const content: Record<Locale, Content> = {
       },
       {
         title: 'Trekking & 4x4',
-        text: 'Several days on foot, with professional mountain guides.',
+        text: 'On foot or by jeep to the highlands, with professional mountain guides.',
         image: trekking,
         alt: 'Riders crossing a highland meadow below an old stone tower and misty mountains',
         moments: moments(
           ['The trail', 'By 4x4', 'A mountain road', 'Our mountain guides', 'A high pass', 'A highland village', 'A guesthouse', 'The view'],
           [
-            themes.georgia[0], themes.georgia[7], themes.georgia[9], themes.culture[6],
-            themes.georgia[4], themes.culture[9], themes.food[3], themes.georgia[10]
+            theTrail, by4x4, aMountainRoad, ourMountainGuides,
+            aHighPass, aHighlandVillage, aGuestHouse, theView
           ]
         )
       },
       {
         title: 'South Caucasus',
-        text: 'Georgia, Armenia and Azerbaijan in one trip.',
+        text: 'Armenia and Azerbaijan, on their own or together with Georgia.',
         image: caucasus,
         alt: 'A shepherd with his crook walking behind a flock of sheep at golden hour',
         focus: '85% 50%',

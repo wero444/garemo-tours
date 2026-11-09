@@ -45,16 +45,15 @@ export const useAbout = () => {
             }, at + 0.5)
           .to(tree.querySelectorAll('path'), { fillOpacity: 1, strokeOpacity: 0, duration: 0.6, ease: 'power2.out' }, at + 1.3).then()
 
-        tl.call(() => leaves.forEach((leaf, j) => {
-          gsap.to(leaf, {
+        leaves.forEach((leaf, j) => {
+          tl.to(leaf, {
             rotate: [6, -8, 8][j],
             duration: 1.4 + j * 0.35 + i * 0.2,
             ease: 'sine.inOut',
             yoyo: true,
-            repeat: -1,
-            delay: j * 0.2
-          }).then()
-        }), [], at + 1.9).then()
+            repeat: -1
+          }, at + 1.9 + j * 0.2).then()
+        })
       })
 
       tl.fromTo('.about-letter',

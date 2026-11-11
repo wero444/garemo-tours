@@ -22,7 +22,14 @@ import aHighPass from 'src/assets/media/images/archs/tekking&4x4/aHighPass.jpg'
 import aHighlandVillage from 'src/assets/media/images/archs/tekking&4x4/aHighlandVillage.jpg'
 import aGuestHouse from 'src/assets/media/images/archs/tekking&4x4/aGuestHouse.jpg'
 import theView from 'src/assets/media/images/archs/tekking&4x4/theView.jpeg'
-import { themes } from 'src/components/gallery/helpers/photos'
+import armenia from 'src/assets/media/images/archs/southCaucasus/armenia.jpg'
+import oldMonasteries from 'src/assets/media/images/archs/southCaucasus/oldMonasteries.jpeg'
+import baku from 'src/assets/media/images/archs/southCaucasus/baku.jpg'
+import azerbaijan from 'src/assets/media/images/archs/southCaucasus/azerbaijan.jpg'
+import sheki from 'src/assets/media/images/archs/southCaucasus/sheki.jpg'
+import lakeSevan from 'src/assets/media/images/archs/southCaucasus/lakeSevan.jpg'
+import georgia from 'src/assets/media/images/archs/southCaucasus/georgia.jpeg'
+import yerevan from 'src/assets/media/images/archs/southCaucasus/yerevan.jpg'
 import type { Locale } from 'src/lib/i18n'
 
 interface Moment {
@@ -99,8 +106,8 @@ export const content: Record<Locale, Content> = {
         moments: moments(
           ['Georgia', 'Armenia', 'Azerbaijan', 'Yerevan', 'Baku', 'Old monasteries', 'Sheki', 'Lake Sevan'],
           [
-            themes.georgia[5], themes.culture[2], themes.culture[11], themes.culture[5],
-            themes.culture[7], themes.culture[8], themes.culture[10], themes.georgia[1]
+            georgia, armenia, azerbaijan, yerevan,
+            baku, oldMonasteries, sheki, lakeSevan
           ]
         )
       }

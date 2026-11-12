@@ -10,8 +10,7 @@ const nextConfig: NextConfig = {
   partialPrefetching: !pages,
   ...(pages && {
     output: 'export',
-    // Separate from .next so a deploy build never clashes with a running dev server
-    distDir: '.next-pages',
+    distDir: 'out',
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     trailingSlash: true,
     experimental: { useCache: true }

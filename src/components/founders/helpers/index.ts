@@ -1,6 +1,6 @@
 import type { StaticImageData } from 'next/image'
-import shota from 'src/assets/media/images/26.jpeg'
-import nodo from 'src/assets/media/images/27.jpeg'
+import shota from 'src/assets/media/images/about/shota.png'
+import nodo from 'src/assets/media/images/about/nodo.jpeg'
 import type { Locale } from 'src/lib/i18n'
 
 interface Founder {
@@ -12,7 +12,7 @@ interface Founder {
 
 export const founders: Array<Founder> = [
   { name: { en: 'Shota Tsereteli' }, role: 'Co-founder and guide', image: shota, position: 'object-[50%_30%]' },
-  { name: { en: 'Nodo Shonia' }, role: 'Co-founder and guide', image: nodo, position: 'object-[32%_50%]' }
+  { name: { en: 'Nodo Shonia' }, role: 'Co-founder and guide', image: nodo, position: 'object-[50%_30%]' }
 ]
 
 export const portrait: Record<Locale, (name: string) => string> = {

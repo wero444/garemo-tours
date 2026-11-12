@@ -34,7 +34,6 @@ garemotours/
 ├── public/                     # Static files served as-is
 ├── scripts/
 │   ├── buildMap.mts            # Turns mapGaremo.svg into the Destinations map module
-│   ├── deployGhPages.mjs       # Builds the static site and pushes it to the gh-pages branch
 │   └── optimizeImages.mjs      # Writes resized WebP copies for the GitHub Pages build
 ├── src/
 │   ├── app/                    # Next.js App Router
@@ -116,8 +115,6 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run lint` | Run ESLint on `src` |
 | `npm run check-all` | Generate route types, then run ESLint and the TypeScript type check |
 | `npm run build:map` | Regenerate the Destinations map from `src/assets/media/svgs/mapGaremo.svg` |
-| `npm run deploy:gh-pages` | Build for www.garemotours.com and push it to the `gh-pages` branch (see Deployment) |
-| `npm run deploy:gh-pages:test` | Build for `https://<owner>.github.io/<repo>` and push it to the `gh-pages` branch |
 
 ## Destinations map
 
@@ -182,39 +179,24 @@ At the domain registrar, point the domain at GitHub Pages:
 
 Then in the repository's **Settings → Pages**, set **Custom domain** to `www.garemotours.com`, wait for the DNS check to pass and tick **Enforce HTTPS**. GitHub redirects `garemotours.com` to `www.garemotours.com` automatically.
 
-### How the static build works
+### GitHub Pages
 
-- `npm run build:pages` with `GITHUB_PAGES=true` switches `next.config.ts` to `output: 'export'`, applies the base path from `NEXT_PUBLIC_BASE_PATH` (empty on the custom domain) and turns off Cache Components, which a static export does not support.
-- `scripts/optimizeImages.mjs` then writes resized WebP copies of every photo. `src/lib/imageLoader.ts` points `next/image` at them, since Pages cannot optimise images on request.
-- The result is in `out/`.
+The site is published as a static export to GitHub Pages by `.github/workflows/deploy.yml` on every push to `master` (or manually from the Actions tab).
 
-GitHub Pages publishes from **one** source at a time, chosen in **Settings → Pages → Source**: either the `gh-pages` branch or GitHub Actions.
-
-### Option 1: `gh-pages` branch (manual, from your machine)
-
-Set **Source** to **Deploy from a branch**, branch `gh-pages`, folder `/ (root)`. Then:
-
-```bash
-npm run deploy:gh-pages        # build for https://www.garemotours.com and push
-npm run deploy:gh-pages:test   # build for https://wero444.github.io/garemo-tours and push
-```
-
-`scripts/deployGhPages.mjs` builds the site, adds `.nojekyll` (and `CNAME` for production), commits `out/` into a fresh one-commit history and force-pushes it to `gh-pages`. Extra flags: `--no-build` pushes the existing `out/`, `--no-push` only builds (e.g. `node scripts/deployGhPages.mjs --test --no-push`).
-
-> The test URL only works while **no custom domain** is set in Settings → Pages: once `www.garemotours.com` is set, `*.github.io` redirects to it and the `/garemo-tours` base path breaks. A production deploy writes `CNAME`, which sets the custom domain; a test deploy removes it again.
-
-### Option 2: GitHub Actions (automatic, on every push to `master`)
-
-Set **Source** to **GitHub Actions**. `.github/workflows/deploy.yml` then runs `npm run build:pages` on every push to `master`, uploads `out/` and deploys it. It reads the URL and base path from the Pages settings, so with the custom domain set it builds for `https://www.garemotours.com` with no base path.
-
-Optional: add `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` as repository **variables** (Settings → Secrets and variables → Actions → Variables).
-
-While the source is the `gh-pages` branch, this workflow's deploy step does not publish anything; run it only with the Actions source, or disable it in the Actions tab.
+- **One-time setup:** in the repository's **Settings → Pages**, set **Source** to **GitHub Actions**.
+- **What the workflow does:**
+  - Runs `npm run build:pages` with `GITHUB_PAGES=true`. This switches `next.config.ts` to `output: 'export'` (built in `.next-pages`, so it never clashes with a running dev server), applies the base path and turns off Cache Components, which a static export does not support.
+  - `scripts/optimizeImages.mjs` then writes resized WebP copies of every photo. `src/lib/imageLoader.ts` points `next/image` at them, since Pages cannot optimise images on request.
+  - Uploads `out/` and deploys it.
+- **URL and base path** come from the Pages settings: with the custom domain set, the site is built for `https://www.garemotours.com` with no base path. No `CNAME` file is needed with the Actions source.
+- **Optional:** add `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` as repository **variables** (Settings → Secrets and variables → Actions → Variables).
 
 ### Preview the static build locally
 
+In Git Bash:
+
 ```bash
-node scripts/deployGhPages.mjs --no-push   # builds for https://www.garemotours.com into out/
+GITHUB_PAGES=true NEXT_PUBLIC_SITE_URL=https://www.garemotours.com npm run build:pages
 npx serve out
 ```
 

@@ -28,7 +28,7 @@ export const RegionPanel = ({ ref, region, slide, onClose, onSlide, onSlideDown,
       ref={ref}
       role='region'
       aria-labelledby='destination-name'
-      className='relative z-30 mt-8 w-full overflow-hidden rounded-3xl border border-white/60 bg-[color-mix(in_oklab,var(--secondary),white_55%)] shadow-[0_2rem_4rem_-1.5rem_rgb(0_0_0/0.45)] lg:absolute lg:mt-0 lg:w-md xl:w-136 2xl:w-xl'
+      className='absolute inset-x-4 bottom-4 z-30 max-h-[calc(100%-6rem)] overflow-y-auto overscroll-contain scrollbar-none md:inset-x-8 lg:inset-x-auto lg:bottom-auto lg:max-h-[calc(100dvh-7rem)] rounded-3xl border border-white/60 bg-[color-mix(in_oklab,var(--secondary),white_55%)] shadow-[0_2rem_4rem_-1.5rem_rgb(0_0_0/0.45)] lg:w-md xl:w-136 2xl:w-xl'
     >
       <button
         type='button'

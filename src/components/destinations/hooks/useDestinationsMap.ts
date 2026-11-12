@@ -1,152 +1,164 @@
-import { useEffect, useRef, type MouseEvent, type PointerEvent, type RefObject } from 'react'
-import { gsap, ScrollTrigger } from 'src/lib/gsap'
+import { useEffect, useRef, useState, type MouseEvent, type PointerEvent, type RefObject } from 'react'
+import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
-import type { MapApi } from 'src/components/destinations/helpers/scene'
-import type { Region } from 'src/components/destinations/helpers'
+import type * as Drawing from 'src/components/destinations/helpers/map'
+import { anchors, type Zone } from 'src/components/destinations/helpers/zones'
 
-interface Options {
-  regions: Array<Region>
-  wrapper: RefObject<HTMLDivElement | null>
-  canvas: RefObject<HTMLCanvasElement | null>
-  onFrame: RefObject<(api: MapApi) => void>
-  onHover: (id: string | null) => void
-  onPick: (id: string | null) => void
-  active: string | null
-  hovered: string | null
+type MapData = typeof Drawing
+
+export interface Target {
+  id: string | null
+  zone: Zone | null
 }
 
-const dark = () => document.documentElement.classList.contains('dark')
+export interface Selected {
+  id: string
+  zone: Zone
+  x: number
+  y: number
+}
 
-export const useDestinationsMap = ({ regions, wrapper, canvas, onFrame, onHover, onPick, active, hovered }: Options) => {
-  const api = useRef<MapApi | null>(null)
-  const hover = useRef<string | null>(null)
-  const state = useRef({ active, hovered })
+interface Options {
+  wrapper: RefObject<HTMLDivElement | null>
+  lit: Zone | null
+  selected: Selected | null
+  onHover: (target: Target) => void
+  onPick: (target: Target) => void
+}
 
-  useEffect(() => {
-    state.current = { active, hovered }
-    api.current?.setActive(active)
-    api.current?.setHovered(hovered)
-  }, [active, hovered])
+const still = () => window.matchMedia(reducedMotion).matches
+const zones = Object.keys(anchors) as Array<Zone>
 
+// Dots and zone shapes carry data-dot / data-hit, so one set of listeners on the wrapper covers the whole map
+const find = (event: MouseEvent<HTMLElement>): Target => {
+  const hit = (event.target as Element).closest<HTMLElement>('[data-dot], [data-hit]')
+  return { id: hit?.dataset.dot ?? null, zone: (hit?.dataset.hit ?? null) as Zone | null }
+}
+
+export const useDestinationsMap = ({ wrapper, lit, selected, onHover, onPick }: Options) => {
+  const [data, setData] = useState<MapData | null>(null)
+  const current = useRef('')
+  const shown = useRef<{ lit: Zone | null, selected: Selected | null }>({ lit: null, selected: null })
+
+  // The drawing is ~130 KB gzipped: fetch it only once the section gets close
   useEffect(() => {
     const element = wrapper.current
-    const surface = canvas.current
-    if (!element || !surface) return
+    if (!element) return undefined
 
-    const still = window.matchMedia(reducedMotion).matches
-    let disposed = false
-    let visible = false
-    let introduced = false
-    let wantsIntro = false
-    let cleanup: (() => void) | null = null
-
-    const tick = (time: number) => {
-      if (!api.current) return
-      api.current.render(time)
-      onFrame.current(api.current)
-    }
-
-    const run = (on: boolean) => {
-      if (on === visible) return
-      visible = on
-      if (on) gsap.ticker.add(tick)
-      else gsap.ticker.remove(tick)
-    }
-
-    const start = () => {
-      if (!api.current || introduced || !wantsIntro) return
-      introduced = true
-      api.current.intro()
-    }
-
-    const intro = ScrollTrigger.create({
-      trigger: element,
-      start: 'top 75%',
-      once: true,
-      onEnter: () => {
-        wantsIntro = true
-        start()
-      }
-    })
-
-    const build = async () => {
-      const { createMap, themes } = await import('src/components/destinations/helpers/scene')
-      if (disposed) return
-
-      const map = createMap(surface, regions, themes[dark() ? 'dark' : 'light'], still)
-      api.current = map
-      map.resize(element.clientWidth, element.clientHeight)
-      map.setActive(state.current.active)
-      map.setHovered(state.current.hovered)
-
-      const resize = new ResizeObserver(() => map.resize(element.clientWidth, element.clientHeight))
-      resize.observe(element)
-
-      const theme = new MutationObserver(() => map.setTheme(themes[dark() ? 'dark' : 'light']))
-      theme.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-
-      const seen = new IntersectionObserver(([entry]) => run(Boolean(entry?.isIntersecting)))
-      seen.observe(element)
-
-      start()
-
-      cleanup = () => {
-        resize.disconnect()
-        theme.disconnect()
-        seen.disconnect()
-        map.dispose()
-      }
-    }
-
+    let live = true
     const near = new IntersectionObserver(([entry]) => {
       if (!entry?.isIntersecting) return
       near.disconnect()
-      build().then()
-    }, { rootMargin: '600px 0px' })
+      import('src/components/destinations/helpers/map').then((module) => {
+        if (live) setData(module)
+      })
+    }, { rootMargin: '800px 0px' })
+
     near.observe(element)
-
     return () => {
-      disposed = true
+      live = false
       near.disconnect()
-      intro.kill()
-      run(false)
-      cleanup?.()
-      api.current = null
     }
-  }, [regions, wrapper, canvas, onFrame])
+  }, [wrapper])
 
-  const local = (event: MouseEvent<HTMLElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    return { x: event.clientX - rect.left, y: event.clientY - rect.top, rect }
-  }
+  // Intro: the country outline draws itself, the regions surface one by one, then the dots pop in
+  useGSAP(() => {
+    if (!data) return undefined
+    gsap.set('[data-edge], [data-ring]', { autoAlpha: 0 }).then()
+
+    const mm = gsap.matchMedia()
+
+    mm.add(reducedMotion, () => {
+      gsap.set('.destinations-dot', { autoAlpha: 1 }).then()
+    })
+
+    mm.add(`not all and ${reducedMotion}`, () => {
+      gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        scrollTrigger: { trigger: wrapper.current, start: 'top 70%', once: true }
+      })
+        .fromTo('[data-layer="outline"]', { drawSVG: '0%' }, { drawSVG: '100%', duration: 2.6, ease: 'power2.inOut' }, 0)
+        .fromTo('[data-zone]', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.09 }, 0.35)
+        .fromTo('[data-layer="borders"]', { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.4, ease: 'power1.inOut' }, 1.3)
+        .fromTo('[data-layer="sky"], [data-layer="sea"]', { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 1.6, stagger: 0.2 }, 0.9)
+        .fromTo('.destinations-dot', { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 0.7, stagger: 0.05, ease: 'back.out(2.5)' }, 1.9).then()
+    })
+
+    return () => mm.revert()
+  }, { scope: wrapper, dependencies: [data] })
+
+  // Hover and selection read differently:
+  // hover — a soft wash of the region's colour and a hairline tracing out from one point both ways
+  // select — the colour floods out from the chosen dot and a bold border draws around the whole region
+  useGSAP(() => {
+    if (!data) return
+    const before = shown.current
+    if (before.lit === lit && before.selected?.id === selected?.id) return
+    shown.current = { lit, selected }
+
+    const speed = still() ? 0 : 1
+    const picked = selected?.zone ?? null
+    const was = before.selected?.zone ?? null
+    const tween = (target: string, vars: gsap.TweenVars, duration = 0.6) => gsap.to(target, { ease: 'power2.out', overwrite: true, ...vars, duration: duration * speed }).then()
+
+    zones.forEach((zone) => {
+      const hovered = zone === lit && zone !== picked
+      const wasHovered = zone === before.lit && zone !== was
+
+      if (hovered !== wasHovered) {
+        tween(`[data-wash="${zone}"]`, { fillOpacity: hovered ? 0.55 : 0 }, hovered ? 0.7 : 0.5)
+        if (hovered) {
+          gsap.fromTo(`[data-edge="${zone}"]`,
+            { drawSVG: '50% 50%', autoAlpha: 1 },
+            { drawSVG: '0% 100%', duration: 1.3 * speed, ease: 'expo.inOut', overwrite: true }).then()
+        } else tween(`[data-edge="${zone}"]`, { drawSVG: '50% 50%', autoAlpha: 0, ease: 'power2.inOut' })
+      }
+
+      const open = zone === lit || zone === picked
+      if (open !== (zone === before.lit || zone === was)) tween(`[data-hole="${zone}"]`, { fillOpacity: open ? 1 : 0 }, 0.7)
+    })
+
+    if (was && was !== picked) {
+      tween(`[data-flood="${was}"]`, { attr: { r: 0 }, ease: 'power3.in' }, 0.7)
+      tween(`[data-ring="${was}"]`, { drawSVG: '100% 100%', autoAlpha: 0, ease: 'power2.in' })
+    }
+
+    if (selected && selected.id !== before.selected?.id) {
+      const { zone, x, y } = selected
+      const fill = wrapper.current?.querySelector<SVGPathElement>(`[data-fill="${zone}"]`)
+      const box = fill?.getBBox()
+      const reach = box
+        ? Math.hypot(Math.max(x - box.x, box.x + box.width - x), Math.max(y - box.y, box.y + box.height - y))
+        : 900
+
+      gsap.fromTo(`[data-flood="${zone}"]`,
+        { attr: { cx: x, cy: y, r: 0 } },
+        { attr: { r: reach }, duration: 1.5 * speed, ease: 'expo.inOut', overwrite: true }).then()
+      if (zone !== was) {
+        gsap.fromTo(`[data-ring="${zone}"]`,
+          { drawSVG: '0% 0%', autoAlpha: 1 },
+          { drawSVG: '0% 100%', duration: 1.6 * speed, delay: 0.25 * speed, ease: 'power3.inOut', overwrite: true }).then()
+      }
+    }
+
+    tween('[data-veil]', { opacity: lit || picked ? 0.6 : 0 }, 0.8)
+  }, { scope: wrapper, dependencies: [data, lit, selected] })
 
   const onPointerMove = (event: PointerEvent<HTMLElement>) => {
-    const map = api.current
-    if (!map || event.pointerType === 'touch') return
-
-    const { x, y, rect } = local(event)
-    map.lean(x / rect.width - 0.5, y / rect.height - 0.5)
-
-    const id = map.pick(x, y)
-    if (id === hover.current) return
-    hover.current = id
-    event.currentTarget.style.cursor = id ? 'pointer' : ''
-    onHover(id)
+    if (event.pointerType === 'touch') return
+    const target = find(event)
+    const key = `${target.id}:${target.zone}`
+    if (key === current.current) return
+    current.current = key
+    onHover(target)
   }
 
-  const onPointerLeave = (event: PointerEvent<HTMLElement>) => {
-    api.current?.lean(0, 0)
-    hover.current = null
-    event.currentTarget.style.cursor = ''
-    onHover(null)
+  const onPointerLeave = () => {
+    current.current = ''
+    onHover({ id: null, zone: null })
   }
 
-  const onClick = (event: MouseEvent<HTMLElement>) => {
-    const map = api.current
-    if (!map) return
-    const { x, y } = local(event)
-    onPick(map.pick(x, y))
-  }
+  const onClick = (event: MouseEvent<HTMLElement>) => onPick(find(event))
 
-  return { onPointerMove, onPointerLeave, onClick }
+  return { data, handlers: { onPointerMove, onPointerLeave, onClick } }
 }

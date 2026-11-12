@@ -1,9 +1,9 @@
-import { useEffect, useLayoutEffect, useRef, type PointerEvent } from 'react'
+import { useEffect, useRef, type PointerEvent } from 'react'
 import { gsap, useGSAP } from 'src/lib/gsap'
 import { reducedMotion } from 'src/lib/intro'
 import { content } from 'src/components/destinations/helpers'
-import type { MapApi } from 'src/components/destinations/helpers/scene'
-import { useDestinationsMap } from 'src/components/destinations/hooks/useDestinationsMap'
+import { viewBox, type Zone } from 'src/components/destinations/helpers/zones'
+import { useDestinationsMap, type Target } from 'src/components/destinations/hooks/useDestinationsMap'
 import { useDestinationsReducer } from 'src/components/destinations/store'
 import { useLocale } from 'src/lib/useLocale'
 
@@ -16,31 +16,33 @@ const folded = 'inset(0% 0% 100% 0% round 1.5rem)'
 
 export const useDestinations = () => {
   const { regions } = content[useLocale()]
-  const [{ active, shown, hovered, slide }, dispatch] = useDestinationsReducer()
+  const [{ active, shown, hovered, zone, slide }, dispatch] = useDestinationsReducer()
   const container = useRef<HTMLElement>(null)
   const wrapper = useRef<HTMLDivElement>(null)
-  const canvas = useRef<HTMLCanvasElement>(null)
   const panel = useRef<HTMLDivElement>(null)
   const route = useRef<SVGPathElement>(null)
   const tip = useRef<SVGCircleElement>(null)
-  const label = useRef<HTMLSpanElement>(null)
-  const map = useRef<MapApi | null>(null)
   const side = useRef<Side>('right')
   const hiding = useRef<gsap.core.Timeline | null>(null)
-  const live = useRef({ shown, marked: hovered ?? active })
   const swipe = useRef<number | null>(null)
 
-  const overlay = (api: MapApi) => {
-    map.current = api
-    const { shown: open, marked } = live.current
+  const zoneOf = (id: string | null): Zone | null => regions.find((region) => region.id === id)?.zone ?? null
+  const lit = zone ?? zoneOf(hovered)
+  const focus = lit ?? zoneOf(active)
+  const chosen = regions.find((item) => item.id === active)
+  const selected = chosen ? { id: chosen.id, zone: chosen.zone, x: chosen.x, y: chosen.y } : null
+  const label = hovered ? `dot:${hovered}` : zone ? `zone:${zone}` : active ? `dot:${active}` : null
 
-    if (label.current) {
-      const at = marked ? api.screen(marked) : null
-      label.current.style.opacity = at ? '1' : '0'
-      if (at) label.current.style.transform = `translate(${at.x}px, ${at.y - 16}px) translate(-50%, -100%)`
-    }
+  // Map coordinates → pixels inside the wrapper, which always keeps the drawing's aspect ratio
+  const screen = (id: string | null) => {
+    const region = regions.find((item) => item.id === id)
+    const frame = wrapper.current
+    if (!region || !frame) return null
+    return { x: region.x / viewBox.width * frame.clientWidth, y: region.y / viewBox.height * frame.clientHeight }
+  }
 
-    const from = open ? api.screen(open) : null
+  const connect = () => {
+    const from = screen(shown)
     if (!from || !panel.current || !wrapper.current || !route.current || !tip.current) return
 
     const box = panel.current.getBoundingClientRect()
@@ -58,12 +60,30 @@ export const useDestinations = () => {
     tip.current.setAttribute('cy', `${end.y}`)
   }
 
-  const onFrame = useRef(overlay)
+  const position = () => {
+    const box = panel.current
+    const frame = wrapper.current
+    const at = screen(shown)
+    if (!box || !frame) return
 
-  useLayoutEffect(() => {
-    live.current = { shown, marked: hovered ?? active }
-    onFrame.current = overlay
-  })
+    if (!wide() || !at) {
+      side.current = 'below'
+      gsap.set(box, { clearProps: 'left,top' }).then()
+      return
+    }
+
+    // The panel lives in the map's box but may use the whole section: the map is narrower than the screen when height runs short
+    const map = frame.getBoundingClientRect()
+    const area = (container.current ?? frame).getBoundingClientRect()
+    const inset = Math.min(64, area.width * 0.03)
+    side.current = at.x < frame.clientWidth / 2 ? 'right' : 'left'
+    const left = side.current === 'right' ? area.right - inset - box.offsetWidth - map.left : area.left + inset - map.left
+    const highest = area.top + 88 - map.top
+    const lowest = area.bottom - 24 - box.offsetHeight - map.top
+    const top = gsap.utils.clamp(highest, Math.max(highest, lowest), at.y - 120)
+
+    gsap.set(box, { left, top }).then()
+  }
 
   const hide = (then: () => void) => {
     if (hiding.current?.isActive()) return
@@ -98,26 +118,25 @@ export const useDestinations = () => {
 
   const hover = (id: string | null) => dispatch({ type: 'HOVER_REGION', id })
 
-  const handlers = useDestinationsMap({ regions, wrapper, canvas, onFrame, onHover: hover, onPick: select, active, hovered })
+  const point = (target: Target) => {
+    dispatch({ type: 'HOVER_REGION', id: target.id })
+    dispatch({ type: 'HOVER_ZONE', zone: target.id ? null : target.zone })
+  }
 
-  const position = () => {
-    const box = panel.current
-    const frame = wrapper.current
-    const at = shown ? map.current?.screen(shown) : null
-    if (!box || !frame) return
-
-    if (!wide() || !at) {
-      side.current = 'below'
-      gsap.set(box, { clearProps: 'left,top' }).then()
+  // A dot opens its own destination; a region opens its first one, or closes when it is already the open one
+  const pick = ({ id, zone: picked }: Target) => {
+    if (id || !picked) {
+      select(id)
       return
     }
 
-    side.current = at.x < frame.clientWidth / 2 ? 'right' : 'left'
-    const left = side.current === 'right' ? frame.clientWidth - box.offsetWidth : 0
-    const top = gsap.utils.clamp(-24, Math.max(-24, frame.clientHeight - box.offsetHeight + 24), at.y - 96)
-
-    gsap.set(box, { left, top }).then()
+    const first = regions.find((region) => region.zone === picked)
+    if (!first) return
+    if (zoneOf(active) === picked) close()
+    else select(first.id)
   }
+
+  const { data, handlers } = useDestinationsMap({ wrapper, lit, selected, onHover: point, onPick: pick })
 
   useGSAP(() => {
     if (!shown) {
@@ -126,7 +145,7 @@ export const useDestinations = () => {
     }
 
     position()
-    if (map.current) overlay(map.current)
+    connect()
     gsap.set([route.current, tip.current], { autoAlpha: 1 }).then()
 
     if (still()) {
@@ -175,7 +194,10 @@ export const useDestinations = () => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') close()
     }
-    const onResize = () => position()
+    const onResize = () => {
+      position()
+      connect()
+    }
 
     window.addEventListener('keydown', onKey)
     window.addEventListener('resize', onResize)
@@ -186,7 +208,6 @@ export const useDestinations = () => {
   })
 
   const region = regions.find(({ id }) => id === shown) ?? null
-  const marked = regions.find(({ id }) => id === (hovered ?? active)) ?? null
   const count = region?.images.length ?? 0
 
   const slideTo = (index: number) => {
@@ -208,16 +229,16 @@ export const useDestinations = () => {
   return {
     regions,
     region,
-    marked,
     active,
+    focus,
+    label,
     slide,
+    data,
     container,
     wrapper,
-    canvas,
     panel,
     route,
     tip,
-    label,
     handlers,
     select,
     close,

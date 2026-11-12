@@ -1,4 +1,5 @@
 import { absoluteUrl as absolute, siteConfig } from 'src/lib/site'
+import { content } from 'src/components/destinations/helpers'
 import { founders } from 'src/components/founders/helpers'
 import { tours } from 'src/components/tours/helpers'
 
@@ -6,6 +7,8 @@ const { name, legalName, url, about, address, email, phone, instagram, areaServe
 
 const organization = `${url}/#organization`
 const website = `${url}/#website`
+const destinations = `${url}/#destinations`
+const { regions, zones } = content.en
 
 export const jsonLd = {
   '@context': 'https://schema.org',
@@ -90,7 +93,36 @@ export const jsonLd = {
       inLanguage: 'en',
       isPartOf: { '@id': website },
       about: { '@id': organization },
-      primaryImageOfPage: absolute('/opengraph-image/card.png')
+      primaryImageOfPage: absolute('/opengraph-image/card.png'),
+      hasPart: { '@id': destinations }
+    },
+    {
+      '@type': 'ItemList',
+      '@id': destinations,
+      name: `Destinations in Georgia | ${name}`,
+      description: content.en.subtitle,
+      url: destinations,
+      numberOfItems: regions.length,
+      itemListElement: regions.map((region, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'TouristDestination',
+          '@id': `${url}/#destination-${region.id}`,
+          name: region.name,
+          description: region.text,
+          url: destinations,
+          image: region.images.slice(0, 3).map(image => absolute(image.src)),
+          geo: { '@type': 'GeoCoordinates', latitude: region.lat, longitude: region.lng },
+          containedInPlace: {
+            '@type': 'AdministrativeArea',
+            name: zones[region.zone],
+            containedInPlace: { '@type': 'Country', name: 'Georgia' }
+          },
+          includesAttraction: region.places.map(place => ({ '@type': 'TouristAttraction', name: place })),
+          provider: { '@id': organization }
+        }
+      }))
     }
   ]
 }

@@ -1,3 +1,4 @@
+import { content } from 'src/components/destinations/helpers'
 import { photos } from 'src/components/gallery/helpers/photos'
 import { tours } from 'src/components/tours/helpers'
 import { absoluteUrl, siteConfig } from 'src/lib/site'
@@ -12,7 +13,7 @@ interface Entry {
 }
 
 const entries: Array<Entry> = [
-  { url: `${siteConfig.url}/`, changeFrequency: 'weekly', priority: 1, images: tours.map(tour => absoluteUrl(tour.image.src)) },
+  { url: `${siteConfig.url}/`, changeFrequency: 'weekly', priority: 1, images: [...tours.map(tour => absoluteUrl(tour.image.src)), ...content.en.regions.flatMap(region => region.images.map(image => absoluteUrl(image.src)))] },
   { url: absoluteUrl('/gallery/'), changeFrequency: 'weekly', priority: 0.8, images: photos.map(photo => absoluteUrl(photo.src)) }
 ]
 

@@ -29,6 +29,16 @@ export const Destinations = () => {
         </p>
       </header>
 
+      <ul className='sr-only'>
+        {regions.map(({ id, name, text, places }) => (
+          <li key={id} id={`destination-${id}`}>
+            <h3>{name}</h3>
+            <p>{text}</p>
+            <p>{places.join(', ')}</p>
+          </li>
+        ))}
+      </ul>
+
       <div className='-mx-5 mt-4 flex max-h-[calc(100vw/1.7117)] min-h-0 flex-1 items-center justify-center [container-type:size] md:-mx-8 md:mt-6 lg:-mx-12'>
         <div className='w-[min(100cqw,calc(100cqh*1.7117))] lg:relative'>
           <DestinationsMap

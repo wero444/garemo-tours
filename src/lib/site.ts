@@ -5,7 +5,7 @@ export const siteConfig = {
   name: 'GAREMO',
   legalName: 'GAREMO Tours',
   // Full public URL of the site root, including the base path
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://garemotours.com').replace(/\/$/, ''),
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.garemotours.com').replace(/\/$/, ''),
   locale: 'en_US',
   title: 'Garemo Tours | Small-Group & Private Tours in Georgia',
   tagline: 'Georgia, the way we know it',

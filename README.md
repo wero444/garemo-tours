@@ -1,6 +1,6 @@
 # GAREMO Tours
 
-The website of **GAREMO Tours**, a Tbilisi-based travel project offering small-group and private journeys across Georgia, and DMC services (group travel, pilgrimages, corporate and special interest tours) for travel partners in Georgia, Armenia and Azerbaijan.
+The website of **GAREMO Tours** ([www.garemotours.com](https://www.garemotours.com)), a Tbilisi-based travel project offering small-group and private journeys across Georgia, and DMC services (group travel, pilgrimages, corporate and special interest tours) for travel partners in Georgia, Armenia and Azerbaijan.
 
 It is a single-page site with a separate photo gallery, built around hand-drawn SVG illustrations and smooth scroll-driven animations.
 
@@ -34,6 +34,7 @@ garemotours/
 ├── public/                     # Static files served as-is
 ├── scripts/
 │   ├── buildMap.mts            # Turns mapGaremo.svg into the Destinations map module
+│   ├── deployGhPages.mjs       # Builds the static site and pushes it to the gh-pages branch
 │   └── optimizeImages.mjs      # Writes resized WebP copies for the GitHub Pages build
 ├── src/
 │   ├── app/                    # Next.js App Router
@@ -100,7 +101,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Variable | Required | Description |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Recommended | Public URL of the site. Used for canonical URLs, sitemap, robots and structured data. Defaults to `https://garemotours.com`. |
+| `NEXT_PUBLIC_SITE_URL` | Recommended | Public URL of the site. Used for canonical URLs, sitemap, robots and structured data. Defaults to `https://www.garemotours.com`. |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | No | Google Search Console verification code |
 | `NEXT_PUBLIC_BING_SITE_VERIFICATION` | No | Bing Webmaster Tools verification code |
 
@@ -115,6 +116,8 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run lint` | Run ESLint on `src` |
 | `npm run check-all` | Generate route types, then run ESLint and the TypeScript type check |
 | `npm run build:map` | Regenerate the Destinations map from `src/assets/media/svgs/mapGaremo.svg` |
+| `npm run deploy:gh-pages` | Build for www.garemotours.com and push it to the `gh-pages` branch (see Deployment) |
+| `npm run deploy:gh-pages:test` | Build for `https://<owner>.github.io/<repo>` and push it to the `gh-pages` branch |
 
 ## Destinations map
 
@@ -165,31 +168,61 @@ Defined in `src/app/layout.tsx` (metadata), `src/lib/site.ts` (name, URL, descri
 
 ## Deployment
 
-### GitHub Pages (current)
+Production domain: **https://www.garemotours.com** (the bare `garemotours.com` redirects to it).
 
-The site is published as a static export to GitHub Pages by `.github/workflows/deploy.yml` on every push to `master`.
+### DNS
 
-- **One-time setup:** in the repository's **Settings → Pages**, set **Source** to **GitHub Actions**.
-- **What the workflow does:**
-  - Runs `npm run build:pages` with `GITHUB_PAGES=true`. This switches `next.config.ts` to `output: 'export'`, applies the repository base path (for example `/garemo-tours`) and turns off Cache Components, which a static export does not support.
-  - `scripts/optimizeImages.mjs` then writes resized WebP copies of every photo. `src/lib/imageLoader.ts` points `next/image` at them, since Pages cannot optimise images on request.
-  - Uploads `out/` and deploys it.
-- **Optional:** add `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` as repository **variables** (Settings → Secrets and variables → Actions → Variables).
-- **Custom domain:** add it in Settings → Pages. The workflow picks up the new URL and drops the base path automatically.
+At the domain registrar, point the domain at GitHub Pages:
 
-To test the Pages build locally (in Git Bash; `MSYS_NO_PATHCONV` keeps the base path from being rewritten into a Windows path):
+| Type | Host | Value |
+| --- | --- | --- |
+| `CNAME` | `www` | `wero444.github.io` |
+| `A` | `@` | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` |
+| `AAAA` | `@` | `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153` |
+
+Then in the repository's **Settings → Pages**, set **Custom domain** to `www.garemotours.com`, wait for the DNS check to pass and tick **Enforce HTTPS**. GitHub redirects `garemotours.com` to `www.garemotours.com` automatically.
+
+### How the static build works
+
+- `npm run build:pages` with `GITHUB_PAGES=true` switches `next.config.ts` to `output: 'export'`, applies the base path from `NEXT_PUBLIC_BASE_PATH` (empty on the custom domain) and turns off Cache Components, which a static export does not support.
+- `scripts/optimizeImages.mjs` then writes resized WebP copies of every photo. `src/lib/imageLoader.ts` points `next/image` at them, since Pages cannot optimise images on request.
+- The result is in `out/`.
+
+GitHub Pages publishes from **one** source at a time, chosen in **Settings → Pages → Source**: either the `gh-pages` branch or GitHub Actions.
+
+### Option 1: `gh-pages` branch (manual, from your machine)
+
+Set **Source** to **Deploy from a branch**, branch `gh-pages`, folder `/ (root)`. Then:
 
 ```bash
-MSYS_NO_PATHCONV=1 GITHUB_PAGES=true NEXT_PUBLIC_BASE_PATH=/garemo-tours NEXT_PUBLIC_SITE_URL=https://wero444.github.io/garemo-tours npm run build:pages
+npm run deploy:gh-pages        # build for https://www.garemotours.com and push
+npm run deploy:gh-pages:test   # build for https://wero444.github.io/garemo-tours and push
 ```
 
-Serve the `out/` folder under `/garemo-tours/` to preview it.
+`scripts/deployGhPages.mjs` builds the site, adds `.nojekyll` (and `CNAME` for production), commits `out/` into a fresh one-commit history and force-pushes it to `gh-pages`. Extra flags: `--no-build` pushes the existing `out/`, `--no-push` only builds (e.g. `node scripts/deployGhPages.mjs --test --no-push`).
+
+> The test URL only works while **no custom domain** is set in Settings → Pages: once `www.garemotours.com` is set, `*.github.io` redirects to it and the `/garemo-tours` base path breaks. A production deploy writes `CNAME`, which sets the custom domain; a test deploy removes it again.
+
+### Option 2: GitHub Actions (automatic, on every push to `master`)
+
+Set **Source** to **GitHub Actions**. `.github/workflows/deploy.yml` then runs `npm run build:pages` on every push to `master`, uploads `out/` and deploys it. It reads the URL and base path from the Pages settings, so with the custom domain set it builds for `https://www.garemotours.com` with no base path.
+
+Optional: add `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` as repository **variables** (Settings → Secrets and variables → Actions → Variables).
+
+While the source is the `gh-pages` branch, this workflow's deploy step does not publish anything; run it only with the Actions source, or disable it in the Actions tab.
+
+### Preview the static build locally
+
+```bash
+node scripts/deployGhPages.mjs --no-push   # builds for https://www.garemotours.com into out/
+npx serve out
+```
 
 ### Node.js hosting
 
 The site also runs anywhere Next.js 16 runs, for example [Vercel](https://vercel.com). There, the full feature set (Cache Components, on-demand image optimisation) is used.
 
-1. Set `NEXT_PUBLIC_SITE_URL` to the production domain.
+1. Set `NEXT_PUBLIC_SITE_URL` to `https://www.garemotours.com`.
 2. Run `npm run build`, then `npm run start` (or let your hosting platform do it).
 
-After the first deploy on either host, submit the site's `sitemap.xml` in Google Search Console and Bing Webmaster Tools.
+After the first deploy on any host, submit `https://www.garemotours.com/sitemap.xml` in Google Search Console and Bing Webmaster Tools.

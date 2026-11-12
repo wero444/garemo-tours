@@ -10,7 +10,9 @@
     "lint": "eslint ./src",
     "check-all": "npx eslint ./src && npx tsc -b --pretty false --noEmit",
     "precheck-all": "next typegen",
-    "build:map": "node scripts/buildMap.mts"
+    "build:map": "node scripts/buildMap.mts",
+    "deploy:gh-pages": "node scripts/deployGhPages.mjs",
+    "deploy:gh-pages:test": "node scripts/deployGhPages.mjs --test"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
